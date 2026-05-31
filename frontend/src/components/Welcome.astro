@@ -1,210 +1,403 @@
----
-import astroLogo from '../assets/astro.svg';
-import background from '../assets/background.svg';
----
-
-<div id="container">
-	<img id="background" src={background.src} alt="" fetchpriority="high" />
-	<main>
-		<section id="hero">
-			<a href="https://astro.build"
-				><img src={astroLogo.src} width="115" height="48" alt="Astro Homepage" /></a
-			>
-			<h1>
-				To get started, open the <code><pre>src/pages</pre></code> directory in your project.
-			</h1>
-			<section id="links">
-				<a class="button" href="https://docs.astro.build">Read our docs</a>
-				<a href="https://astro.build/chat"
-					>Join our Discord <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 127.14 96.36"
-						><path
-							fill="currentColor"
-							d="M107.7 8.07A105.15 105.15 0 0 0 81.47 0a72.06 72.06 0 0 0-3.36 6.83 97.68 97.68 0 0 0-29.11 0A72.37 72.37 0 0 0 45.64 0a105.89 105.89 0 0 0-26.25 8.09C2.79 32.65-1.71 56.6.54 80.21a105.73 105.73 0 0 0 32.17 16.15 77.7 77.7 0 0 0 6.89-11.11 68.42 68.42 0 0 1-10.85-5.18c.91-.66 1.8-1.34 2.66-2a75.57 75.57 0 0 0 64.32 0c.87.71 1.76 1.39 2.66 2a68.68 68.68 0 0 1-10.87 5.19 77 77 0 0 0 6.89 11.1 105.25 105.25 0 0 0 32.19-16.14c2.64-27.38-4.51-51.11-18.9-72.15ZM42.45 65.69C36.18 65.69 31 60 31 53s5-12.74 11.43-12.74S54 46 53.89 53s-5.05 12.69-11.44 12.69Zm42.24 0C78.41 65.69 73.25 60 73.25 53s5-12.74 11.44-12.74S96.23 46 96.12 53s-5.04 12.69-11.43 12.69Z"
-						></path></svg
-					>
-				</a>
-			</section>
-		</section>
-	</main>
-
-	<a href="https://astro.build/blog/astro-6-beta/" id="news" class="box">
-		<svg width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg"
-			><path
-				d="M24.667 12c1.333 1.414 2 3.192 2 5.334 0 4.62-4.934 5.7-7.334 12C18.444 28.567 18 27.456 18 26c0-4.642 6.667-7.053 6.667-14Zm-5.334-5.333c1.6 1.65 2.4 3.43 2.4 5.333 0 6.602-8.06 7.59-6.4 17.334C13.111 27.787 12 25.564 12 22.666c0-4.434 7.333-8 7.333-16Zm-6-5.333C15.111 3.555 16 5.556 16 7.333c0 8.333-11.333 10.962-5.333 22-3.488-.774-6-4-6-8 0-8.667 8.666-10 8.666-20Z"
-				fill="#111827"></path></svg
-		>
-		<h2>What's New in Astro 6.0?</h2>
-		<p>
-			Redesigned dev server, fonts, live collections, built-in CSP support, and more! Click to
-			explore Astro 6.0's new features.
+<section class="landing" aria-label="Meet the team">
+	<div class="landing__content">
+		<p class="landing__eyebrow">Collaboration starts here</p>
+		<h1 class="landing__title">Meet the Team</h1>
+		<p class="landing__subtitle">
+			We design, build, and ship together — turning ideas into products people love.
 		</p>
-	</a>
-</div>
+	</div>
+
+	<div class="landing__illustration">
+		<img
+			class="landing__illustration-fallback"
+			src="/meet-the-team.svg"
+			alt="Illustration of a team collaborating"
+		/>
+	</div>
+
+	<a class="landing__cta" href="#team">Explore the team</a>
+</section>
 
 <style>
-	#background {
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
-		filter: blur(100px);
-	}
+	.landing {
+		position: relative;
+		--accent: #6c63ff;
+		--accent-soft: rgba(108, 99, 255, 0.12);
+		--ink: #111827;
+		--muted: #4b5563;
+		--surface: #ffffff;
 
-	#container {
-		font-family: Inter, Roboto, 'Helvetica Neue', 'Arial Nova', 'Nimbus Sans', Arial, sans-serif;
-		height: 100%;
-	}
-
-	main {
-		height: 100%;
-		display: flex;
-		justify-content: center;
-	}
-
-	#hero {
-		display: flex;
-		align-items: start;
-		flex-direction: column;
-		justify-content: center;
-		padding: 16px;
-	}
-
-	h1 {
-		font-size: 22px;
-		margin-top: 0.25em;
-	}
-
-	#links {
-		display: flex;
-		gap: 16px;
-	}
-
-	#links a {
-		display: flex;
+		min-height: 100vh;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
 		align-items: center;
-		padding: 10px 12px;
-		color: #111827;
-		text-decoration: none;
-		transition: color 0.2s;
-	}
-
-	#links a:hover {
-		color: rgb(78, 80, 86);
-	}
-
-	#links a svg {
-		height: 1em;
-		margin-left: 8px;
-	}
-
-	#links a.button {
-		color: white;
-		background: linear-gradient(83.21deg, #3245ff 0%, #bc52ee 100%);
-		box-shadow:
-			inset 0 0 0 1px rgba(255, 255, 255, 0.12),
-			inset 0 -2px 0 rgba(0, 0, 0, 0.24);
-		border-radius: 10px;
-	}
-
-	#links a.button:hover {
-		color: rgb(230, 230, 230);
-		box-shadow: none;
-	}
-
-	pre {
-		font-family:
-			ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono',
-			monospace;
-		font-weight: normal;
-		background: linear-gradient(14deg, #d83333 0%, #f041ff 100%);
-		-webkit-background-clip: text;
-		-webkit-text-fill-color: transparent;
-		background-clip: text;
-		margin: 0;
-	}
-
-	h2 {
-		margin: 0 0 1em;
-		font-weight: normal;
-		color: #111827;
-		font-size: 20px;
-	}
-
-	p {
-		color: #4b5563;
-		font-size: 16px;
-		line-height: 24px;
-		letter-spacing: -0.006em;
-		margin: 0;
-	}
-
-	code {
-		display: inline-block;
+		gap: clamp(2rem, 5vw, 4rem);
+		padding: clamp(2rem, 6vw, 5rem);
 		background:
-			linear-gradient(66.77deg, #f3cddd 0%, #f5cee7 100%) padding-box,
-			linear-gradient(155deg, #d83333 0%, #f041ff 18%, #f5cee7 45%) border-box;
-		border-radius: 8px;
-		border: 1px solid transparent;
-		padding: 6px 8px;
+			radial-gradient(circle at 15% 20%, var(--accent-soft), transparent 45%),
+			radial-gradient(circle at 85% 80%, rgba(255, 185, 185, 0.18), transparent 40%),
+			linear-gradient(180deg, #fafbff 0%, #f3f4ff 100%);
+		font-family: Inter, system-ui, sans-serif;
+		color: var(--ink);
 	}
 
-	.box {
-		padding: 16px;
-		background: rgba(255, 255, 255, 1);
-		border-radius: 16px;
-		border: 1px solid white;
+	.landing__content {
+		max-width: 34rem;
 	}
 
-	#news {
+	.landing__eyebrow {
+		margin: 0 0 0.75rem;
+		font-size: 0.8125rem;
+		font-weight: 600;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+		color: var(--accent);
+	}
+
+	.landing__title {
+		margin: 0 0 1rem;
+		font-size: clamp(2.5rem, 6vw, 4.25rem);
+		line-height: 1.05;
+		letter-spacing: -0.03em;
+		font-weight: 700;
+	}
+
+	.landing__subtitle {
+		margin: 0;
+		max-width: 28rem;
+		font-size: clamp(1rem, 2vw, 1.125rem);
+		line-height: 1.65;
+		color: var(--muted);
+	}
+
+	.landing__illustration {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		min-height: 20rem;
+	}
+
+	.landing__illustration :global(svg),
+	.landing__illustration-fallback {
+		width: min(100%, 42rem);
+		height: auto;
+		will-change: transform;
+	}
+
+	.landing__illustration :global(.team-hotspot) {
+		cursor: pointer;
+	}
+
+	.landing__illustration :global(.team-focus-ring) {
+		pointer-events: none;
+	}
+
+	.landing__illustration:has(:global(svg)) .landing__illustration-fallback {
+		display: none;
+	}
+
+	.landing__cta {
 		position: absolute;
-		bottom: 16px;
-		right: 16px;
-		max-width: 300px;
+		left: clamp(2rem, 6vw, 5rem);
+		bottom: clamp(2rem, 5vw, 3rem);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		padding: 0.875rem 1.5rem;
+		border-radius: 999px;
+		background: var(--accent);
+		color: var(--surface);
+		font-size: 0.9375rem;
+		font-weight: 600;
 		text-decoration: none;
-		transition: background 0.2s;
-		backdrop-filter: blur(50px);
+		box-shadow: 0 12px 30px rgba(108, 99, 255, 0.28);
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
 	}
 
-	#news:hover {
-		background: rgba(255, 255, 255, 0.55);
+	.landing__cta:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 16px 36px rgba(108, 99, 255, 0.34);
 	}
 
-	@media screen and (max-height: 368px) {
-		#news {
-			display: none;
-		}
-	}
-
-	@media screen and (max-width: 768px) {
-		#container {
-			display: flex;
-			flex-direction: column;
+	@media (max-width: 900px) {
+		.landing {
+			grid-template-columns: 1fr;
+			padding-bottom: 6.5rem;
 		}
 
-		#hero {
-			display: block;
-			padding-top: 10%;
+		.landing__content {
+			text-align: center;
+			margin-inline: auto;
 		}
 
-		#links {
-			flex-wrap: wrap;
+		.landing__subtitle {
+			margin-inline: auto;
 		}
 
-		#links a.button {
-			padding: 14px 18px;
+		.landing__cta {
+			left: 50%;
+			transform: translateX(-50%);
 		}
 
-		#news {
-			right: 16px;
-			left: 16px;
-			bottom: 2.5rem;
-			max-width: 100%;
-		}
-
-		h1 {
-			line-height: 1.5;
+		.landing__cta:hover {
+			transform: translateX(-50%) translateY(-2px);
 		}
 	}
 </style>
+
+<script>
+	import gsap from 'gsap';
+
+	const illustration = document.querySelector('.landing__illustration');
+
+	async function init() {
+		if (!illustration) return;
+
+		let svg = illustration.querySelector('svg');
+
+		try {
+			const response = await fetch('/meet-the-team.svg');
+			if (!response.ok) throw new Error(`SVG request failed (${response.status})`);
+
+			illustration.innerHTML = await response.text();
+			svg = illustration.querySelector('svg');
+			if (!svg) throw new Error('SVG markup did not include an svg root');
+		} catch (error) {
+			console.error('Failed to load team illustration', error);
+			return;
+		}
+
+		svg.setAttribute('role', 'img');
+		svg.setAttribute('aria-label', 'Illustration of a team collaborating');
+		illustration.removeAttribute('aria-hidden');
+
+		const shapes = svg.querySelectorAll('path, circle, ellipse');
+		const accentShapes = svg.querySelectorAll('[fill="#6c63ff"], [fill="#6C63FF"]');
+		const cursor = Array.from(svg.querySelectorAll('path')).find((path) =>
+			path.getAttribute('d')?.startsWith('M734.688,311.257'),
+		);
+		const teamMembers = [
+			{
+				name: 'Design lead',
+				card: { x: 56, y: 94, width: 154, height: 112 },
+				cursor: { x: 0, y: 0 },
+			},
+			{
+				name: 'Product strategist',
+				card: { x: 56, y: 250, width: 154, height: 112 },
+				cursor: { x: 0, y: 156 },
+			},
+			{
+				name: 'Engineering lead',
+				card: { x: 56, y: 413, width: 154, height: 112 },
+				cursor: { x: 0, y: 319 },
+			},
+		];
+		const interactionLayer = createTeamInteractionLayer(svg, teamMembers);
+
+		const mm = gsap.matchMedia();
+
+		mm.add(
+			{
+				reduceMotion: '(prefers-reduced-motion: reduce)',
+				motionSafe: '(prefers-reduced-motion: no-preference)',
+			},
+			(context) => {
+				const { reduceMotion } = context.conditions;
+
+				if (reduceMotion) {
+					gsap.set(['.landing__eyebrow', '.landing__title', '.landing__subtitle', svg, '.landing__cta'], {
+						autoAlpha: 1,
+						y: 0,
+						scale: 1,
+					});
+					selectTeamMember(interactionLayer, 0);
+					return;
+				}
+
+				gsap.set(shapes, { transformOrigin: '50% 50%' });
+				gsap.set(svg, { transformOrigin: '50% 50%' });
+				if (cursor) {
+					gsap.set(cursor, { transformOrigin: '50% 50%' });
+				}
+
+				const intro = gsap.timeline({
+					defaults: { ease: 'power3.out' },
+				});
+
+				intro
+					.from('.landing__eyebrow', { autoAlpha: 0, y: 24, duration: 0.55 })
+					.from('.landing__title', { autoAlpha: 0, y: 48, duration: 0.75 }, '-=0.25')
+					.from('.landing__subtitle', { autoAlpha: 0, y: 28, duration: 0.55 }, '-=0.35')
+					.from(
+						svg,
+						{
+							autoAlpha: 0,
+							scale: 0.9,
+							y: 36,
+							duration: 1,
+							ease: 'back.out(1.4)',
+						},
+						'-=0.25',
+					)
+					.from(
+						shapes,
+						{
+							autoAlpha: 0,
+							scale: 0.96,
+							duration: 0.45,
+							stagger: {
+								amount: 0.9,
+								from: 'center',
+							},
+						},
+						'-=0.85',
+					)
+					.from('.landing__cta', { autoAlpha: 0, y: 18, duration: 0.45 }, '-=0.35');
+
+				gsap.to(svg, {
+					y: '-=10',
+					duration: 2.8,
+					ease: 'sine.inOut',
+					repeat: -1,
+					yoyo: true,
+					delay: 1.4,
+				});
+
+				if (accentShapes.length) {
+					gsap.fromTo(
+						accentShapes,
+						{ fill: '#e8e6ff' },
+						{
+							fill: '#6c63ff',
+							duration: 1.2,
+							stagger: 0.08,
+							ease: 'power2.inOut',
+							delay: 0.6,
+						},
+					);
+				}
+
+				const clickLoop = createTeamClickLoop(cursor, interactionLayer);
+
+				return () => {
+					intro.kill();
+					clickLoop?.kill();
+					gsap.killTweensOf([svg, shapes, accentShapes, cursor, ...interactionLayer.frames]);
+				};
+			},
+		);
+	}
+
+	function createTeamInteractionLayer(svg, teamMembers) {
+		const namespace = 'http://www.w3.org/2000/svg';
+		const layer = document.createElementNS(namespace, 'g');
+		layer.setAttribute('class', 'team-interaction-layer');
+		svg.append(layer);
+
+		const frames = teamMembers.map((member, index) => {
+			const frame = document.createElementNS(namespace, 'rect');
+			frame.setAttribute('class', 'team-focus-ring');
+			frame.setAttribute('x', member.card.x);
+			frame.setAttribute('y', member.card.y);
+			frame.setAttribute('width', member.card.width);
+			frame.setAttribute('height', member.card.height);
+			frame.setAttribute('rx', '12');
+			frame.setAttribute('fill', 'rgba(108, 99, 255, 0.08)');
+			frame.setAttribute('stroke', '#6c63ff');
+			frame.setAttribute('stroke-width', '3');
+			frame.setAttribute('opacity', '0');
+			layer.append(frame);
+
+			const hotspot = document.createElementNS(namespace, 'rect');
+			hotspot.setAttribute('class', 'team-hotspot');
+			hotspot.setAttribute('x', member.card.x);
+			hotspot.setAttribute('y', member.card.y);
+			hotspot.setAttribute('width', member.card.width);
+			hotspot.setAttribute('height', member.card.height);
+			hotspot.setAttribute('rx', '12');
+			hotspot.setAttribute('fill', 'transparent');
+			hotspot.setAttribute('tabindex', '0');
+			hotspot.setAttribute('role', 'button');
+			hotspot.setAttribute('aria-label', `Select ${member.name}`);
+			hotspot.addEventListener('click', () => selectTeamMember({ frames }, index));
+			hotspot.addEventListener('keydown', (event) => {
+				if (event.key === 'Enter' || event.key === ' ') {
+					event.preventDefault();
+					selectTeamMember({ frames }, index);
+				}
+			});
+			layer.append(hotspot);
+
+			return frame;
+		});
+
+		return { frames, members: teamMembers };
+	}
+
+	function createTeamClickLoop(cursor, interactionLayer) {
+		if (!cursor) return null;
+
+		const loop = gsap.timeline({
+			delay: 2.1,
+			repeat: -1,
+			repeatDelay: 0.7,
+		});
+
+		interactionLayer.members.forEach((member, index) => {
+			loop
+				.to(cursor, {
+					x: member.cursor.x,
+					y: member.cursor.y,
+					duration: index === 0 ? 0.25 : 0.65,
+					ease: 'power2.inOut',
+				})
+				.to(cursor, {
+					scale: 0.88,
+					duration: 0.08,
+					ease: 'power1.in',
+				})
+				.add(() => selectTeamMember(interactionLayer, index))
+				.to(cursor, {
+					scale: 1,
+					duration: 0.14,
+					ease: 'back.out(2)',
+				})
+				.to({}, { duration: 0.45 });
+		});
+
+		return loop;
+	}
+
+	function selectTeamMember(interactionLayer, activeIndex) {
+		interactionLayer.frames.forEach((frame, index) => {
+			if (index === activeIndex) {
+				gsap.fromTo(
+					frame,
+					{
+						autoAlpha: 0.35,
+						scale: 0.96,
+						transformOrigin: '50% 50%',
+					},
+					{
+						autoAlpha: 1,
+						scale: 1,
+						duration: 0.28,
+						ease: 'back.out(2)',
+					},
+				);
+				return;
+			}
+
+			gsap.to(frame, {
+				autoAlpha: 0,
+				scale: 1,
+				duration: 0.2,
+				ease: 'power2.out',
+			});
+		});
+	}
+
+	init();
+</script>
