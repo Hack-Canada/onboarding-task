@@ -2,6 +2,7 @@
 import group2 from '../assets/Group 2.svg';
 import group3 from '../assets/Group 3.svg';
 import group4 from '../assets/Group 4.svg';
+import { Highlighter } from '@/components/ui/highlighter';
 
 // Replace label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
 const teamLinks = [
@@ -18,7 +19,19 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 	<div class="home__content">
 		<h1 class="home__title">Site showcase</h1>
 		<p class="home__lead">
-			Onboarding task: build your own page, add it below, and link back to this home screen when you are done.
+			Onboarding task:{' '}
+			<Highlighter client:load action="highlight" color="#fde68a">
+				build your own page
+			</Highlighter>
+			,{' '}
+			<Highlighter client:load action="underline" color="#f97316">
+				add it below
+			</Highlighter>
+			, and{' '}
+			<Highlighter client:load action="highlight" color="#bae6fd">
+				link back to this home screen
+			</Highlighter>{' '}
+			when you are done.
 		</p>
 
 		<nav class="home__nav" aria-label="Showcase pages">
