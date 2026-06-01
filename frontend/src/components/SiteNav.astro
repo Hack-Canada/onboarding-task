@@ -1,0 +1,46 @@
+---
+interface Props {
+	current?: 'home' | 'page';
+}
+
+const { current = 'home' } = Astro.props;
+---
+
+<nav class="site-nav" aria-label="Site">
+	<a class:list={['site-nav__link', { 'is-active': current === 'home' }]} href="/">Home</a>
+	<a class:list={['site-nav__link', { 'is-active': current === 'page' }]} href="/example">Example page</a>
+</nav>
+
+<style>
+	.site-nav {
+		position: fixed;
+		top: 1.25rem;
+		right: 1.25rem;
+		z-index: 10;
+		display: flex;
+		gap: 0.75rem;
+	}
+
+	.site-nav__link {
+		padding: 0.45rem 0.85rem;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		border-radius: 999px;
+		background: rgba(17, 24, 39, 0.55);
+		color: #ffffff;
+		font-family: Inter, system-ui, sans-serif;
+		font-size: 0.875rem;
+		font-weight: 600;
+		text-decoration: none;
+		backdrop-filter: blur(8px);
+	}
+
+	.site-nav__link:hover {
+		border-color: rgba(255, 255, 255, 0.7);
+		background: rgba(17, 24, 39, 0.75);
+	}
+
+	.site-nav__link.is-active {
+		border-color: #ffdf6e;
+		color: #ffdf6e;
+	}
+</style>
