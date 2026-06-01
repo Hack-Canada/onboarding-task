@@ -1,334 +1,102 @@
-<section class="landing" aria-label="HackCanada 2027">
-	<div class="landing__content">
-		<p class="landing__eyebrow">Applications will open soon</p>
-		<h1 class="landing__title">
-			Hack<span class="landing__canada" aria-label="Canada">
-				<span class="landing__canada-letter landing__canada-letter--white">C</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				><span class="landing__canada-letter landing__canada-letter--white">n</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				><span class="landing__canada-letter landing__canada-letter--white">d</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				>
-			</span>
-			2027
-		</h1>
-		<p class="landing__tagline">
-			Get ready to
-			<span class="landing__word-flip" aria-live="polite">
-				<span class="landing__flip-word is-active">code</span>
-				<span class="landing__flip-word">build</span>
-				<span class="landing__flip-word">shine</span>
-				<span class="landing__flip-word">connect</span>
-				<span class="landing__flip-word">create</span>
-			</span>
-		</p>
-	</div>
+---
+// Replace label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
+const teamLinks = [
+	{ label: 'Name 1', href: '' },
+	{ label: 'Name 2', href: '' },
+	{ label: 'Name 3', href: '' },
+	{ label: 'Name 4', href: '' },
+];
+---
 
-	<div class="landing__paper-airplane" aria-hidden="true">
-		<span class="landing__smoke landing__smoke--one"></span>
-		<span class="landing__smoke landing__smoke--two"></span>
-		<span class="landing__smoke landing__smoke--three"></span>
-		<span class="landing__smoke landing__smoke--four"></span>
-		<span class="landing__smoke landing__smoke--five"></span>
-		<div class="landing__paper-airplane-frame">
-			<img src="/paper-airplane.webp" alt="" />
-		</div>
-	</div>
-</section>
+<main class="home" aria-label="Site showcase">
+	<h1 class="home__title">Site showcase</h1>
+	<p class="home__lead">
+		Onboarding task: build your own page, add it below, and link back to this home screen when you are done.
+	</p>
+
+	<nav class="home__nav" aria-label="Showcase pages">
+		{
+			teamLinks.map((link) => (
+				<a class="home__button" href={link.href}>
+					{link.label}
+				</a>
+			))
+		}
+	</nav>
+</main>
 
 <style>
-	.landing {
-		position: relative;
+	.home {
+		box-sizing: border-box;
 		min-height: 100vh;
-		display: grid;
+		display: flex;
+		flex-direction: column;
 		align-items: center;
-		padding: clamp(2rem, 6vw, 5rem);
-		overflow: hidden;
-		background-image: linear-gradient(90deg, rgba(17, 24, 39, 0.74), rgba(17, 24, 39, 0.24)),
-			url('/background.webp');
-		background-position: center;
-		background-size: cover;
-		color: #ffffff;
+		justify-content: center;
+		gap: 2rem;
+		padding: 2rem;
+		background: #f3f4f6;
+		color: #111827;
 		font-family: Inter, system-ui, sans-serif;
-		isolation: isolate;
+		text-align: center;
 	}
 
-	/* Hero copy */
-	.landing__content {
-		position: relative;
-		/* Adjust margin/translate values here to move the text block around. */
-		z-index: 2;
-		max-width: 54rem;
-		transform: translateY(-12rem);
-	}
-
-	.landing__eyebrow {
-		margin: 0 0 1rem;
-		font-size: clamp(0.82rem, 1.4vw, 1rem);
-		font-weight: 700;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.84);
-	}
-
-	.landing__title {
-		margin: 0 0 1.1rem;
-		font-size: clamp(3rem, 9vw, 7.5rem);
-		line-height: 0.94;
-		font-weight: 800;
-		letter-spacing: 0;
-	}
-
-	.landing__canada {
-		display: inline-flex;
-		align-items: baseline;
-	}
-
-	.landing__canada-letter {
-		position: relative;
-		display: inline-block;
-	}
-
-	.landing__canada-letter--white {
-		color: #ffffff;
-	}
-
-	.landing__canada-letter--red {
-		color: #ff3b3b;
-	}
-
-	.landing__tagline {
+	.home__title {
 		margin: 0;
-		font-size: clamp(1.35rem, 3vw, 2.75rem);
+		font-size: clamp(1.75rem, 4vw, 2.5rem);
 		font-weight: 700;
-		line-height: 1.2;
-		color: rgba(255, 255, 255, 0.9);
 	}
 
-	.landing__word-flip {
-		position: relative;
-		display: inline-grid;
-		min-width: 6.5ch;
-		margin-left: 0.3rem;
-		vertical-align: baseline;
-		color: #ffdf6e;
+	.home__lead {
+		max-width: 28rem;
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.5;
+		color: #4b5563;
 	}
 
-	.landing__flip-word {
-		grid-area: 1 / 1;
-		opacity: 0;
-		will-change: transform, opacity;
+	.home__nav {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(9rem, 1fr));
+		gap: 1rem;
+		width: min(100%, 22rem);
 	}
 
-	.landing__flip-word.is-active {
-		opacity: 1;
+	.home__button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3.25rem;
+		padding: 0.85rem 1.25rem;
+		border: 2px solid #111827;
+		border-radius: 0.5rem;
+		background: #ffffff;
+		color: #111827;
+		font-size: 1rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease,
+			transform 0.15s ease;
 	}
 
-	/* Paper airplane */
-	.landing__paper-airplane {
-		position: absolute;
-		top: clamp(4.5rem, 16vh, 11rem);
-		left: clamp(1.5rem, 8vw, 8rem);
-		z-index: 1;
-		width: clamp(2.5rem, 4vw, 4rem);
-		pointer-events: none;
-		will-change: transform;
+	.home__button:hover {
+		background: #111827;
+		color: #ffffff;
+		transform: translateY(-2px);
 	}
 
-	.landing__paper-airplane-frame {
-		position: relative;
-		z-index: 2;
-		aspect-ratio: 1.8;
-		overflow: hidden;
-		mix-blend-mode: screen;
-		opacity: 0.9;
+	.home__button:focus-visible {
+		outline: 3px solid #2563eb;
+		outline-offset: 2px;
 	}
 
-	.landing__paper-airplane-frame img {
-		position: absolute;
-		top: -42%;
-		left: -72%;
-		width: 190%;
-		max-width: none;
-		height: auto;
-	}
-
-	/* Smoke trail */
-	.landing__smoke {
-		position: absolute;
-		top: 64%;
-		left: 8%;
-		z-index: 1;
-		width: clamp(0.22rem, 0.45vw, 0.4rem);
-		aspect-ratio: 1;
-		border-radius: 999px;
-		background: rgba(242, 247, 255, 0.82);
-		box-shadow: 0 0 0.7rem rgba(242, 247, 255, 0.62);
-		mix-blend-mode: screen;
-		opacity: 0;
-		transform: scale(0.3);
-		will-change: transform, opacity;
-	}
-
-	.landing__smoke--two {
-		top: 70%;
-		left: 1%;
-	}
-
-	.landing__smoke--three {
-		top: 76%;
-		left: -6%;
-	}
-
-	.landing__smoke--four {
-		top: 82%;
-		left: -13%;
-	}
-
-	.landing__smoke--five {
-		top: 88%;
-		left: -20%;
-	}
-
-	@media (max-width: 900px) {
-		.landing {
-			background-image: linear-gradient(180deg, rgba(17, 24, 39, 0.72), rgba(17, 24, 39, 0.34)),
-				url('/background.webp');
-			text-align: center;
-		}
-
-		.landing__content {
-			margin-inline: auto;
-			transform: translateY(-2rem);
-		}
-
-		.landing__word-flip {
-			display: block;
-			margin: 0.2rem auto 0;
-		}
-
-		.landing__paper-airplane {
-			top: 6rem;
-			left: 1rem;
-			width: 2.5rem;
-			opacity: 0.82;
-		}
-
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.landing__smoke {
-			display: none;
+	@media (max-width: 480px) {
+		.home__nav {
+			grid-template-columns: 1fr;
+			width: 100%;
+			max-width: 16rem;
 		}
 	}
 </style>
-
-<script>
-	import gsap from 'gsap';
-
-	const airplane = document.querySelector('.landing__paper-airplane');
-	const smokePuffs = gsap.utils.toArray('.landing__smoke');
-	const flipWords = gsap.utils.toArray('.landing__flip-word');
-
-	const airplaneStart = { x: 0, y: 0, rotation: -8, autoAlpha: 0.82 };
-	const airplaneEnd = {
-		x: () => Math.min(Math.max(window.innerWidth * 0.12, 64), 170),
-		y: () => -Math.min(Math.max(window.innerHeight * 0.12, 52), 120),
-		rotation: -15,
-		autoAlpha: 0.98,
-		duration: 4.2,
-	};
-
-	const smokeStart = { autoAlpha: 0, x: 0, y: 0, scale: 0.3 };
-	const smokeAppear = {
-		autoAlpha: 0.58,
-		scale: 0.7,
-		duration: 0.16,
-		stagger: 0.16,
-		ease: 'power1.out',
-	};
-	const smokeDrift = {
-		x: (index) => -14 - index * 7,
-		y: (index) => 10 + index * 4,
-		autoAlpha: 0,
-		scale: (index) => 1 + index * 0.18,
-		duration: 1.45,
-		stagger: 0.16,
-		ease: 'power2.out',
-	};
-
-	if (airplane) {
-		const mm = gsap.matchMedia();
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			const flight = createAirplaneFlight(airplane, smokePuffs);
-
-			return () => flight.kill();
-		});
-
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			gsap.set(smokePuffs, { autoAlpha: 0 });
-			gsap.set(airplane, { ...airplaneStart, autoAlpha: 0.9 });
-		});
-	}
-
-	if (flipWords.length > 1) {
-		const mm = gsap.matchMedia();
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			const wordFlip = createWordFlip(flipWords);
-
-			return () => wordFlip.kill();
-		});
-	}
-
-	function createWordFlip(words) {
-		const timeline = gsap.timeline({
-			repeat: -1,
-			repeatDelay: 0.35,
-		});
-
-		gsap.set(words, { autoAlpha: 0, y: '0.8em' });
-		gsap.set(words[0], { autoAlpha: 1, y: 0 });
-
-		words.forEach((word, index) => {
-			const nextWord = words[(index + 1) % words.length];
-
-			timeline
-				.to({}, { duration: 1.25 })
-				.to(word, {
-					autoAlpha: 0,
-					y: '-0.8em',
-					duration: 0.28,
-					ease: 'power2.in',
-				})
-				.fromTo(
-					nextWord,
-					{ autoAlpha: 0, y: '0.8em' },
-					{
-						autoAlpha: 1,
-						y: 0,
-						duration: 0.32,
-						ease: 'power2.out',
-					},
-					'<0.06',
-				);
-		});
-
-		return timeline;
-	}
-
-	function createAirplaneFlight(airplaneElement, smokeElements) {
-		return gsap
-			.timeline({
-				repeatRefresh: true,
-				defaults: { ease: 'sine.inOut' },
-			})
-			.set(smokeElements, smokeStart, 0)
-			.fromTo(airplaneElement, airplaneStart, airplaneEnd, 0)
-			.to(smokeElements, smokeAppear, 0.1)
-			.to(smokeElements, smokeDrift, 0.18);
-	}
-
-</script>
