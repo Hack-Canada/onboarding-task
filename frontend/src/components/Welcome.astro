@@ -1,10 +1,13 @@
 ---
+// Three mascot drawings we flip through like a short animation.
 import group2 from '../assets/Group 2.svg';
 import group3 from '../assets/Group 3.svg';
 import group4 from '../assets/Group 4.svg';
+// Speech bubble image that sits next to the beaver (frame 1 only).
+import textBubble from '../assets/text-bubble.png';
 import { Highlighter } from '@/components/ui/highlighter';
 
-// Replace label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
+// replace the label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
 const teamLinks = [
 	{ label: 'Name 1', href: '' },
 	{ label: 'Name 2', href: '' },
@@ -12,6 +15,7 @@ const teamLinks = [
 	{ label: 'Name 4', href: '' },
 ];
 
+// List of mascot image URLs in play order (beaver → next frame → next frame).
 const mascotSrcs = [group2.src, group3.src, group4.src];
 ---
 
@@ -45,7 +49,9 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 		</nav>
 	</div>
 
+	<!-- Bottom mascot area: one image swaps, bubble layers on top when needed. -->
 	<div class="home__mascot">
+		<!-- The beaver (and other frames) — src changes in the script below. -->
 		<img
 			class="home__mascot-img"
 			data-mascot
@@ -55,30 +61,56 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 			height="67"
 			decoding="async"
 		/>
+		<!-- "Let's get started" bubble — only visible on the first mascot frame. -->
+		<img
+			class="home__mascot-bubble home__mascot-bubble--visible"
+			data-mascot-bubble
+			src={textBubble.src}
+			alt=""
+			width={textBubble.width}
+			height={textBubble.height}
+			decoding="async"
+		/>
 	</div>
 </main>
 
 <script define:vars={{ mascotSrcs }}>
+	// Find the mascot image and speech bubble in the page.
 	const img = document.querySelector('[data-mascot]');
+	const bubble = document.querySelector('[data-mascot-bubble]');
 	if (!img || mascotSrcs.length < 2) {
 		return;
 	}
 
+	// First image in the list is Group 2 (beaver with banana).
+	const group2Index = 0;
+
+	// Show the bubble only on that first frame; hide it on the others.
+	const setBubbleVisible = (frame) => {
+		bubble?.classList.toggle('home__mascot-bubble--visible', frame === group2Index);
+	};
+
+	setBubbleVisible(group2Index);
+
+	// If the user prefers less motion, keep the first frame and skip the loop.
 	if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
 		return;
 	}
 
+	// Load all frames early so swapping does not flash a blank image.
 	mascotSrcs.forEach((src) => {
 		const preload = new Image();
 		preload.src = src;
 	});
 
-	let frame = 0;
+	let frame = group2Index;
 	const frameMs = 700;
 
+	// Every 700ms, switch to the next mascot picture and update the bubble.
 	window.setInterval(() => {
 		frame = (frame + 1) % mascotSrcs.length;
 		img.src = mascotSrcs[frame];
+		setBubbleVisible(frame);
 	}, frameMs);
 </script>
 
@@ -160,7 +192,10 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 		outline-offset: 2px;
 	}
 
+	/* Box at the bottom of the page that holds the mascot and bubble. */
 	.home__mascot {
+		position: relative;
+		overflow: visible; /* Let the bubble stick out past the box edges. */
 		flex-shrink: 0;
 		width: min(10rem, 42vw);
 		aspect-ratio: 63 / 67;
@@ -168,12 +203,35 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 		margin-bottom: clamp(1rem, 4vh, 2.5rem);
 	}
 
+	/* Mascot SVG fills the box and sits on the bottom. */
 	.home__mascot-img {
 		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
 		object-position: bottom center;
+	}
+
+	/* Speech bubble — placed above-right of the beaver, hidden by default. */
+	.home__mascot-bubble {
+		position: absolute; /* take the bubble out of normal layout so we can place it on top */
+		top: -3.75rem; /* move up (more negative = higher) */
+		right: -5.25rem; /* move right (more negative = further right) */
+		left: auto; /* ignore left so right + top control position */
+		z-index: 1; /* draw the bubble above the mascot image */
+		width: 9.75rem; /* how wide the bubble image is */
+		max-width: none; /* allow the bubble to use the full width above */
+		height: auto; /* keep the image proportions */
+		object-fit: contain; /* scale the bubble without stretching */
+		pointer-events: none; /* clicks pass through to things behind the bubble */
+		opacity: 0; /* hidden until the visible class is added */
+		transform: none; /* no extra move/scale (use top/right instead) */
+		transition: opacity 0.12s ease; /* fade in/out when the frame changes */
+	}
+
+	/* Script adds this class when we are on the beaver (Group 2) frame. */
+	.home__mascot-bubble--visible {
+		opacity: 1; /* show the bubble on the beaver frame */
 	}
 
 	@media (max-width: 480px) {
@@ -186,6 +244,13 @@ const mascotSrcs = [group2.src, group3.src, group4.src];
 		.home__mascot {
 			width: min(8rem, 50vw);
 			aspect-ratio: 63 / 67;
+		}
+
+		/* Slightly smaller bubble offset on narrow screens. */
+		.home__mascot-bubble {
+			top: -2.25rem; /* move up on small screens (less than desktop) */
+			right: -1.75rem; /* move right on small screens */
+			width: 8rem; /* smaller bubble on narrow viewports */
 		}
 	}
 </style>
