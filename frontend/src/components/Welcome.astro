@@ -1,334 +1,363 @@
-<section class="landing" aria-label="HackCanada 2027">
-	<div class="landing__content">
-		<p class="landing__eyebrow">Applications will open soon</p>
-		<h1 class="landing__title">
-			Hack<span class="landing__canada" aria-label="Canada">
-				<span class="landing__canada-letter landing__canada-letter--white">C</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				><span class="landing__canada-letter landing__canada-letter--white">n</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				><span class="landing__canada-letter landing__canada-letter--white">d</span><span
-					class="landing__canada-letter landing__canada-letter--red">a</span
-				>
-			</span>
-			2027
-		</h1>
-		<p class="landing__tagline">
-			Get ready to
-			<span class="landing__word-flip" aria-live="polite">
-				<span class="landing__flip-word is-active">code</span>
-				<span class="landing__flip-word">build</span>
-				<span class="landing__flip-word">shine</span>
-				<span class="landing__flip-word">connect</span>
-				<span class="landing__flip-word">create</span>
-			</span>
+---
+// Three mascot drawings we flip through like a short animation.
+import group2 from '../assets/Group 2.svg';
+import group3 from '../assets/Group 3.svg';
+import group4 from '../assets/Group 4.svg';
+// Speech bubble image that sits next to the beaver (frame 1 only).
+import textBubble from '../assets/text-bubble.png';
+// Decorative leaf for the top-left corner.
+import cornerLeaf from '../assets/corner-leaf.png';
+// Hanging foliage for the top-right corner.
+import topLeaves from '../assets/leaves.png';
+import { Highlighter } from '@/components/ui/highlighter';
+
+// replace the label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
+const teamLinks = [
+	{ label: 'Name 1', href: '' },
+	{ label: 'Name 2', href: '' },
+	{ label: 'Name 3', href: '' },
+	{ label: 'Name 4', href: '' },
+];
+
+// List of mascot image URLs in play order (beaver → next frame → next frame).
+const mascotSrcs = [group2.src, group3.src, group4.src];
+---
+
+<img
+	class="home__corner-leaf"
+	data-corner-leaf
+	src={cornerLeaf.src}
+	alt=""
+	width={cornerLeaf.width}
+	height={cornerLeaf.height}
+	decoding="async"
+	aria-hidden="true"
+/>
+
+<img
+	class="home__top-leaves"
+	data-top-leaves
+	src={topLeaves.src}
+	alt=""
+	width={topLeaves.width}
+	height={topLeaves.height}
+	decoding="async"
+	aria-hidden="true"
+/>
+
+<main class="home" aria-label="Site showcase">
+	<div class="home__content">
+		<h1 class="home__title">HC27 - Tech Onboarding </h1>
+		<p class="home__lead">
+			Onboarding task:{' '}
+			<Highlighter client:load action="highlight" color="#fde68a">
+				build your own page
+			</Highlighter>
+			,{' '}
+			<Highlighter client:load action="underline" color="#f97316">
+				add it below
+			</Highlighter>
+			, and{' '}
+			<Highlighter client:load action="highlight" color="#bae6fd">
+				link back to this home screen
+			</Highlighter>{' '}
+			when you are done.
 		</p>
+
+		<nav class="home__nav" aria-label="Showcase pages">
+			{
+				teamLinks.map((link) => (
+					<a class="home__button" href={link.href}>
+						{link.label}
+					</a>
+				))
+			}
+		</nav>
 	</div>
 
-	<div class="landing__paper-airplane" aria-hidden="true">
-		<span class="landing__smoke landing__smoke--one"></span>
-		<span class="landing__smoke landing__smoke--two"></span>
-		<span class="landing__smoke landing__smoke--three"></span>
-		<span class="landing__smoke landing__smoke--four"></span>
-		<span class="landing__smoke landing__smoke--five"></span>
-		<div class="landing__paper-airplane-frame">
-			<img src="/paper-airplane.webp" alt="" />
-		</div>
+	<!-- Bottom mascot area: one image swaps, bubble layers on top when needed. -->
+	<div class="home__mascot">
+		<!-- The beaver (and other frames) — src changes in the script below. -->
+		<img
+			class="home__mascot-img"
+			data-mascot
+			src={group2.src}
+			alt=""
+			width="63"
+			height="67"
+			decoding="async"
+		/>
+		<!-- "Let's get started" bubble — only visible on the first mascot frame. -->
+		<img
+			class="home__mascot-bubble home__mascot-bubble--visible"
+			data-mascot-bubble
+			src={textBubble.src}
+			alt=""
+			width={textBubble.width}
+			height={textBubble.height}
+			decoding="async"
+		/>
 	</div>
-</section>
+</main>
 
-<style>
-	.landing {
-		position: relative;
-		min-height: 100vh;
-		display: grid;
-		align-items: center;
-		padding: clamp(2rem, 6vw, 5rem);
-		overflow: hidden;
-		background-image: linear-gradient(90deg, rgba(17, 24, 39, 0.74), rgba(17, 24, 39, 0.24)),
-			url('/background.webp');
-		background-position: center;
-		background-size: cover;
-		color: #ffffff;
-		font-family: Inter, system-ui, sans-serif;
-		isolation: isolate;
+<script define:vars={{ mascotSrcs }}>
+	// Find the mascot image and speech bubble in the page.
+	const img = document.querySelector('[data-mascot]');
+	const bubble = document.querySelector('[data-mascot-bubble]');
+	if (img && mascotSrcs.length >= 2) {
+
+	// First image in the list is Group 2 (beaver with banana).
+	const group2Index = 0;
+
+	// Show the bubble only on that first frame; hide it on the others.
+	const setBubbleVisible = (frame) => {
+		bubble?.classList.toggle('home__mascot-bubble--visible', frame === group2Index);
+	};
+
+	setBubbleVisible(group2Index);
+
+	// If the user prefers less motion, keep the first frame and skip the loop.
+	if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+		// Load all frames early so swapping does not flash a blank image.
+		mascotSrcs.forEach((src) => {
+			const preload = new Image();
+			preload.src = src;
+		});
+
+		let frame = group2Index;
+		const frameMs = 700;
+
+		// Every 700ms, switch to the next mascot picture and update the bubble.
+		window.setInterval(() => {
+			frame = (frame + 1) % mascotSrcs.length;
+			img.src = mascotSrcs[frame];
+			setBubbleVisible(frame);
+		}, frameMs);
 	}
-
-	/* Hero copy */
-	.landing__content {
-		position: relative;
-		/* Adjust margin/translate values here to move the text block around. */
-		z-index: 2;
-		max-width: 54rem;
-		transform: translateY(-12rem);
 	}
-
-	.landing__eyebrow {
-		margin: 0 0 1rem;
-		font-size: clamp(0.82rem, 1.4vw, 1rem);
-		font-weight: 700;
-		letter-spacing: 0.16em;
-		text-transform: uppercase;
-		color: rgba(255, 255, 255, 0.84);
-	}
-
-	.landing__title {
-		margin: 0 0 1.1rem;
-		font-size: clamp(3rem, 9vw, 7.5rem);
-		line-height: 0.94;
-		font-weight: 800;
-		letter-spacing: 0;
-	}
-
-	.landing__canada {
-		display: inline-flex;
-		align-items: baseline;
-	}
-
-	.landing__canada-letter {
-		position: relative;
-		display: inline-block;
-	}
-
-	.landing__canada-letter--white {
-		color: #ffffff;
-	}
-
-	.landing__canada-letter--red {
-		color: #ff3b3b;
-	}
-
-	.landing__tagline {
-		margin: 0;
-		font-size: clamp(1.35rem, 3vw, 2.75rem);
-		font-weight: 700;
-		line-height: 1.2;
-		color: rgba(255, 255, 255, 0.9);
-	}
-
-	.landing__word-flip {
-		position: relative;
-		display: inline-grid;
-		min-width: 6.5ch;
-		margin-left: 0.3rem;
-		vertical-align: baseline;
-		color: #ffdf6e;
-	}
-
-	.landing__flip-word {
-		grid-area: 1 / 1;
-		opacity: 0;
-		will-change: transform, opacity;
-	}
-
-	.landing__flip-word.is-active {
-		opacity: 1;
-	}
-
-	/* Paper airplane */
-	.landing__paper-airplane {
-		position: absolute;
-		top: clamp(4.5rem, 16vh, 11rem);
-		left: clamp(1.5rem, 8vw, 8rem);
-		z-index: 1;
-		width: clamp(2.5rem, 4vw, 4rem);
-		pointer-events: none;
-		will-change: transform;
-	}
-
-	.landing__paper-airplane-frame {
-		position: relative;
-		z-index: 2;
-		aspect-ratio: 1.8;
-		overflow: hidden;
-		mix-blend-mode: screen;
-		opacity: 0.9;
-	}
-
-	.landing__paper-airplane-frame img {
-		position: absolute;
-		top: -42%;
-		left: -72%;
-		width: 190%;
-		max-width: none;
-		height: auto;
-	}
-
-	/* Smoke trail */
-	.landing__smoke {
-		position: absolute;
-		top: 64%;
-		left: 8%;
-		z-index: 1;
-		width: clamp(0.22rem, 0.45vw, 0.4rem);
-		aspect-ratio: 1;
-		border-radius: 999px;
-		background: rgba(242, 247, 255, 0.82);
-		box-shadow: 0 0 0.7rem rgba(242, 247, 255, 0.62);
-		mix-blend-mode: screen;
-		opacity: 0;
-		transform: scale(0.3);
-		will-change: transform, opacity;
-	}
-
-	.landing__smoke--two {
-		top: 70%;
-		left: 1%;
-	}
-
-	.landing__smoke--three {
-		top: 76%;
-		left: -6%;
-	}
-
-	.landing__smoke--four {
-		top: 82%;
-		left: -13%;
-	}
-
-	.landing__smoke--five {
-		top: 88%;
-		left: -20%;
-	}
-
-	@media (max-width: 900px) {
-		.landing {
-			background-image: linear-gradient(180deg, rgba(17, 24, 39, 0.72), rgba(17, 24, 39, 0.34)),
-				url('/background.webp');
-			text-align: center;
-		}
-
-		.landing__content {
-			margin-inline: auto;
-			transform: translateY(-2rem);
-		}
-
-		.landing__word-flip {
-			display: block;
-			margin: 0.2rem auto 0;
-		}
-
-		.landing__paper-airplane {
-			top: 6rem;
-			left: 1rem;
-			width: 2.5rem;
-			opacity: 0.82;
-		}
-
-	}
-
-	@media (prefers-reduced-motion: reduce) {
-		.landing__smoke {
-			display: none;
-		}
-	}
-</style>
+</script>
 
 <script>
 	import gsap from 'gsap';
 
-	const airplane = document.querySelector('.landing__paper-airplane');
-	const smokePuffs = gsap.utils.toArray('.landing__smoke');
-	const flipWords = gsap.utils.toArray('.landing__flip-word');
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-	const airplaneStart = { x: 0, y: 0, rotation: -8, autoAlpha: 0.82 };
-	const airplaneEnd = {
-		x: () => Math.min(Math.max(window.innerWidth * 0.12, 64), 170),
-		y: () => -Math.min(Math.max(window.innerHeight * 0.12, 52), 120),
-		rotation: -15,
-		autoAlpha: 0.98,
-		duration: 4.2,
+	const animateDecorIn = (el, corner) => {
+		const run = () => {
+			const w = el.getBoundingClientRect().width || el.offsetWidth || 200;
+			const h = el.getBoundingClientRect().height || el.offsetHeight || 200;
+			const offscreenX = corner === 'right' ? w + 96 : -(w + 96);
+			const offscreenY = -(h + 72);
+			const delay = corner === 'right' ? 0.8 : 0.65;
+
+			gsap.set(el, { x: offscreenX, y: offscreenY, autoAlpha: 0, force3D: true });
+			gsap.to(el, {
+				x: 0,
+				y: 0,
+				autoAlpha: 1,
+				duration: 1.5,
+				ease: 'power3.out',
+				delay,
+			});
+		};
+
+		if (reducedMotion.matches) {
+			gsap.set(el, { x: 0, y: 0, autoAlpha: 1 });
+		} else if (el instanceof HTMLImageElement ? el.complete : true) {
+			run();
+		} else {
+			el.addEventListener('load', run, { once: true });
+		}
 	};
 
-	const smokeStart = { autoAlpha: 0, x: 0, y: 0, scale: 0.3 };
-	const smokeAppear = {
-		autoAlpha: 0.58,
-		scale: 0.7,
-		duration: 0.16,
-		stagger: 0.16,
-		ease: 'power1.out',
-	};
-	const smokeDrift = {
-		x: (index) => -14 - index * 7,
-		y: (index) => 10 + index * 4,
-		autoAlpha: 0,
-		scale: (index) => 1 + index * 0.18,
-		duration: 1.45,
-		stagger: 0.16,
-		ease: 'power2.out',
-	};
+	const cornerLeaf = document.querySelector('[data-corner-leaf]');
+	const topLeaves = document.querySelector('[data-top-leaves]');
 
-	if (airplane) {
-		const mm = gsap.matchMedia();
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			const flight = createAirplaneFlight(airplane, smokePuffs);
-
-			return () => flight.kill();
-		});
-
-		mm.add('(prefers-reduced-motion: reduce)', () => {
-			gsap.set(smokePuffs, { autoAlpha: 0 });
-			gsap.set(airplane, { ...airplaneStart, autoAlpha: 0.9 });
-		});
-	}
-
-	if (flipWords.length > 1) {
-		const mm = gsap.matchMedia();
-
-		mm.add('(prefers-reduced-motion: no-preference)', () => {
-			const wordFlip = createWordFlip(flipWords);
-
-			return () => wordFlip.kill();
-		});
-	}
-
-	function createWordFlip(words) {
-		const timeline = gsap.timeline({
-			repeat: -1,
-			repeatDelay: 0.35,
-		});
-
-		gsap.set(words, { autoAlpha: 0, y: '0.8em' });
-		gsap.set(words[0], { autoAlpha: 1, y: 0 });
-
-		words.forEach((word, index) => {
-			const nextWord = words[(index + 1) % words.length];
-
-			timeline
-				.to({}, { duration: 1.25 })
-				.to(word, {
-					autoAlpha: 0,
-					y: '-0.8em',
-					duration: 0.28,
-					ease: 'power2.in',
-				})
-				.fromTo(
-					nextWord,
-					{ autoAlpha: 0, y: '0.8em' },
-					{
-						autoAlpha: 1,
-						y: 0,
-						duration: 0.32,
-						ease: 'power2.out',
-					},
-					'<0.06',
-				);
-		});
-
-		return timeline;
-	}
-
-	function createAirplaneFlight(airplaneElement, smokeElements) {
-		return gsap
-			.timeline({
-				repeatRefresh: true,
-				defaults: { ease: 'sine.inOut' },
-			})
-			.set(smokeElements, smokeStart, 0)
-			.fromTo(airplaneElement, airplaneStart, airplaneEnd, 0)
-			.to(smokeElements, smokeAppear, 0.1)
-			.to(smokeElements, smokeDrift, 0.18);
-	}
-
+	if (cornerLeaf) animateDecorIn(cornerLeaf, 'left');
+	if (topLeaves) animateDecorIn(topLeaves, 'right');
 </script>
+
+<style>
+	.home {
+		position: relative;
+		box-sizing: border-box;
+		width: 100%;
+		min-height: 100dvh;
+		min-height: 100vh;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		padding: 2rem 2rem 0;
+		margin: 0 auto;
+		overflow-x: clip;
+		background: #f8fafc;
+		color: #0f172a;
+		font-family: Inter, system-ui, sans-serif;
+	}
+
+	.home__corner-leaf,
+	.home__top-leaves {
+		position: fixed;
+		top: 0;
+		z-index: 2;
+		pointer-events: none;
+		user-select: none;
+		will-change: transform, opacity;
+		/* Hidden until GSAP runs (avoids flash before the entrance). */
+		opacity: 0;
+		visibility: hidden;
+	}
+
+	.home__corner-leaf {
+		left: 0;
+		width: clamp(15rem, 38vw, 28rem);
+		height: auto;
+		object-fit: contain;
+		object-position: left top;
+		transform-origin: top left;
+	}
+
+	.home__top-leaves {
+		right: 0;
+		width: clamp(18rem, 48vw, 38rem);
+		height: auto;
+		object-fit: contain;
+		object-position: right top;
+		transform-origin: top right;
+	}
+
+	.home__content {
+		position: relative;
+		z-index: 3;
+		flex: 1;
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 2rem;
+		width: 100%;
+		text-align: center;
+	}
+
+	.home__title {
+		margin: 0;
+		font-size: clamp(2.75rem, 7vw, 4.5rem);
+		line-height: 1.1;
+		font-weight: 700;
+	}
+
+	.home__lead {
+		max-width: 28rem;
+		margin: 0;
+		font-size: 1rem;
+		line-height: 1.5;
+		color: #475569;
+	}
+
+	.home__nav {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(9rem, 1fr));
+		gap: 1rem;
+		width: min(100%, 22rem);
+		margin: 0 auto;
+		justify-items: stretch;
+	}
+
+	.home__button {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		min-height: 3.25rem;
+		padding: 0.85rem 1.25rem;
+		border: 2px solid #0f172a;
+		border-radius: 0.5rem;
+		background: #fff;
+		color: #0f172a;
+		font-size: 1rem;
+		font-weight: 600;
+		text-decoration: none;
+		transition:
+			background 0.15s ease,
+			color 0.15s ease;
+	}
+
+	.home__button:hover {
+		background: #0f172a;
+		color: #fff;
+	}
+
+	.home__button:focus-visible {
+		outline: 3px solid #3b82f6;
+		outline-offset: 2px;
+	}
+
+	/* Box at the bottom of the page that holds the mascot and bubble. */
+	.home__mascot {
+		position: relative;
+		overflow: visible; /* Let the bubble stick out past the box edges. */
+		flex-shrink: 0;
+		width: min(10rem, 42vw);
+		aspect-ratio: 63 / 67;
+		margin-top: auto;
+		margin-bottom: clamp(1rem, 4vh, 2.5rem);
+	}
+
+	/* Mascot SVG fills the box and sits on the bottom. */
+	.home__mascot-img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		object-position: bottom center;
+	}
+
+	/* Speech bubble — placed above-right of the beaver, hidden by default. */
+	.home__mascot-bubble {
+		position: absolute; /* take the bubble out of normal layout so we can place it on top */
+		top: -3.75rem; /* move up (more negative = higher) */
+		right: -5.25rem; /* move right (more negative = further right) */
+		left: auto; /* ignore left so right + top control position */
+		z-index: 1; /* draw the bubble above the mascot image */
+		width: 9.75rem; /* how wide the bubble image is */
+		max-width: none; /* allow the bubble to use the full width above */
+		height: auto; /* keep the image proportions */
+		object-fit: contain; /* scale the bubble without stretching */
+		pointer-events: none; /* clicks pass through to things behind the bubble */
+		opacity: 0; /* hidden until the visible class is added */
+		transform: none; /* no extra move/scale (use top/right instead) */
+		transition: opacity 0.12s ease; /* fade in/out when the frame changes */
+	}
+
+	/* Script adds this class when we are on the beaver (Group 2) frame. */
+	.home__mascot-bubble--visible {
+		opacity: 1; /* show the bubble on the beaver frame */
+	}
+
+	@media (max-width: 480px) {
+		.home__nav {
+			grid-template-columns: 1fr;
+			width: 100%;
+			max-width: 16rem;
+		}
+
+		.home__mascot {
+			width: min(8rem, 50vw);
+			aspect-ratio: 63 / 67;
+		}
+
+		/* Slightly smaller bubble offset on narrow screens. */
+		.home__mascot-bubble {
+			top: -2.25rem; /* move up on small screens (less than desktop) */
+			right: -1.75rem; /* move right on small screens */
+			width: 8rem; /* smaller bubble on narrow viewports */
+		}
+
+		.home__corner-leaf {
+			width: clamp(9rem, 42vw, 14rem);
+		}
+
+		.home__top-leaves {
+			width: clamp(11rem, 52vw, 20rem);
+		}
+	}
+</style>

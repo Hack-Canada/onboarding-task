@@ -1,0 +1,94 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteNav from '../components/SiteNav.astro';
+---
+
+<Layout>
+	<SiteNav current="page" />
+	<main class="page">
+		<p class="page__eyebrow">Onboarding example</p>
+		<h1 class="page__title">Example page</h1>
+		<p class="page__lead">
+			Copy this file, rename it to <code>your-name.astro</code>, and put your images in
+			<code>public/assets/your-name/</code>.
+		</p>
+
+		<figure class="page__figure">
+			<img src="/assets/example/placeholder.svg" alt="Example placeholder image" width="320" height="200" />
+			<figcaption>Image from <code>/assets/example/placeholder.svg</code></figcaption>
+		</figure>
+
+		<p class="page__back">
+			<a href="/">← Back to home</a>
+		</p>
+	</main>
+</Layout>
+
+<style>
+	.page {
+		min-height: 100vh;
+		padding: clamp(5rem, 12vh, 7rem) clamp(1.5rem, 6vw, 4rem) 3rem;
+		background: #111827;
+		color: #ffffff;
+		font-family: Inter, system-ui, sans-serif;
+	}
+
+	.page__eyebrow {
+		margin: 0 0 0.75rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.7);
+	}
+
+	.page__title {
+		margin: 0 0 1rem;
+		font-size: clamp(2rem, 5vw, 3.25rem);
+		line-height: 1.1;
+	}
+
+	.page__lead {
+		max-width: 40rem;
+		margin: 0 0 2rem;
+		font-size: 1.05rem;
+		line-height: 1.6;
+		color: rgba(255, 255, 255, 0.88);
+	}
+
+	.page__lead code {
+		padding: 0.1rem 0.35rem;
+		border-radius: 0.25rem;
+		background: rgba(255, 255, 255, 0.1);
+		font-size: 0.92em;
+	}
+
+	.page__figure {
+		margin: 0 0 2rem;
+		max-width: 20rem;
+	}
+
+	.page__figure img {
+		display: block;
+		width: 100%;
+		height: auto;
+		border-radius: 0.75rem;
+		border: 1px solid rgba(255, 255, 255, 0.15);
+	}
+
+	.page__figure figcaption {
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
+		color: rgba(255, 255, 255, 0.65);
+	}
+
+	.page__back a {
+		color: #ffdf6e;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.page__back a:hover {
+		text-decoration: underline;
+	}
+</style>
