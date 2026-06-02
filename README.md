@@ -18,13 +18,13 @@ npm install
 npm run dev
 ```
 
-4. Open **http://localhost:4321** in your browser. You should see the home page.
+4. Open **http://localhost:4321** in your browser. You should see the home page (do you like it haha)
 
 ## Step 1 — Create a branch with your name
 
 Do not work directly on `main`. Make your own branch first.
 
-Use your first name in lowercase. Use hyphens if you need spaces (for example `mary-jane`):
+Use your first name in lowercase. Use hyphens if you need spaces (for example `linus-gao`):
 
 ```bash
 git checkout -b your-name
@@ -33,7 +33,7 @@ git checkout -b your-name
 Example:
 
 ```bash
-git checkout -b faiz
+git checkout -b faiz-m
 ```
 
 ## Step 2 — Create a folder for your images
@@ -50,55 +50,38 @@ Examples:
 Use them on your page like this (note the path starts with `/assets/`):
 
 ```html
-<img src="/assets/your-name/headshot.jpg" alt="My photo" />
+<img src="/assets/your-name/headshot.jpg" alt="headshot" />
 ```
 
 Do not mix your files into someone else’s folder. One folder per person.
 
 See **`frontend/public/assets/example/`** for a sample folder and placeholder image.
 
-## Step 3 — Create your page
+## Step 3 — Create your page and link it from home
 
-1. Copy the example page file:
+You are building a **brand-new page** that is separate from the home screen. Name it after yourself, wire it up on the home page, then implement everything on that page.
+
+1. **Create your page file** — copy the starter:
 
    - From: `frontend/src/pages/example.astro`
    - To: `frontend/src/pages/your-name.astro`  
-     (use the same name as your branch, for example `faiz.astro`)
+     (use your name, same as your branch — for example `faiz.astro`)
 
-2. Edit your new file:
+2. **Link it from the home page** — in `frontend/src/components/Welcome.astro`, find the `teamLinks` list and replace one placeholder with your name and path:
 
-   - Change the title and text.
-   - Point image paths to **`/assets/your-name/...`**
-   - Keep the **link back to home** at the bottom:
-
-   ```html
-   <a href="/">← Back to home</a>
+   ```javascript
+   { label: 'Faiz', href: '/faiz' },
    ```
 
-3. Your page will be at:
+   Save both files. On the home page, click your button — it should open **your** page at a new URL (for example `http://localhost:4321/faiz`). That is the page you will implement.
 
-   **http://localhost:4321/your-name**
+3. **Build out your page** — edit `your-name.astro`:
+   - Ensure I am able to click your name on home screen and it gets redirected to your super cool site!
+   - Change the title, layout, and content (this is your page to design).
+   - Point image paths to **`/assets/your-name/...`**
 
-   (for example `http://localhost:4321/faiz`)
 
-## Step 4 — Link your page and home together
-
-The home page has **4 buttons**. When your page is ready, update one of them with your name.
-
-**On the home page** (`frontend/src/components/Welcome.astro`):
-
-- Find the `teamLinks` list at the top of the file.
-- Change one entry to use **your name** and **your page path**:
-
-```javascript
-{ label: 'Faiz', href: '/faiz' },
-```
-
-**On your page** (`frontend/src/pages/your-name.astro`):
-
-- Keep a link to home (`href="/"`). The example page already shows this.
-
-## Step 5 — Test locally
+## Step 4 — Test locally
 
 ```bash
 cd frontend
@@ -112,27 +95,32 @@ Check:
 - Images show up from `/assets/your-name/`.
 - Links between home and your page work both ways.
 
-## Step 6 — Commit your work
+## Step 6 — Commit, push, and open a pull request
+
+Commit a little as you go — a small commit each day is better than one big dump at the end. That way your progress is saved on GitHub and we can check in on your work as you build.
+
+When you have something worth saving locally:
 
 ```bash
 git add .
 git commit -m "Add my onboarding page and assets"
 ```
 
-## Step 7 — Push and open a pull request
+Push your branch so it shows up on GitHub (do this regularly, not only at the deadline):
 
 ```bash
 git push -u origin your-name
 ```
 
-Then on GitHub:
+When you are ready for review, open a pull request:
 
 1. Click **Compare & pull request** (or **New pull request**).
 2. Base branch: **`main`**. Compare branch: **your branch**.
 3. Describe what you added (page, images, links).
 4. Click **Create pull request**.
+5. Ping Faiz on Discord and make sure to update your task on Notion!
 
-Ask for a review when you are done. Do not merge your own PR unless someone tells you to.
+Ask for a review when you are done. Do not merge your own PR......... if you do................... big oh no.......
 
 ## Quick checklist
 
@@ -140,7 +128,6 @@ Ask for a review when you are done. Do not merge your own PR unless someone tell
 - [ ] Folder `frontend/public/assets/your-name/` with your images
 - [ ] Page `frontend/src/pages/your-name.astro` created
 - [ ] Home links to your page
-- [ ] Your page links back to home
 - [ ] Tested with `npm run dev`
 - [ ] Pull request opened against `main`
 
