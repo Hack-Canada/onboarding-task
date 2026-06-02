@@ -95,7 +95,7 @@ Check:
 - Images show up from `/assets/your-name/`.
 - Links between home and your page work both ways.
 
-## Step 6 — Commit, push, and open a pull request
+## Step 5 — Commit, push, and open a pull request
 
 Commit a little as you go — a small commit each day is better than one big dump at the end. That way your progress is saved on GitHub and we can check in on your work as you build.
 
