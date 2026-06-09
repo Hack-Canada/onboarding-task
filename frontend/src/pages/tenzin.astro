@@ -1,5 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
+import Sprite from '../components/Sprite.astro';
 
 // Hack Canada — "Build For Canada's Future" hero.
 // Nova Scotia / coastal-Canada theme, hand-drawn cozy aesthetic.
@@ -7,6 +8,54 @@ import Layout from '../layouts/Layout.astro';
 // (so the lighthouse / waterfall / boat stay glued), while the text layer reflows
 // responsively on top. Motion is GSAP (text reveal + floating elements).
 const base = '/assets/tenzin';
+const scroll = '/assets/tenzin/scroll';
+
+// ---- Section 2: sponsor voyage (horizontal scroll) ----
+// Boats come straight from Figma (px). SPREAD pushes them apart horizontally so
+// the voyage is long enough to feel like a real scroll; boat sizes and the
+// boat↔water ratio are preserved (they depend on px + STAGE_H, not the spread).
+const STAGE_H = 757; // figma section height (origin at topmost boat, y=863)
+const OY = 863;
+const SPREAD = 1.7;
+const TILE = 1918; // figma water-tile width
+
+// Raw boats in Figma px. `crop` = region of `src` sheet.
+const rawBoats = [
+	{ logoFor: 'cloud', src: `${base}/sprites.png`, sheetW: 1536, sheetH: 1024, fx: 0.0289, fy: 0.6504, fw: 0.1038, fh: 0.1658, x: 54, y: 1007, w: 412, depth: 0.85 },
+	{ logoFor: 'google', src: `${base}/sprites.png`, sheetW: 1536, sheetH: 1024, fx: 0.1584, fy: 0.6629, fw: 0.1038, fh: 0.1658, x: 565, y: 1262, w: 365, depth: 1 },
+	{ logoFor: 'redbull', src: `${base}/sprites.png`, sheetW: 1536, sheetH: 1024, fx: 0.2675, fy: 0.6741, fw: 0.0862, fh: 0.1498, x: 923, y: 863, w: 415, depth: 0.7 },
+	{ logoFor: 'stripe', src: `${scroll}/boats-extra.png`, sheetW: 560, sheetH: 446, fx: 0.0498, fy: 0.6485, fw: 0.2657, fh: 0.3515, x: 1252, y: 1199, w: 400, depth: 0.9 },
+	{ logoFor: null, src: `${base}/sprites.png`, sheetW: 1536, sheetH: 1024, fx: 0.1942, fy: 0.4515, fw: 0.1226, fh: 0.1991, x: 1834, y: 1002, w: 308, depth: 0.95 },
+	{ logoFor: 'github', src: `${scroll}/boats-extra.png`, sheetW: 560, sheetH: 446, fx: 0.3898, fy: 0.3878, fw: 0.2657, fh: 0.3515, x: 2360, y: 1226, w: 337, depth: 0.82 },
+];
+
+// Logos in Figma px, linked to a boat index (so they ride along glued to it).
+const rawLogos = [
+	{ img: `${scroll}/logo18.png`, alt: 'Cloudinary', boat: 0, x: 265.9, y: 1235, w: 82, icon: true, rot: 4.87 },
+	{ img: `${scroll}/logo12.png`, alt: 'Google', boat: 1, x: 606.8, y: 1490, w: 84, rot: 7.95 },
+	{ img: `${scroll}/logo14.png`, alt: 'Stripe', boat: 3, x: 1413, y: 1343, w: 79, rot: 0 },
+	{ img: `${scroll}/logo16.png`, alt: 'GitHub', boat: 5, x: 2478, y: 1340, w: 101, rot: 0 },
+];
+
+const sx = (x: number) => x * SPREAD; // spread a boat's x
+const STAGE_W = Math.round(Math.max(...rawBoats.map((b) => sx(b.x) + b.w)) + 360);
+const xPc = (x: number) => +((x / STAGE_W) * 100).toFixed(3);
+const yPc = (y: number) => +(((y - OY) / STAGE_H) * 100).toFixed(3);
+const wPc = (w: number) => +((w / STAGE_W) * 100).toFixed(3);
+
+const boats = rawBoats.map((b) => ({ ...b, X: xPc(sx(b.x)), Y: yPc(b.y), W: wPc(b.w) }));
+// Logos keep their original px offset from the (now-spread) boat so they stay put.
+const logos = rawLogos.map((l) => {
+	const bx = rawBoats[l.boat].x;
+	return { ...l, X: xPc(sx(bx) + (l.x - bx)), Y: yPc(l.y), W: wPc(l.w) };
+});
+
+// Ocean tiles (image 6 then image 7, alternating) to cover the spread stage.
+const tileWpct = +((TILE / STAGE_W) * 100).toFixed(3);
+const tiles = Array.from({ length: Math.ceil(STAGE_W / TILE) + 1 }, (_, i) => ({
+	img: i % 2 ? 'water2' : 'water1',
+	left: +(i * tileWpct).toFixed(3),
+}));
 ---
 
 <Layout>
@@ -130,6 +179,48 @@ const base = '/assets/tenzin';
 			</div>
 		</div>
 	</main>
+
+	<!-- ===================== SPONSOR VOYAGE (horizontal scroll) ===================== -->
+	<section class="voyage" id="sponsors" aria-label="Our sponsors set sail">
+		<div class="voyage__viewport">
+			<div class="voyage__stage" style={`width:calc(100svh * ${STAGE_W} / ${STAGE_H});`}>
+				<!-- Ocean base: image 6 then image 7, tiled across the stage -->
+				<div class="sea">
+					{tiles.map((t) => (
+						<img class="sea-tile" src={`${scroll}/${t.img}.png`} alt="" aria-hidden="true" style={`left:${t.left}%;width:${tileWpct}%;`} />
+					))}
+				</div>
+
+				<!-- Sponsor boats -->
+				{boats.map((b) => (
+					<Sprite
+						src={b.src}
+						sheetW={b.sheetW}
+						sheetH={b.sheetH}
+						fx={b.fx}
+						fy={b.fy}
+						fw={b.fw}
+						fh={b.fh}
+						depth={b.depth}
+						class="boat"
+						style={`left:${b.X}%;top:${b.Y}%;width:${b.W}%;`}
+					/>
+				))}
+
+				<!-- Sponsor logos layered on the boats -->
+				{logos.map((l) => (
+					<div
+						class:list={['logo-badge', l.icon && 'logo-badge--icon']}
+						data-boat={l.boat}
+						data-rot={l.rot}
+						style={`left:${l.X}%;top:${l.Y}%;width:${l.W}%;`}
+					>
+						<img src={l.img} alt={l.alt} loading="lazy" />
+					</div>
+				))}
+			</div>
+		</div>
+	</section>
 </Layout>
 
 <style>
@@ -169,6 +260,68 @@ const base = '/assets/tenzin';
 	.js .nav-link,
 	.js .logo { opacity: 0; visibility: hidden; }
 
+	/* -------------------- Sponsor voyage (horizontal scroll) -------------------- */
+	.voyage {
+		position: relative;
+		background: #14324a;
+	}
+	.voyage__viewport {
+		position: relative;
+		height: 100svh;
+		overflow: hidden;
+	}
+	/* Stage keeps the Figma 2928×807 aspect; height fills the viewport, width
+	   overflows to the right and is scrubbed sideways on scroll. */
+	.voyage__stage {
+		position: absolute;
+		top: 0;
+		left: 0;
+		height: 100%;
+		will-change: transform;
+	}
+
+	/* Ocean base — two water tiles (image 6 + image 7) side by side. Each tile is
+	   1918/3180 of the stage width, matching Figma so the boat↔water ratio holds. */
+	.sea {
+		position: absolute;
+		inset: 0;
+		overflow: hidden;
+	}
+	.sea-tile {
+		position: absolute;
+		top: 0;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.boat {
+		filter: drop-shadow(0 12px 18px rgba(0, 0, 0, 0.18));
+	}
+
+	/* Sponsor logo badges layered on the boats (rotation applied via GSAP so it
+	   composes with the bob motion). */
+	.logo-badge {
+		position: absolute;
+		z-index: 4;
+	}
+	.logo-badge img {
+		display: block;
+		width: 100%;
+		height: auto;
+		filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.25));
+	}
+	/* Cloudinary: show only the cloud icon (left ~26% of the wordmark). */
+	.logo-badge--icon {
+		aspect-ratio: 1.33;
+		overflow: hidden;
+	}
+	.logo-badge--icon img {
+		width: 389%;
+		height: 100%;
+		object-fit: cover;
+		object-position: left center;
+	}
 </style>
 
 <script>
@@ -195,10 +348,10 @@ const base = '/assets/tenzin';
 		// Floating / environmental motion (transform + opacity only → cheap to composite).
 		gsap.utils.toArray<HTMLElement>('.gull').forEach((el, i) => {
 			gsap.to(el, {
-				y: `+=${10 + i * 4}`,
-				x: `+=${8 + i * 3}`,
-				rotation: i % 2 ? 2.5 : -2,
-				duration: 2.2 + i * 0.6,
+				y: `+=${24 + i * 8}`,
+				x: `+=${28 + i * 10}`,
+				rotation: i % 2 ? 5 : -4,
+				duration: 2.6 + i * 0.5,
 				repeat: -1,
 				yoyo: true,
 				ease: 'sine.inOut',
@@ -221,6 +374,103 @@ const base = '/assets/tenzin';
 		const open = menu?.classList.toggle('hidden') === false;
 		btn.setAttribute('aria-expanded', String(open));
 	});
+</script>
+
+<script>
+	// Sponsor voyage: pin the section and scrub the ocean stage sideways, with
+	// per-boat parallax (containerAnimation) plus continuous bob/sail so the
+	// fleet feels alive as it crosses the viewport.
+	import gsap from 'gsap';
+	import ScrollTrigger from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const viewport = document.querySelector<HTMLElement>('.voyage__viewport');
+	const stage = document.querySelector<HTMLElement>('.voyage__stage');
+	const boats = gsap.utils.toArray<HTMLElement>('.boat');
+	const logoFor = (i: number) =>
+		document.querySelector<HTMLElement>(`.logo-badge[data-boat="${i}"]`);
+
+	if (viewport && stage) {
+		const distance = () => stage.scrollWidth - window.innerWidth;
+
+		let scrollTween: gsap.core.Tween | null = null;
+		if (!reduceMotion) {
+			// One long, eased scrub → the whole section reads as a single glide.
+			scrollTween = gsap.to(stage, {
+				x: () => -distance(),
+				ease: 'none',
+				scrollTrigger: {
+					trigger: viewport,
+					start: 'top top',
+					end: () => '+=' + distance(),
+					pin: true,
+					scrub: 1.4,
+					anticipatePin: 1,
+					invalidateOnRefresh: true,
+				},
+			});
+
+			// Horizontal parallax: the ocean drifts slower than the boats (it sits
+			// inside the moving stage, so we nudge it back by a fraction).
+			gsap.to('.sea', {
+				x: () => distance() * 0.3,
+				ease: 'none',
+				scrollTrigger: {
+					trigger: viewport,
+					start: 'top top',
+					end: () => '+=' + distance(),
+					scrub: 1.4,
+				},
+			});
+		}
+
+		// Set each logo's static tilt up front so the bob (y) composes with it.
+		boats.forEach((boat, i) => {
+			const logo = logoFor(i);
+			if (logo) gsap.set(logo, { rotation: parseFloat(logo.dataset.rot || '0') });
+			const group = logo ? [boat, logo] : boat;
+
+			// Parallax depth: boats at different depths drift vertically as they
+			// cross the viewport. The logo rides along so it stays on its boat.
+			if (scrollTween) {
+				const drift = 26 * (1 - parseFloat(boat.dataset.depth || '0.85'));
+				gsap.fromTo(
+					group,
+					{ yPercent: -drift },
+					{
+						yPercent: drift,
+						ease: 'none',
+						scrollTrigger: {
+							trigger: boat,
+							containerAnimation: scrollTween,
+							start: 'left right',
+							end: 'right left',
+							scrub: true,
+						},
+					},
+				);
+			}
+
+			// Continuous bob + rock so the fleet looks like it's sailing.
+			gsap.to(group, {
+				y: `+=${7 + (i % 3) * 3}`,
+				duration: 2.6 + (i % 4) * 0.4,
+				repeat: -1,
+				yoyo: true,
+				ease: 'sine.inOut',
+				delay: i * 0.2,
+			});
+			gsap.to(boat, {
+				rotation: i % 2 ? 1.4 : -1.4,
+				duration: 3 + (i % 3) * 0.5,
+				repeat: -1,
+				yoyo: true,
+				ease: 'sine.inOut',
+			});
+		});
+	}
 </script>
 
 <style is:global>

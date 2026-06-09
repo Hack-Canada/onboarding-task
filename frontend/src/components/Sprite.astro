@@ -1,0 +1,65 @@
+---
+/**
+ * Reusable sprite-atlas crop. Shows a normalized rectangle (fx,fy,fw,fh as
+ * fractions 0–1) of /assets/tenzin/sprites.png, kept at its natural aspect ratio.
+ * Pass placement via `style` (e.g. "left:10%;top:30%;width:18vw;") — height is
+ * derived from aspect-ratio. Provide `depth` (0 far … 1 near) to mark it as a
+ * parallax layer for the horizontal-scroll section.
+ */
+interface Props {
+	fx: number;
+	fy: number;
+	fw: number;
+	fh: number;
+	/** Source atlas + its pixel dimensions (defaults to the main sprite sheet). */
+	src?: string;
+	sheetW?: number;
+	sheetH?: number;
+	style?: string;
+	class?: string;
+	depth?: number;
+	alt?: string;
+}
+
+const {
+	fx,
+	fy,
+	fw,
+	fh,
+	src = '/assets/tenzin/sprites.png',
+	sheetW = 1536,
+	sheetH = 1024,
+	style = '',
+	class: className = '',
+	depth,
+	alt = '',
+} = Astro.props;
+
+const aspect = ((fw * sheetW) / (fh * sheetH)).toFixed(4);
+const boxStyle = `aspect-ratio:${aspect};${style}`;
+const imgStyle =
+	`width:${(100 / fw).toFixed(3)}%;` +
+	`height:${(100 / fh).toFixed(3)}%;` +
+	`left:${((-fx / fw) * 100).toFixed(3)}%;` +
+	`top:${((-fy / fh) * 100).toFixed(3)}%;`;
+---
+
+<div
+	class:list={['sprite', className, depth != null && 'parallax']}
+	style={boxStyle}
+	data-depth={depth}
+>
+	<img src={src} alt={alt} style={imgStyle} loading="lazy" />
+</div>
+
+<style>
+	.sprite {
+		position: absolute;
+		overflow: hidden;
+		pointer-events: none;
+	}
+	.sprite img {
+		position: absolute;
+		max-width: none;
+	}
+</style>
