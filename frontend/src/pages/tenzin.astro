@@ -1,0 +1,229 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+// Hack Canada — "Build For Canada's Future" hero.
+// Nova Scotia / coastal-Canada theme, hand-drawn cozy aesthetic.
+// Environment art lives on a fixed-aspect artboard that cover-fits the viewport
+// (so the lighthouse / waterfall / boat stay glued), while the text layer reflows
+// responsively on top. Motion is GSAP (text reveal + floating elements).
+const base = '/assets/tenzin';
+---
+
+<Layout>
+	<!-- Sync flag so reveal elements start hidden only when JS is available (no FOUC, graceful no-JS). -->
+	<script is:inline>document.documentElement.classList.add('js');</script>
+
+	<main class="hero relative w-full min-h-[100svh] overflow-hidden bg-[linear-gradient(180deg,#f5e6cc_0%,#fdeac8_100%)]">
+		<!-- ===================== ENVIRONMENT (cover-fit artboard) ===================== -->
+		<div class="env absolute inset-0">
+			<div class="frame">
+				<!-- Sky (kept inside the artboard so it aligns with the scene horizon) -->
+				<img
+					src={`${base}/background.png`}
+					alt=""
+					aria-hidden="true"
+					class="absolute inset-0 size-full object-cover"
+				/>
+
+				<!-- Landscape group (scene + glued sprites) — shifted right via .landscape -->
+				<div class="landscape">
+				<!-- Cliff + waterfall scene (transparent sky) -->
+				<img
+					src={`${base}/scene.png`}
+					alt=""
+					aria-hidden="true"
+					fetchpriority="high"
+					class="absolute pointer-events-none"
+					style="left:-12.92%;top:-2.93%;width:112.92%;height:105.86%;"
+				/>
+
+				<!-- Sailing ship / trawler (bottom-left) -->
+				<div class="crop ship" style="left:7.64%;top:64.65%;width:26.74%;height:31.74%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:467.58%;width:593.05%;left:-12.34%;top:-207.1%;" />
+				</div>
+
+				<!-- Glued lighthouse -->
+				<div class="crop" style="left:71.25%;top:19.73%;width:14.1%;height:32.13%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:311.25%;width:756.65%;left:-464.38%;top:-22.62%;" />
+				</div>
+
+				<!-- Floating clouds (top-right) -->
+				<div class="crop cloud is-faint" style="left:89.31%;top:2.44%;width:17.36%;height:15.04%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:922.52%;width:852%;left:-705.46%;top:-430.17%;" />
+				</div>
+
+				<!-- Floating seagulls -->
+				<div class="crop gull" style="left:34.58%;top:14.45%;width:7.22%;height:7.62%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:1013.97%;width:1139.55%;left:-173.22%;top:-171.44%;" />
+				</div>
+				<div class="crop gull" style="left:58.19%;top:24.8%;width:11.53%;height:12.01%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:832.52%;width:925.3%;left:-50.6%;top:-72.36%;" />
+				</div>
+				<div class="crop gull" style="left:91.88%;top:24.8%;width:10.56%;height:9.28%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:832.52%;width:779.7%;left:-181.48%;top:-179.11%;" />
+				</div>
+
+				<!-- Bobbing buoy -->
+				<div class="crop buoy" style="left:5.56%;top:70.9%;width:4.17%;height:6.93%;">
+					<img src={`${base}/sprites.png`} alt="" style="height:701.37%;width:1238.71%;left:-858.67%;top:-587.51%;" />
+				</div>
+				</div>
+			</div>
+			<!-- Readability scrim (mostly for small screens) -->
+			<div class="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#f5e6cc]/90 via-[#f5e6cc]/30 to-transparent md:from-[#f5e6cc]/65 md:via-[#f5e6cc]/10 md:to-transparent"></div>
+		</div>
+
+		<!-- ===================== NAVBAR ===================== -->
+		<header class="absolute inset-x-0 top-0 z-30 flex items-center justify-between px-[clamp(1.25rem,4vw,3.5rem)] py-[clamp(1rem,3vh,2rem)]">
+			<img src={`${base}/logo.png`} alt="Hack Canada" class="logo h-[clamp(3.5rem,7vw,5.5rem)] w-auto" />
+
+			<nav class="hidden items-center gap-[clamp(2.5rem,5vw,5rem)] font-hand text-[clamp(1.1rem,1.6vw,1.7rem)] font-bold text-[#1a2438] md:flex" aria-label="Primary">
+				<a href="#about" class="nav-link transition-colors hover:text-[#b01c17]">About</a>
+				<a href="#events" class="nav-link transition-colors hover:text-[#b01c17]">Events</a>
+				<a href="#sponsors" class="nav-link transition-colors hover:text-[#b01c17]">Sponsors</a>
+				<a href="#team" class="nav-link transition-colors hover:text-[#b01c17]">Team</a>
+				<a href="#faq" class="nav-link transition-colors hover:text-[#b01c17]">Faq</a>
+			</nav>
+
+			<button id="menuBtn" class="text-[#1a2438] md:hidden" aria-label="Toggle menu" aria-expanded="false">
+				<svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+					<line x1="3" y1="7" x2="21" y2="7" /><line x1="3" y1="12" x2="21" y2="12" /><line x1="3" y1="17" x2="21" y2="17" />
+				</svg>
+			</button>
+		</header>
+
+		<!-- Mobile menu -->
+		<nav id="mobileMenu" class="absolute inset-x-0 top-[4.5rem] z-20 mx-4 hidden flex-col gap-1 rounded-2xl border border-[#1a2438]/15 bg-[#f6e4c6]/95 p-4 font-hand text-2xl font-bold text-[#1a2438] shadow-xl backdrop-blur md:hidden" aria-label="Mobile">
+			<a href="#about" class="rounded-lg px-3 py-2 hover:bg-[#1a2438]/10">About</a>
+			<a href="#events" class="rounded-lg px-3 py-2 hover:bg-[#1a2438]/10">Events</a>
+			<a href="#sponsors" class="rounded-lg px-3 py-2 hover:bg-[#1a2438]/10">Sponsors</a>
+			<a href="#team" class="rounded-lg px-3 py-2 hover:bg-[#1a2438]/10">Team</a>
+			<a href="#faq" class="rounded-lg px-3 py-2 hover:bg-[#1a2438]/10">Faq</a>
+		</nav>
+
+		<!-- ===================== CONTENT ===================== -->
+		<div class="relative z-10 flex min-h-[100svh] flex-col justify-center px-[clamp(1.25rem,4vw,3.5rem)] pb-12 pt-28 md:pt-0">
+			<div class="max-w-[34rem]">
+				<h1 class="font-marker w-max max-w-[92vw] text-[clamp(2.25rem,6.5vw,5rem)] leading-[0.95] text-[#1a2438]">
+					<span class="reveal-line block overflow-hidden pb-[0.1em]">
+						<span class="reveal-inner block">Build For</span>
+					</span>
+					<span class="reveal-line block overflow-hidden pb-[0.1em]">
+						<span class="reveal-inner block whitespace-nowrap"><span class="text-[#b01c17]">Canada&rsquo;s</span> Future</span>
+					</span>
+				</h1>
+
+				<p class="reveal-up mt-5 max-w-[27rem] font-hand text-[clamp(1.15rem,2.4vw,1.9rem)] font-medium leading-snug text-[#1a2438]">
+					Hack Canada is a nationwide student-led movement building a more innovative,
+					inclusive, and diverse Canada.
+				</p>
+
+				<div class="mt-7 flex flex-wrap gap-4">
+					<a href="#apply" class="reveal-btn inline-flex items-center gap-2 rounded-[10px] bg-[#1a2438] px-6 py-2.5 font-hand text-[clamp(1rem,1.6vw,1.55rem)] font-bold text-white transition-colors hover:bg-[#b01c17]">
+						APPLY NOW
+						<img src={`${base}/arrow.svg`} alt="" aria-hidden="true" class="h-3 w-3 invert" />
+					</a>
+					<a href="#learn" class="reveal-btn inline-flex items-center rounded-[10px] border-2 border-[#1a2438] px-6 py-2.5 font-hand text-[clamp(1rem,1.6vw,1.55rem)] font-bold text-[#1a2438] transition-colors hover:bg-[#1a2438] hover:text-white">
+						LEARN MORE
+					</a>
+				</div>
+			</div>
+		</div>
+	</main>
+</Layout>
+
+<style>
+	@font-face {
+		font-family: 'Brown Cookies';
+		src: url('/assets/tenzin/brown-cookies.otf') format('opentype');
+		font-weight: normal;
+		font-style: normal;
+		font-display: swap;
+	}
+
+	.font-marker { font-family: 'Brown Cookies', cursive; }
+	.font-hand { font-family: 'Brown Cookies', cursive; }
+
+	/* Stretch the whole artboard (scene + glued sprites) to fill the viewport. */
+	.frame {
+		position: absolute;
+		inset: 0;
+	}
+
+	/* Landscape group (scene + glued sprites) nudged right; sky stays full-bleed. */
+	.landscape {
+		position: absolute;
+		inset: 0;
+		transform: translateX(12.9%);
+	}
+
+	/* Sprite-sheet crops: clip a region and place the atlas inside. */
+	.crop { position: absolute; overflow: hidden; pointer-events: none; will-change: transform; }
+	.crop img { position: absolute; max-width: none; }
+	.is-faint { opacity: 0.5; }
+
+	/* Pre-animation hidden states — only when JS is present (graceful no-JS fallback). */
+	.js .reveal-inner { transform: translateY(110%); }
+	.js .reveal-up,
+	.js .reveal-btn,
+	.js .nav-link,
+	.js .logo { opacity: 0; visibility: hidden; }
+
+</style>
+
+<script>
+	import gsap from 'gsap';
+
+	const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const hidden = ['.reveal-up', '.reveal-btn', '.nav-link', '.logo'];
+
+	// Reveal: clip-mask headline lines + fade-up nav/subtitle/buttons.
+	if (reduce) {
+		gsap.set('.reveal-inner', { y: 0 });
+		gsap.set(hidden, { autoAlpha: 1, y: 0 });
+	} else {
+		gsap.set('.reveal-inner', { yPercent: 110 });
+		gsap.set(hidden, { autoAlpha: 0, y: 14 });
+
+		const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+		tl.to('.logo', { autoAlpha: 1, y: 0, duration: 0.6 })
+			.to('.nav-link', { autoAlpha: 1, y: 0, stagger: 0.08, duration: 0.5 }, '<0.1')
+			.to('.reveal-inner', { yPercent: 0, duration: 1, stagger: 0.14, ease: 'power4.out' }, 0.15)
+			.to('.reveal-up', { autoAlpha: 1, y: 0, duration: 0.8 }, '-=0.5')
+			.to('.reveal-btn', { autoAlpha: 1, y: 0, stagger: 0.12, duration: 0.6 }, '-=0.4');
+
+		// Floating / environmental motion (transform + opacity only → cheap to composite).
+		gsap.utils.toArray<HTMLElement>('.gull').forEach((el, i) => {
+			gsap.to(el, {
+				y: `+=${10 + i * 4}`,
+				x: `+=${8 + i * 3}`,
+				rotation: i % 2 ? 2.5 : -2,
+				duration: 2.2 + i * 0.6,
+				repeat: -1,
+				yoyo: true,
+				ease: 'sine.inOut',
+				delay: i * 0.3,
+			});
+		});
+
+		// Ship: sail back and forth across the water while bobbing on the swell.
+		gsap.to('.ship', { x: '+=140', duration: 10, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+		gsap.to('.ship', { y: '+=6', rotation: 1.4, duration: 2.8, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+		// Buoy: gentle bob in place.
+		gsap.to('.buoy', { y: '+=5', rotation: 2, duration: 2.2, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+		gsap.to('.cloud', { x: '+=34', duration: 14, repeat: -1, yoyo: true, ease: 'sine.inOut' });
+	}
+
+	// Mobile menu toggle.
+	const btn = document.getElementById('menuBtn');
+	const menu = document.getElementById('mobileMenu');
+	btn?.addEventListener('click', () => {
+		const open = menu?.classList.toggle('hidden') === false;
+		btn.setAttribute('aria-expanded', String(open));
+	});
+</script>
+
+<style is:global>
+	html,
+	body { overflow-x: hidden; }
+</style>

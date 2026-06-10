@@ -1,0 +1,67 @@
+---
+import secondPageScene from "../../public/assets/linusgao/secondpage/ChatGPT Image Jun 8, 2026, 11_26_53 AM.png";
+
+const stats = [
+  { value: 30, label: "Workshops", color: "bg-[#52c83b]", height: "h-44 sm:h-56", valueClass: "text-[3rem] sm:text-[3.75rem]", y: -34, scale: 0.92 },
+  { value: 2900, label: "Hours travelled", color: "bg-[#66b4df]", height: "h-48 sm:h-56", valueClass: "text-[2.5rem] sm:text-[3.1rem]", y: 26, scale: 1.06 },
+  { value: 295, label: "Schools", color: "bg-[#edae36]", height: "h-44 sm:h-52", valueClass: "text-[3rem] sm:text-[3.55rem]", y: -18, scale: 0.96 },
+  { value: 30, label: "Countries", color: "bg-[#d65bbd]", height: "h-36 sm:h-40", valueClass: "text-[2.9rem] sm:text-[3.45rem]", y: 42, scale: 0.9 },
+  { value: 220, label: "Mentors", color: "bg-[#52c83b]", height: "h-56 sm:h-72", valueClass: "text-[3rem] sm:text-[3.75rem]", y: -46, scale: 1.08 },
+  { value: 550, label: "Projects submitted", color: "bg-[#d65bbd]", height: "h-60 sm:h-72", valueClass: "text-[2.9rem] sm:text-[3.6rem]", y: 34, scale: 1.12 },
+  { value: 3000, label: "Hackers", color: "bg-[#edae36]", height: "h-48 sm:h-52", valueClass: "text-[2.5rem] sm:text-[3.1rem]", y: -24, scale: 0.98 }
+];
+---
+
+<section
+  id="story"
+  class="relative isolate min-h-[190svh] overflow-clip bg-[#020b26] text-white"
+  data-parallax-section
+  aria-labelledby="parallax-title"
+>
+  <div class="sticky top-0 h-svh overflow-hidden">
+    <img
+      src={secondPageScene.src}
+      width={secondPageScene.width}
+      height={secondPageScene.height}
+      alt=""
+      class="absolute inset-0 h-full w-full scale-[1.08] object-cover object-center"
+      data-parallax-layer
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_62%_46%,rgba(34,211,238,0.14),transparent_32%),linear-gradient(90deg,rgba(2,8,31,0.9)_0%,rgba(2,8,31,0.48)_42%,rgba(2,8,31,0.58)_100%)]"></div>
+    <div class="absolute inset-x-0 top-0 h-28 bg-gradient-to-b from-[#020b26] to-transparent"></div>
+    <div class="absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t from-[#020b26] to-transparent"></div>
+
+    <div
+      class="stats-stage pointer-events-none absolute left-1/2 top-[27vh] z-10 flex w-max -translate-x-1/2 origin-top items-end gap-4 scale-[0.46] sm:top-[22vh] sm:scale-[0.72] lg:top-[18vh] lg:scale-100"
+      data-stats-stage
+      aria-hidden="true"
+    >
+      <span class="stats-shape stats-shape-blob left-[-7rem] top-[14rem] bg-[#ef69c3]"></span>
+      <span class="stats-shape stats-shape-star left-[31rem] top-[22rem] bg-[#68e83f]"></span>
+      <span class="stats-shape stats-shape-star left-[33rem] top-[23rem] scale-75 bg-[#ffe961]"></span>
+      <span class="stats-shape stats-shape-star right-[18rem] top-[-4rem] bg-[#68e83f]"></span>
+      <span class="stats-shape stats-shape-burst right-[2rem] top-[24rem] bg-[#66b4df]"></span>
+
+      {
+        stats.map((stat) => (
+          <div
+            class:list={[
+              "stats-card flex w-36 shrink-0 flex-col justify-end rounded-lg px-4 pb-6 text-white shadow-[0_22px_54px_rgba(0,0,0,0.2)] sm:w-44 sm:px-5 sm:pb-7",
+              stat.color,
+              stat.height
+            ]}
+            data-stat-card
+            data-scroll-y={stat.y}
+            data-scroll-scale={stat.scale}
+          >
+            <p class:list={["stats-number font-display font-black leading-none tracking-normal", stat.valueClass]}>
+              <span data-stat-value data-count={stat.value}>0</span><sup class="text-[0.58em] leading-none">+</sup>
+            </p>
+            <p class="stats-label mt-3 text-[0.82rem] font-black uppercase leading-tight text-white/92 sm:text-[0.98rem]">{stat.label}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

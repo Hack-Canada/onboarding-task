@@ -1,0 +1,141 @@
+---
+import caveLayer from "../../public/assets/linusgao/processed/newhero-2.png"
+import characterLayer from "../../public/assets/linusgao/processed/newhero-3.png"
+import poolLayer from "../../public/assets/linusgao/processed/newhero-4.png"
+import waterfallFrame1 from "../../public/assets/linusgao/processed/newhero-waterfall-1.png"
+import waterfallFrame2 from "../../public/assets/linusgao/processed/newhero-waterfall-2.png"
+import waterfallFrame3 from "../../public/assets/linusgao/processed/newhero-waterfall-3.png"
+import waterfallFrame4 from "../../public/assets/linusgao/processed/newhero-waterfall-4.png"
+import waterfallFrame5 from "../../public/assets/linusgao/processed/newhero-waterfall-5.png"
+
+const waterfallFrames = [
+  waterfallFrame1,
+  waterfallFrame2,
+  waterfallFrame3,
+  waterfallFrame4,
+  waterfallFrame5
+];
+---
+
+<section
+  id="top"
+  class="relative isolate min-h-[100svh] overflow-hidden bg-[#020b26] px-5 pb-10 pt-5 text-white sm:px-8 lg:px-12"
+  aria-labelledby="hero-title"
+  data-hero
+>
+  <div class="absolute inset-0 -z-40 bg-[radial-gradient(circle_at_70%_56%,rgba(21,207,231,0.32)_0%,rgba(4,24,65,0.8)_26%,rgba(2,8,31,1)_66%)]"></div>
+  <div class="absolute inset-0 -z-30 bg-[linear-gradient(90deg,rgba(2,8,31,0.98)_0%,rgba(2,8,31,0.82)_31%,rgba(2,8,31,0.42)_55%,rgba(2,8,31,0.76)_100%)]"></div>
+
+  <img
+    src={caveLayer.src}
+    width={caveLayer.width}
+    height={caveLayer.height}
+    alt=""
+    class="hero-cave absolute inset-0 -z-20 h-full w-full object-cover object-center opacity-95"
+    data-hero-cave
+    loading="eager"
+  />
+
+  <img
+    src={poolLayer.src}
+    width={poolLayer.width}
+    height={poolLayer.height}
+    alt=""
+    class="absolute inset-0 -z-10 h-full w-full object-cover object-center opacity-90"
+    data-hero-asset
+    loading="eager"
+  />
+
+  <div class="absolute inset-0 -z-[8] mix-blend-screen" data-hero-asset>
+    {
+      waterfallFrames.map((frame, index) => (
+        <img
+          src={frame.src}
+          width={frame.width}
+          height={frame.height}
+          alt=""
+          class:list={[
+            "waterfall-frame absolute inset-0 h-full w-full object-cover object-center",
+            index === 0 && "is-active"
+          ]}
+          data-waterfall-frame
+          loading="eager"
+        />
+      ))
+    }
+  </div>
+
+  <img
+    src={characterLayer.src}
+    width={characterLayer.width}
+    height={characterLayer.height}
+    alt=""
+    class="absolute inset-0 z-0 h-full w-full object-cover object-center"
+    data-hero-asset
+    loading="eager"
+  />
+
+  <div class="pointer-events-none absolute inset-0 z-[1] bg-[radial-gradient(circle_at_72%_60%,rgba(49,236,246,0.14),transparent_28%),linear-gradient(180deg,rgba(2,8,31,0)_0%,rgba(2,8,31,0.42)_100%)]"></div>
+
+  <header class="relative z-30 mx-auto flex max-w-[92rem] items-center justify-between gap-5 px-1 py-4 text-white">
+    <a href="#top" class="flex shrink-0 items-center gap-3 text-lg font-black tracking-tight">
+      <span class="grid h-10 w-10 place-items-center rounded-full border border-cyan-200/30 bg-cyan-300/10 text-xl text-cyan-300">*</span>
+      <span class="sr-only">HC27</span>
+    </a>
+    <nav aria-label="Primary" class="hidden items-center gap-8 text-base font-black text-white/92 md:flex">
+      <a class="border-b-2 border-cyan-300 pb-1 text-cyan-200" href="#top">Home</a>
+      <a class="transition hover:text-cyan-200" href="#story">About</a>
+      <a class="transition hover:text-cyan-200" href="#story">Projects & Stories</a>
+      <a class="transition hover:text-cyan-200" href="#sponsors">Sponsors</a>
+      <a class="transition hover:text-cyan-200" href="#story">FAQ</a>
+      <a class="rounded border border-cyan-300/80 px-2 py-0.5 text-cyan-100 shadow-[0_0_12px_rgba(103,232,249,0.18)] transition hover:bg-cyan-300 hover:text-[#041334]" href="#story">2027</a>
+    </nav>
+    <div class="hidden items-center gap-4 text-base font-black text-white/90 lg:flex">
+      <a class="transition hover:text-cyan-200" href="#story">IG</a>
+      <a class="transition hover:text-cyan-200" href="#story">X</a>
+      <a class="transition hover:text-cyan-200" href="#story">in</a>
+      <a class="transition hover:text-cyan-200" href="#story">tt</a>
+    </div>
+  </header>
+
+  <div class="relative z-20 mx-auto grid min-h-[calc(100svh-5.5rem)] max-w-[92rem] items-center pt-8">
+    <div class="max-w-[44rem]">
+      <h1 id="hero-title" class="font-display text-[clamp(3.1rem,5.25vw,5.4rem)] font-black leading-[1.02] tracking-normal text-white drop-shadow-[0_4px_18px_rgba(0,0,0,0.35)]">
+        <span class="reveal-line sm:whitespace-nowrap font-serif"><span>Hack Canada</span></span>
+      </h1>
+      <div class="hero-squiggle mt-5 h-px w-80 max-w-[80vw] bg-cyan-300/80"></div>
+      <p class="hero-copy mt-8 max-w-[31rem] font-serif text-xl font-semibold leading-8 text-cyan-50/84 sm:text-2xl">
+        March 6-8th
+      </p>
+      <div class="hero-actions mt-8 flex flex-wrap items-center gap-5">
+        <a
+          href="#apply"
+          class="rounded-full bg-cyan-300 px-9 py-4 text-base font-black text-[#041334] shadow-[0_0_28px_rgba(60,230,232,0.24)] transition hover:-translate-y-0.5 hover:bg-cyan-200"
+        >
+          Apply Now -&gt;
+        </a>
+        <a
+          href="#story"
+          class="rounded-full border-2 border-cyan-300 px-9 py-4 text-base font-black text-cyan-50 transition hover:bg-cyan-300 hover:text-[#041334]"
+        >
+          Learn More
+        </a>
+      </div>
+
+      <div class="hero-features mt-14 grid max-w-[45rem] gap-6 text-sm text-cyan-50/74 sm:grid-cols-3">
+        <!-- <div class="border-cyan-300/16 sm:border-r sm:pr-6">
+          <p class="font-black text-cyan-200">Build together</p>
+          <p class="mt-2 leading-6">Meet passionate builders and creators.</p>
+        </div>
+        <div class="border-cyan-300/16 sm:border-r sm:pr-6">
+          <p class="font-black text-cyan-200">Ship your ideas</p>
+          <p class="mt-2 leading-6">Turn concepts into real demos.</p>
+        </div>
+        <div>
+          <p class="font-black text-cyan-200">Win prizes</p>
+          <p class="mt-2 leading-6">Celebrate strong projects.</p>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</section>
