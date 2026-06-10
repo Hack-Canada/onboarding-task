@@ -33,6 +33,11 @@ body {
   overflow-x: hidden;
 }
 
+/* Hide everything until GSAP sets initial states — prevents position flash on load/refresh */
+body.js-loading {
+  visibility: hidden;
+}
+
 @keyframes float {
   0%, 100% { transform: translateX(-50%) translateY(0); }
   50% { transform: translateX(-50%) translateY(6px); }
@@ -43,32 +48,56 @@ body {
   background: #1C1C1C;
 }
 
+/* Hide hero elements before entrance animation — prevents flash on first paint */
+#hero .hero-ocean,
+#hero .hero-rock,
+#hero .hero-rocks-right,
+#hero .hero-rock-right,
+#hero .hero-rock2,
+#hero .lighthouse-wrap,
+#hero .hero-cloud,
+#hero .hero-cloud-3,
+#hero .hero-cloud-4,
+#hero .hero-cloud-5,
+#hero .hero-text {
+  opacity: 0;
+}
+
 /* Beaver sprite global positioning and top-layer styles */
 .h-beaver {
     position: absolute;
-    top: calc(38% - 140px);
-    left: 28%;
+    top: calc(8%);
+    left: 50%;
     width: 120px;
-    height: auto;
+    aspect-ratio: 247 / 115;
     z-index: 20000;
     pointer-events: none;
     transform: translateZ(0);
     will-change: transform;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.25s ease, visibility 0.25s ease;
+    transition: translate 0.4s cubic-bezier(0.2,1,0.3,1);
 }
 
-.h-beaver.ready {
-  opacity: 1;
-  visibility: visible;
+.hb-frame {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    opacity: 0;
+}
+
+.hb-frame.active {
+    opacity: 1;
 }
 </style>
 
-<script type="module">
-  import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.mjs';
-  import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js';
-  import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js';
+<script>
+  // Kill browser scroll restoration and jump to top before any paint
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
+  import Lenis from 'lenis';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
   const lenis = new Lenis({
     lerp: 0.12,
@@ -89,7 +118,8 @@ body {
   gsap.set([
     '#hero .hero-ocean', '#hero .hero-rock', '#hero .hero-rocks-right',
     '#hero .hero-rock-right', '#hero .hero-rock2', '#hero .lighthouse-wrap',
-    '#hero .hero-cloud', '#hero .hero-text',
+    '#hero .hero-cloud', '#hero .hero-cloud-3', '#hero .hero-cloud-4', '#hero .hero-cloud-5',
+    '#hero .hero-text',
   ], { opacity: 0 });
   gsap.set('#hero .hero-ocean',     { y: 50 });
   gsap.set('#hero .hero-rock',      { y: 80 });
@@ -97,6 +127,9 @@ body {
   gsap.set('#hero .hero-rock2',     { y: 60 });
   gsap.set('#hero .lighthouse-wrap',{ y: 24, scale: 0.97 });
   gsap.set('#hero .hero-text',      { y: 28 });
+
+  // All initial GSAP states are set — safe to reveal the page
+  document.body.classList.remove('js-loading');
 
   const panels = document.getElementById('horizontal-panels');
 
@@ -119,11 +152,31 @@ body {
     .to('#hero .lighthouse-wrap', { yPercent: 6, ease: 'none', force3D: true }, 0)
     .to('#hero .hero-text', { yPercent: 12, ease: 'none', force3D: true }, 0);
 
-  const heroCloud = document.getElementById('hero-cloud');
-  if (heroCloud) {
-    gsap.to(heroCloud, {
-      x: () => window.innerWidth + 260,
-      duration: 50,
+  // cloud-2 starts off-screen left (-240px) so its xEnd needs +240 extra to reach off-screen right
+  [
+    { id: 'hero-cloud',   dur: 78  },
+    { id: 'hero-cloud-2', dur: 95,  xEnd: () => window.innerWidth + 480 },
+    { id: 'hero-cloud-3', dur: 84  },
+    { id: 'hero-cloud-4', dur: 72  },
+    { id: 'hero-cloud-5', dur: 102 },
+  ].forEach(({ id, dur, xEnd }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    gsap.to(el, {
+      x: xEnd ?? (() => window.innerWidth + 260),
+      duration: dur,
+      ease: 'none',
+      repeat: -1,
+      repeatDelay: 0,
+      immediateRender: false,
+    });
+  });
+
+  const seagullWrap = document.getElementById('seagull-wrap');
+  if (seagullWrap) {
+    gsap.to(seagullWrap, {
+      x: () => window.innerWidth + 210,
+      duration: 55,
       ease: 'none',
       repeat: -1,
       repeatDelay: 0,
@@ -152,6 +205,86 @@ body {
   hTl.to('.layer-back',        { x: () => -horizontalDistance() * 0.15 }, 0);
   hTl.to('.layer-mid',         { x: () => -horizontalDistance() * 0.35 }, 0);
   hTl.to('.layer-front',       { x: () => -horizontalDistance() * 0.65 }, 0);
+  hTl.to(['#scroll-visual-img', '#beaver-boat'], { x: () => -(window.innerWidth + 600), duration: 0.3, ease: 'none' }, 0);
+
+  // When horizontal scroll pins, freeze the waterfall at its current viewport position
+  // so it stops scrolling up and only exits left via the hTl x animation above.
+  const wfEl   = document.getElementById('scroll-visual-img');
+  const boatEl = document.getElementById('beaver-boat');
+  if (wfEl) {
+    ScrollTrigger.create({
+      trigger: '#horizontal-scroll-section',
+      start: 'top top',
+      onEnter: () => {
+        const r = wfEl.getBoundingClientRect();
+        gsap.set(wfEl, { position: 'fixed', top: r.top, left: r.left, width: r.width });
+        if (boatEl) {
+          const br = boatEl.getBoundingClientRect();
+          // br.top already includes the scroll-driven y offset, so reset y to avoid double-offset
+          gsap.set(boatEl, { position: 'fixed', top: br.top, left: br.left, width: br.width, y: 0 });
+        }
+      },
+      onLeaveBack: () => {
+        gsap.set(wfEl, { clearProps: 'position,top,left,width,x' });
+        if (boatEl) gsap.set(boatEl, { clearProps: 'position,top,left,width,x,y' });
+      },
+    });
+  }
+
+  // Scene-wide x+y mouse parallax — whole horizontal section moves as one image.
+  // No individual panel reactions; panels only shift as part of the collective scene.
+  const hSection = document.getElementById('horizontal-scroll-section');
+  const hInner   = hSection?.querySelector('.horizontal-scroll-inner');
+  if (hSection && hInner) {
+    const qtRX = gsap.quickTo(hInner, 'rotateX', { duration: 1.0, ease: 'power2.out' });
+    const qtRY = gsap.quickTo(hInner, 'rotateY', { duration: 1.0, ease: 'power2.out' });
+
+    const layerDefs = [
+      { sel: '.layer-back',  xa: 6,  ya: 8  },
+      { sel: '.layer-mid',   xa: 14, ya: 22 },
+      { sel: '.layer-front', xa: 26, ya: 38 },
+    ];
+
+    hSection.addEventListener('mousemove', e => {
+      const r = hSection.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width  * 2 - 1;
+      const ny = (e.clientY - r.top)  / r.height * 2 - 1;
+
+      layerDefs.forEach(({ sel, xa, ya }) => {
+        const el = hSection.querySelector(sel);
+        if (el) el.style.translate = `${-nx * xa}px ${-ny * ya}px`;
+      });
+
+      if (panels) panels.style.translate = `${-nx * 10}px ${-ny * 8}px`;
+
+      const bvEl = document.getElementById('h-beaver');
+      if (bvEl) bvEl.style.translate = `${nx * 18}px ${-ny * 12}px`;
+
+      // Waterfall + boat are fixed during horizontal scroll — parallax stacks on their position
+      const wfElem = document.getElementById('scroll-visual-img');
+      if (wfElem) wfElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
+      const boatElem = document.getElementById('beaver-boat');
+      if (boatElem) boatElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
+
+      qtRX(-ny * 2.5);
+      qtRY(nx * 4);
+    });
+
+    hSection.addEventListener('mouseleave', () => {
+      layerDefs.forEach(({ sel }) => {
+        const el = hSection.querySelector(sel);
+        if (el) el.style.translate = '';
+      });
+      if (panels) panels.style.translate = '';
+      const bvEl = document.getElementById('h-beaver');
+      if (bvEl) bvEl.style.translate = '';
+      const wfElem = document.getElementById('scroll-visual-img');
+      if (wfElem) wfElem.style.translate = '';
+      const boatElem = document.getElementById('beaver-boat');
+      if (boatElem) boatElem.style.translate = '';
+      qtRX(0); qtRY(0);
+    });
+  }
 
   gsap.to('.scroll-hint', {
     opacity: 0,
@@ -163,21 +296,66 @@ body {
     },
   });
 
-  // Horizontal beaver: cycle sprite frames
-  const hBeaver = document.getElementById('h-beaver');
-  if (hBeaver) {
-    const beaverFrames = [1,2,3,4,5,6,7].map(i => `/assets/amy-huang/beaver[${i}].svg`);
+  // Horizontal beaver: cycle sprite frames via class toggling (no dynamic src changes)
+  const hBeaverWrap = document.getElementById('h-beaver');
+  if (hBeaverWrap) {
+    const frames = Array.from(hBeaverWrap.querySelectorAll('.hb-frame'));
     let bfIdx = 0;
+    frames[0].classList.add('active');
     const bfTimer = setInterval(() => {
-      bfIdx = (bfIdx + 1) % beaverFrames.length;
-      hBeaver.src = beaverFrames[bfIdx];
+      frames[bfIdx].classList.remove('active');
+      bfIdx = (bfIdx + 1) % frames.length;
+      frames[bfIdx].classList.add('active');
     }, 120);
-
-    const show = () => hBeaver.classList.add('ready');
-    if (hBeaver.complete) show();
-    else hBeaver.addEventListener('load', show, { once: true });
-
     window.addEventListener('pagehide', () => clearInterval(bfTimer));
+  }
+
+  // River section height = waterfall bottom, so horizontal scroll starts exactly
+  // when the waterfall's bottom edge hits the viewport bottom.
+  const wfImg = document.getElementById('scroll-visual-img');
+  const riverSection = document.getElementById('river-section');
+  function syncRiverHeight() {
+    if (wfImg && riverSection && wfImg.offsetHeight > 0) {
+      riverSection.style.height = (wfImg.offsetTop + wfImg.offsetHeight) + 'px';
+      ScrollTrigger.refresh();
+    }
+  }
+  if (wfImg?.complete && wfImg?.naturalHeight > 0) syncRiverHeight();
+  else wfImg?.addEventListener('load', syncRiverHeight, { once: true });
+  window.addEventListener('resize', syncRiverHeight);
+
+  // Boat follows the waterfall's actual water channel path with rotation tilt on each curve.
+  // x offsets are derived from the waterfall SVG mask path waypoints, scaled to rendered width.
+  // Formula: x_offset = wfWidth * (svgX / 922 - 0.58), where 0.58 is the boat's CSS anchor %.
+  // Final segment (76–100%) has nearly zero x change = "straight downwards".
+  if (boatEl) {
+    const wfImgEl = document.getElementById('scroll-visual-img');
+    const wfW = () => wfImgEl?.offsetWidth  || 1181;
+    const wfH = () => wfImgEl?.offsetHeight || 0;
+
+    const boatPath = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#river-section',
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+      defaults: { ease: 'sine.inOut' },
+    });
+
+    boatPath
+      .set(boatEl, { x: () => wfW() *  0.110, y: 0,                   rotation:  0 })
+      // 0–32 %: channel sweeps right (SVG x 636 → 713)
+      .to(boatEl,  { x: () => wfW() *  0.194, y: () => wfH() * 0.258, rotation:  8, duration: 0.315 })
+      // 32–47 %: sweeps hard left  (SVG x 713 → 469)
+      .to(boatEl,  { x: () => wfW() * -0.071, y: () => wfH() * 0.387, rotation: -8, duration: 0.157 })
+      // 47–56 %: recovers to centre (SVG x 469 → 580)
+      .to(boatEl,  { x: () => wfW() *  0.049, y: () => wfH() * 0.456, rotation:  3, duration: 0.084 })
+      // 56–76 %: settles into the main channel (SVG x 580 → 645)
+      .to(boatEl,  { x: () => wfW() *  0.119, y: () => wfH() * 0.624, rotation:  2, duration: 0.205 })
+      // 76–100 %: long straight plunge — x barely moves (SVG x 645 → 652)
+      .to(boatEl,  { x: () => wfW() *  0.127, y: () => wfH() * 0.82,  rotation:  0, ease: 'none', duration: 0.239 });
   }
 
   const entranceTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.05 });
@@ -188,6 +366,7 @@ body {
     .to('#hero .hero-rocks-right', { y: 0, opacity: 1, duration: 1.0  }, 0.15)
     .to('#hero .hero-rock2',       { y: 0, opacity: 1, duration: 1.2  }, 0.2)
     .to('#hero .lighthouse-wrap',  { y: 0, opacity: 1, scale: 1, duration: 0.8 }, 0.28)
-    .to('#hero .hero-cloud',       { opacity: 1, duration: 0.9        }, 0.38)
+    .to(['#hero .hero-cloud', '#hero .hero-cloud-3', '#hero .hero-cloud-4', '#hero .hero-cloud-5'],
+                                   { opacity: 1, duration: 1.2        }, 0.38)
     .to('#hero .hero-text',        { y: 0, opacity: 1, duration: 1.0  }, 0.55);
 </script>

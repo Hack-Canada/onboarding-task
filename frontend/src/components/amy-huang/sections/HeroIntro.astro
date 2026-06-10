@@ -3,7 +3,14 @@
 <section id="hero">
   <div class="hero-bg"></div>
 
-  <img id="hero-cloud" class="hero-cloud" src="/assets/amy-huang/cloud(1).svg" alt="cloud" loading="eager" decoding="async" />
+  <img id="hero-cloud"   class="hero-cloud"   src="/assets/amy-huang/cloud(1).svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+  <img id="hero-cloud-2" class="hero-cloud-2" src="/assets/amy-huang/cloud(2).svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+  <img id="hero-cloud-3" class="hero-cloud-3" src="/assets/amy-huang/cloud(2).svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+  <img id="hero-cloud-4" class="hero-cloud-4" src="/assets/amy-huang/cloud(1).svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+  <img id="hero-cloud-5" class="hero-cloud-5" src="/assets/amy-huang/cloud(2).svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+  <div id="seagull-wrap" class="seagull-wrap" aria-hidden="true">
+    <img class="hero-seagull" src="/assets/amy-huang/seagull.svg" alt="" loading="eager" decoding="async" />
+  </div>
 
   <div class="hero-rock">
     <img src="/assets/amy-huang/rock.svg" alt="rock" width="1491" height="434" loading="eager" decoding="async" />
@@ -62,6 +69,7 @@
 .lighthouse-wrap,
 .hero-cloud,
 .hero-text {
+  opacity: 0;
   will-change: transform;
   backface-visibility: hidden;
 }
@@ -198,19 +206,73 @@
 
 .hero-cloud {
   position: absolute;
-  top: 12%;
-  left: -160px;
-  width: min(18vw, 100px);
-  max-width: 180px;
-  z-index: 7;
+  top: 9%;
+  left: 15vw;
+  width: clamp(80px, 14vw, 160px);
+  height: auto;
+  z-index: 4;
   pointer-events: none;
 }
 
-.hero-cloud img {
-  width: 100%;
+.hero-cloud-2 {
+  position: absolute;
+  top: 22%;
+  left: -240px;
+  width: clamp(100px, 18vw, 200px);
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero-cloud-3 {
+  position: absolute;
+  top: 13%;
+  left: 42vw;
+  width: clamp(75px, 13vw, 155px);
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero-cloud-4 {
+  position: absolute;
+  top: 6%;
+  left: 70vw;
+  width: clamp(60px, 11vw, 130px);
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero-cloud-5 {
+  position: absolute;
+  top: 19%;
+  left: 25vw;
+  width: clamp(55px, 9vw, 110px);
+  height: auto;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.seagull-wrap {
+  position: absolute;
+  top: 17%;
+  left: -110px;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.hero-seagull {
+  width: clamp(40px, 5vw, 75px);
   height: auto;
   display: block;
-  pointer-events: none;
+  animation: seagull-bob 9s ease-in-out infinite;
+}
+
+@keyframes seagull-bob {
+  0%, 100% { transform: translateY(0); }
+  28%  { transform: translateY(-22px); }
+  62%  { transform: translateY(12px); }
 }
 
 .hero-text {

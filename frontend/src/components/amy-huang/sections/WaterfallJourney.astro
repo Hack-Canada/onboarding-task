@@ -2,19 +2,38 @@
 ---
 <div class="scroll-journey">
   <section id="river-section">
+    <img id="rock-screen-2" class="rock-screen-2" src="/assets/amy-huang/bg.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
     <img id="scroll-visual-img" src="/assets/amy-huang/waterfall.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+    <img id="beaver-boat" class="beaver-boat" src="/assets/amy-huang/beaver%20on%20boat.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
     <div class="scroll-hint">
       <span>SCROLL</span>
       <div class="scroll-arrow"></div>
     </div>
-  </section>
 
-  <div id="horizontal-scroll-section">
+    <div id="waterfall-text" class="waterfall-text">
+      <h2 class="wt-heading">Stats or Sumn<br>Anneyonghaseyo.</h2>
+      <p class="wt-body">MI BOMBOOOOOOO copy filler idk what to write states about Hack Canada 50% hello elo.</p>
+    </div>
+
+    <div id="waterfall-text-2" class="waterfall-text-2">
+      <h2 class="wt-heading">Description <br>Konnichawa</h2>
+      <p class="wt-body">Lorem ipsum sumn thing tung tung sahur hellooOo!!!! Okay time to be very professional. no funny business</p>
+    </div>
+
+
+
+    <div id="horizontal-scroll-section">
     <div class="horizontal-scroll-inner">
       <div class="horizontal-parallax">
-        <div class="horizontal-parallax-layer layer-back"></div>
-        <div class="horizontal-parallax-layer layer-mid"></div>
-        <div class="horizontal-parallax-layer layer-front"></div>
+        <div class="layer-anim layer-anim-1">
+          <div class="horizontal-parallax-layer layer-back"></div>
+        </div>
+        <div class="layer-anim layer-anim-2">
+          <div class="horizontal-parallax-layer layer-mid"></div>
+        </div>
+        <div class="layer-anim layer-anim-3">
+          <div class="horizontal-parallax-layer layer-front"></div>
+        </div>
       </div>
       <div class="horizontal-viewport">
         <div class="horizontal-panels" id="horizontal-panels">
@@ -44,9 +63,18 @@
           </article>
         </div>
       </div>
-      <img id="h-beaver" class="h-beaver" src="/assets/amy-huang/beaver[1].svg" alt="" aria-hidden="true" />
     </div>
-  </div>
+    <div id="h-beaver" class="h-beaver" aria-hidden="true">
+      <img class="hb-frame" src="/assets/amy-huang/beaver[1].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[2].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[3].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[4].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[5].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[6].svg" loading="eager" alt="" />
+      <img class="hb-frame" src="/assets/amy-huang/beaver[7].svg" loading="eager" alt="" />
+    </div>
+    </div><!-- end #horizontal-scroll-section -->
+  </section>
 </div>
 
 <style>
@@ -64,15 +92,38 @@
   background: transparent;
 }
 
+.rock-screen-2 {
+  position: absolute;
+  left: 0vw;
+  top: -5px;
+  width: 120vw;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  max-width: none;
+  pointer-events: none;
+  z-index: 15;
+}
+
 #scroll-visual-img {
   position: absolute;
-  left: 0;
-  top: 0;
-  width: clamp(320px, 35vw, 480px);
+  left: -220px;
+  top: 7vh;
+  width: clamp(800px, 82vw, 1200px);
   height: auto;
   max-width: none;
   pointer-events: none;
   z-index: 11000;
+  animation: waterfallFlow 2.4s ease-in-out infinite;
+  transition: translate 0.8s cubic-bezier(0.2,1,0.3,1);
+}
+
+@keyframes waterfallFlow {
+  0%   { opacity: 1;    filter: brightness(1)    saturate(1);    }
+  28%  { opacity: 0.86; filter: brightness(1.09) saturate(1.06); }
+  55%  { opacity: 0.96; filter: brightness(0.95) saturate(0.97); }
+  82%  { opacity: 0.9;  filter: brightness(1.05) saturate(1.03); }
+  100% { opacity: 1;    filter: brightness(1)    saturate(1);    }
 }
 
 .scroll-hint {
@@ -109,13 +160,64 @@
   border-top: 8px solid var(--dark);
 }
 
-/* ── Horizontal scroll section (continues the waterfall scene) ── */
+/* ── Waterfall text — appears to the right of the waterfall on scroll ── */
+.waterfall-text {
+  position: absolute;
+  left: clamp(800px, 42vw, 560px);
+  top: 100vh;
+  width: min(48vw, 460px);
+  z-index: 12000;
+  pointer-events: none;
+  overflow: visible;
+}
+.waterfall-text-2{
+  position: absolute; 
+  left: clamp(800px, 42vw, 560px);
+  top: 180vh;
+  width: min(48vw, 460px);
+  z-index: 12000;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.wt-label {
+  display: block;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #1a4a6b;
+  margin-bottom: 14px;
+}
+
+.wt-heading {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  font-weight: 800;
+  color: #1a1a1a;
+  line-height: 1.05;
+  margin: 0 0 18px;
+} 
+
+.wt-body {
+  font-size: clamp(0.85rem, 1.2vw, 1rem);
+  color: #444;
+  line-height: 1.7;
+  max-width: 380px;
+  margin: 0;
+}
+
+/* ── Horizontal scroll section — anchored to bottom of river section ── */
 #horizontal-scroll-section {
-  position: relative;
-  width: 100vw;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
   height: 100vh;
   background: #1a7aab;
   overflow: hidden;
+  z-index: 1000;
+  perspective: 1400px;
 }
 
 .horizontal-scroll-inner {
@@ -130,6 +232,7 @@
   inset: 0;
   overflow: hidden;
   pointer-events: none;
+  z-index: 200;
 }
 
 .horizontal-panels {
@@ -138,7 +241,7 @@
   align-items: center;
   gap: 40px;
   height: 100%;
-  left: clamp(32vw, 38vw, 44vw);
+  left: clamp(48vw, 54vw, 62vw);
   top: 38%;
   transform: translateY(-50%);
   pointer-events: auto;
@@ -202,7 +305,41 @@
   background-size: cover;
 }
 
-.layer-back  { opacity: 0.85; }
-.layer-mid   { opacity: 0.60; }
-.layer-front { opacity: 0.45; }
+.layer-back  { opacity: 0.85; transition: translate 0.9s cubic-bezier(0.2,1,0.3,1); }
+.layer-mid   { opacity: 0.60; transition: translate 0.65s cubic-bezier(0.2,1,0.3,1); }
+.layer-front { opacity: 0.45; transition: translate 0.45s cubic-bezier(0.2,1,0.3,1); }
+
+/* ── Beaver on Boat — rides down the waterfall on scroll ── */
+#beaver-boat {
+  position: absolute;
+  /* Place boat at ~58% of waterfall width, centered on the main water channel */
+  left: calc(-220px + clamp(800px, 82vw, 1200px) * 0.58 - 50px);
+  top: 7vh;
+  width: 100px;
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  z-index: 11500;
+  transform-origin: center center;
+  transition: translate 0.8s cubic-bezier(0.2,1,0.3,1);
+}
+
+/* ── Layer bob wrappers: CSS animation on the wrapper, GSAP on the inner layer ── */
+.layer-anim {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+@keyframes layerBob {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(18px); }
+}
+
+.layer-anim-1 { animation: layerBob 3.0s ease-in-out infinite; }
+.layer-anim-2 { animation: layerBob 4.2s ease-in-out infinite 0.8s; }
+.layer-anim-3 { animation: layerBob 5.5s ease-in-out infinite 1.5s; }
+
+/* CSS translate transition for panels container mouse parallax */
+#horizontal-panels { transition: translate 0.7s cubic-bezier(0.2,1,0.3,1); }
 </style>
