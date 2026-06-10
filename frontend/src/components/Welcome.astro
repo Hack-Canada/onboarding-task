@@ -1,6 +1,8 @@
 ---
-// Served from public/mascots/ (see scripts/copy-mascots.mjs) — avoids WSL absolute-path dev errors.
-const mascotFrames = ['/mascots/group-2.svg', '/mascots/group-3.svg', '/mascots/group-4.svg'];
+// Three mascot drawings we flip through like a short animation.
+import group2 from '../assets/Group 2.svg';
+import group3 from '../assets/Group 3.svg';
+import group4 from '../assets/Group 4.svg';
 // Speech bubble image that sits next to the beaver (frame 1 only).
 import textBubble from '../assets/text-bubble.png';
 // Decorative leaf for the top-left corner.
@@ -9,13 +11,16 @@ import cornerLeaf from '../assets/corner-leaf.png';
 import topLeaves from '../assets/leaves.png';
 import { Highlighter } from '@/components/ui/highlighter';
 
+// replace the label and href with your name when you add your page (for example label: "Faiz", href: "/faiz").
 const teamLinks = [
-	{ label: 'Alys', href: '/alysibak' },
+	{ label: 'Name 1', href: '' },
 	{ label: 'Name 2', href: '' },
 	{ label: 'Name 3', href: '' },
 	{ label: 'Name 4', href: '' },
 ];
 
+// List of mascot image URLs in play order (beaver → next frame → next frame).
+const mascotSrcs = [group2.src, group3.src, group4.src];
 ---
 
 <img
@@ -70,26 +75,18 @@ const teamLinks = [
 		</nav>
 	</div>
 
-	<!-- Bottom mascot area: frames stacked; script toggles visibility (no client src swap). -->
+	<!-- Bottom mascot area: one image swaps, bubble layers on top when needed. -->
 	<div class="home__mascot">
-		<div class="home__mascot-frames">
-			{
-				mascotFrames.map((frame, index) => (
-					<img
-						class:list={[
-							'home__mascot-img',
-							{ 'home__mascot-img--active': index === 0 },
-						]}
-						data-mascot-frame
-						src={frame}
-						alt=""
-						width="63"
-						height="67"
-						decoding="async"
-					/>
-				))
-			}
-		</div>
+		<!-- The beaver (and other frames) — src changes in the script below. -->
+		<img
+			class="home__mascot-img"
+			data-mascot
+			src={group2.src}
+			alt=""
+			width="63"
+			height="67"
+			decoding="async"
+		/>
 		<!-- "Let's get started" bubble — only visible on the first mascot frame. -->
 		<img
 			class="home__mascot-bubble home__mascot-bubble--visible"
@@ -103,28 +100,40 @@ const teamLinks = [
 	</div>
 </main>
 
-<script>
-	const frames = document.querySelectorAll('[data-mascot-frame]');
+<script define:vars={{ mascotSrcs }}>
+	// Find the mascot image and speech bubble in the page.
+	const img = document.querySelector('[data-mascot]');
 	const bubble = document.querySelector('[data-mascot-bubble]');
-	if (frames.length < 2) return;
+	if (img && mascotSrcs.length >= 2) {
 
+	// First image in the list is Group 2 (beaver with banana).
 	const group2Index = 0;
-	const setBubbleVisible = (index) => {
-		bubble?.classList.toggle('home__mascot-bubble--visible', index === group2Index);
+
+	// Show the bubble only on that first frame; hide it on the others.
+	const setBubbleVisible = (frame) => {
+		bubble?.classList.toggle('home__mascot-bubble--visible', frame === group2Index);
 	};
 
 	setBubbleVisible(group2Index);
 
+	// If the user prefers less motion, keep the first frame and skip the loop.
 	if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-		let active = group2Index;
+		// Load all frames early so swapping does not flash a blank image.
+		mascotSrcs.forEach((src) => {
+			const preload = new Image();
+			preload.src = src;
+		});
+
+		let frame = group2Index;
 		const frameMs = 700;
 
+		// Every 700ms, switch to the next mascot picture and update the bubble.
 		window.setInterval(() => {
-			frames[active]?.classList.remove('home__mascot-img--active');
-			active = (active + 1) % frames.length;
-			frames[active]?.classList.add('home__mascot-img--active');
-			setBubbleVisible(active);
+			frame = (frame + 1) % mascotSrcs.length;
+			img.src = mascotSrcs[frame];
+			setBubbleVisible(frame);
 		}, frameMs);
+	}
 	}
 </script>
 
@@ -293,27 +302,13 @@ const teamLinks = [
 		margin-bottom: clamp(1rem, 4vh, 2.5rem);
 	}
 
-	.home__mascot-frames {
-		position: relative;
-		width: 100%;
-		height: 100%;
-	}
-
 	/* Mascot SVG fills the box and sits on the bottom. */
 	.home__mascot-img {
-		position: absolute;
-		inset: 0;
 		display: block;
 		width: 100%;
 		height: 100%;
 		object-fit: contain;
 		object-position: bottom center;
-		opacity: 0;
-		transition: opacity 0.12s ease;
-	}
-
-	.home__mascot-img--active {
-		opacity: 1;
 	}
 
 	/* Speech bubble — placed above-right of the beaver, hidden by default. */
