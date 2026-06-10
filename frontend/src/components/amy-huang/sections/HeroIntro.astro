@@ -1,0 +1,274 @@
+---
+---
+<section id="hero">
+  <div class="hero-bg"></div>
+
+  <img id="hero-cloud" class="hero-cloud" src="/assets/amy-huang/cloud(1).svg" alt="cloud" loading="eager" decoding="async" />
+
+  <div class="hero-rock">
+    <img src="/assets/amy-huang/rock.svg" alt="rock" width="1491" height="434" loading="eager" decoding="async" />
+  </div>
+
+  <div class="hero-rocks-right">
+    <img src="/assets/amy-huang/rocks right.svg" alt="rocks right" width="1183" height="683" loading="eager" decoding="async" />
+  </div>
+
+  <div class="hero-rock-right">
+    <img src="/assets/amy-huang/right rock.svg" alt="right rock" width="804" height="681" loading="eager" decoding="async" />
+  </div>
+
+  <div class="lighthouse-wrap">
+      <img class="lighthouse-img" src="/assets/amy-huang/lighthouse.svg" alt="Lighthouse" width="289" height="853" loading="eager" decoding="async" />
+      <div class="lighthouse-glow" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-ocean">
+    <img src="/assets/amy-huang/ocean.svg" alt="ocean" loading="eager" decoding="async" />
+  </div>
+
+  <div class="hero-text">
+    <h1 class="hero-title">HACK CANADA</h1>
+    <p class="hero-subtitle">lorem ipsum blahh fix the text here</p>
+  </div>
+
+  <div class="hero-rock2">
+    <img src="/assets/amy-huang/rock2.svg" alt="rock2" width="1316" height="536" loading="eager" decoding="async" />
+  </div>
+</section>
+
+<style>
+#hero {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  height: var(--hero-height);
+  overflow: visible;
+  background: linear-gradient(to bottom, #76C7FF 0%, #87CEEB 35%, #B0DFF0 60%, #C8E8A0 100%);
+}
+
+.hero-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 110%, rgba(255,255,255,0.6) 0%, transparent 60%),
+    linear-gradient(180deg, #76C7FF 0%, #87CEEB 35%, #B0DFF0 60%, #C8E8A0 100%);
+}
+
+.hero-ocean,
+.hero-rock,
+.hero-rocks-right,
+.hero-rock-right,
+.hero-rock2,
+.lighthouse-wrap,
+.hero-cloud,
+.hero-text {
+  will-change: transform;
+  backface-visibility: hidden;
+}
+
+.hero-ocean {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45vh;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.hero-ocean img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-rock {
+  position: absolute;
+  width: 1491px;
+  height: 434px;
+  left: -22px;
+  top: 420px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.hero-rock img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-rocks-right {
+  position: absolute;
+  width: 1182.79px;
+  height: 683px;
+  left: 267px;
+  top: 350px;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.hero-rocks-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-rock-right {
+  position: absolute;
+  width: 804.3px;
+  height: 681px;
+  left: -196px;
+  top: 410px;
+  z-index: 6;
+  pointer-events: none;
+}
+
+.hero-rock-right img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-rock2 {
+  position: absolute;
+  width: 1315.71px;
+  height: 536px;
+  left: 460px;
+  top: 500px;
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.hero-rock2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.lighthouse-wrap {
+  position: absolute;
+  width: 289px;
+  height: 853.15px;
+  left: clamp(24px, 560px, calc(100% - 289px - 24px));
+  top: clamp(245px, 30vh, 329px);
+  z-index: 5;
+  pointer-events: none;
+}
+
+.lighthouse-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  pointer-events: none;
+}
+
+.lighthouse-glow {
+  position: absolute;
+  top: 2%;
+  left: 50%;
+  transform: translateX(-50%) translateX(-12px);
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,200,0.98), rgba(255,255,200,0.7) 30%, rgba(255,255,200,0.15) 60%, transparent 85%);
+  filter: blur(8px);
+  pointer-events: none;
+  z-index: 99999;
+  opacity: 0.9;
+  animation: lighthouse-glow 2.8s ease-in-out infinite;
+}
+
+@keyframes lighthouse-glow {
+  0% { transform: translateX(-50%) translateX(-12px) scale(1); opacity: 0.7; }
+  50% { transform: translateX(-50%) translateX(12px) scale(1.06); opacity: 1; }
+  100% { transform: translateX(-50%) translateX(-12px) scale(1); opacity: 0.7; }
+}
+
+.hero-cloud {
+  position: absolute;
+  top: 12%;
+  left: -160px;
+  width: min(18vw, 100px);
+  max-width: 180px;
+  z-index: 7;
+  pointer-events: none;
+}
+
+.hero-cloud img {
+  width: 100%;
+  height: auto;
+  display: block;
+  pointer-events: none;
+}
+
+.hero-text {
+  position: absolute;
+  top: clamp(110px, 10vh, 150px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  width: min(85vw, 760px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.hero-title {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(3rem, 6vw, 6rem);
+  font-weight: 800;
+  color: #FF3535;
+  line-height: 0.9;
+  letter-spacing: 0.02em;
+}
+
+.hero-subtitle {
+  font-size: clamp(0.75rem, 1.5vw, 1rem);
+  color: var(--dark);
+  margin-top: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+/* Ocean ripple / wave animation */
+.hero-ocean {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 45vh;
+  z-index: 2;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hero-ocean img {
+  width: 110%;
+  height: 110%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+  transform-origin: center bottom;
+  will-change: transform;
+  animation: ocean-sway 8s ease-in-out infinite;
+}
+
+@keyframes ocean-sway {
+  0% { transform: translate3d(0,0,0) scale(1); }
+  50% { transform: translate3d(-6px,-8px,0) scale(1.01); }
+  100% { transform: translate3d(0,0,0) scale(1); }
+}
+
+</style>

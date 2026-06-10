@@ -1,0 +1,208 @@
+---
+---
+<div class="scroll-journey">
+  <section id="river-section">
+    <img id="scroll-visual-img" src="/assets/amy-huang/waterfall.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+    <div class="scroll-hint">
+      <span>SCROLL</span>
+      <div class="scroll-arrow"></div>
+    </div>
+  </section>
+
+  <div id="horizontal-scroll-section">
+    <div class="horizontal-scroll-inner">
+      <div class="horizontal-parallax">
+        <div class="horizontal-parallax-layer layer-back"></div>
+        <div class="horizontal-parallax-layer layer-mid"></div>
+        <div class="horizontal-parallax-layer layer-front"></div>
+      </div>
+      <div class="horizontal-viewport">
+        <div class="horizontal-panels" id="horizontal-panels">
+          <article class="hpanel">
+            <h3 class="hpanel-title">Spons 1</h3>
+            <p class="hpanel-copy">Example 1 + picture would be here</p>
+          </article>
+          <article class="hpanel">
+            <h3 class="hpanel-title">Spons 2</h3>
+            <p class="hpanel-copy">lorem ipsum</p>
+          </article>
+          <article class="hpanel">
+            <h3 class="hpanel-title">Spons 3</h3>
+            <p class="hpanel-copy">this is so chopped cheese</p>
+          </article>
+          <article class="hpanel">
+            <h3 class="hpanel-title">Spons 4</h3>
+            <p class="hpanel-copy">sorry,, this was not the best</p>
+          </article>
+          <article class="hpanel">
+            <h3 class="hpanel-title">Spons 5</h3>
+            <p class="hpanel-copy">Would like to add more to this</p>
+          </article>
+          <article class="hpanel">
+            <h3 class="hpanel-title">Final spons</h3>
+            <p class="hpanel-copy">true</p>
+          </article>
+        </div>
+      </div>
+      <img id="h-beaver" class="h-beaver" src="/assets/amy-huang/beaver[1].svg" alt="" aria-hidden="true" />
+    </div>
+  </div>
+</div>
+
+<style>
+.scroll-journey {
+  position: relative;
+  margin-top: calc(var(--hero-height) * -0.12);
+}
+
+/* ── Waterfall scroll section ── */
+#river-section {
+  position: relative;
+  width: 100%;
+  height: var(--river-height);
+  overflow: visible;
+  background: transparent;
+}
+
+#scroll-visual-img {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: clamp(320px, 35vw, 480px);
+  height: auto;
+  max-width: none;
+  pointer-events: none;
+  z-index: 11000;
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 80px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  opacity: 0.5;
+  animation: float 2s ease-in-out infinite;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  color: var(--dark);
+  pointer-events: none;
+}
+
+.scroll-arrow {
+  width: 2px;
+  height: 32px;
+  background: var(--dark);
+  position: relative;
+}
+
+.scroll-arrow::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -4px;
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-top: 8px solid var(--dark);
+}
+
+/* ── Horizontal scroll section (continues the waterfall scene) ── */
+#horizontal-scroll-section {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  background: #1a7aab;
+  overflow: hidden;
+}
+
+.horizontal-scroll-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.horizontal-viewport {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.horizontal-panels {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 40px;
+  height: 100%;
+  left: clamp(32vw, 38vw, 44vw);
+  top: 38%;
+  transform: translateY(-50%);
+  pointer-events: auto;
+  will-change: transform;
+}
+
+.hpanel {
+  flex: 0 0 280px;
+  min-height: 340px;
+  border-radius: 32px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,249,251,0.98) 100%);
+  box-shadow: 0 28px 68px rgba(15, 23, 42, 0.12);
+  padding: 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden;
+  position: relative;
+  border: 1px solid rgba(18, 32, 74, 0.08);
+}
+
+.hpanel::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 40%);
+  pointer-events: none;
+}
+
+.hpanel-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: 0.95;
+  color: #111;
+  margin-bottom: 20px;
+}
+
+.hpanel-copy {
+  font-size: clamp(0.9rem, 1.2vw, 1rem);
+  line-height: 1.6;
+  color: #333;
+}
+
+.horizontal-parallax {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.horizontal-parallax-layer {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 200%;
+  height: 120%;
+  transform: translateY(-50%);
+  background-image: url('/assets/amy-huang/horizontalbg.svg');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-size: cover;
+}
+
+.layer-back  { opacity: 0.85; }
+.layer-mid   { opacity: 0.60; }
+.layer-front { opacity: 0.45; }
+</style>

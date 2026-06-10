@@ -1,0 +1,130 @@
+---
+---
+<nav id="site-nav" aria-label="Site navigation">
+  <a href="#hero" class="nav-logo" aria-label="Home">
+    <img src="/assets/amy-huang/logo.svg" alt="Hack Canada" width="72" height="72" />
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">about</a></li>
+    <li><a href="#sponsors">sponsors</a></li>
+    <li><a href="#faq">faq</a></li>
+  </ul>
+</nav>
+
+<style>
+#site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  padding: 0 48px;
+  background: transparent;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  z-index: 200000;
+  transform: translateY(0);
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              background 0.3s ease,
+              backdrop-filter 0.3s ease;
+  pointer-events: auto;
+}
+
+#site-nav.hidden {
+  transform: translateY(-100%);
+  pointer-events: none;
+}
+
+#site-nav.scrolled {
+  background: rgba(22, 100, 145, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.nav-logo img {
+  width: 72px;
+  height: 72px;
+  display: block;
+  transition: opacity 0.2s ease;
+}
+
+.nav-logo:hover img {
+  opacity: 0.8;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 89px;
+  margin-left: 70px;
+  list-style: none;
+  padding: 0;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.nav-links a {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  line-height: 1;
+  color: #000;
+  text-decoration: none;
+  position: relative;
+  transition: opacity 0.2s ease;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  width: 100%;
+  height: 3px;
+  background: #000;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
+}
+
+.nav-links a:hover {
+  opacity: 0.65;
+}
+
+.nav-links a:hover::after {
+  transform: scaleX(1);
+}
+</style>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  let lastY = window.scrollY;
+
+  window.addEventListener('scroll', () => {
+    const currentY = window.scrollY;
+
+    if (currentY <= 80) {
+      // At top: visible, no background
+      nav?.classList.remove('hidden', 'scrolled');
+    } else if (currentY < lastY) {
+      // Scrolling up: visible with blue bg
+      nav?.classList.remove('hidden');
+      nav?.classList.add('scrolled');
+    } else {
+      // Scrolling down: hide
+      nav?.classList.add('hidden');
+      nav?.classList.remove('scrolled');
+    }
+
+    lastY = currentY;
+  }, { passive: true });
+</script>

@@ -1,0 +1,193 @@
+---
+import HeroIntro from './HeroIntro.astro';
+import WaterfallJourney from './WaterfallJourney.astro';
+import NavBar from '../ui/NavBar.astro';
+---
+
+<NavBar />
+<HeroIntro />
+<WaterfallJourney />
+
+<div class="footer-space"></div>
+
+<style is:global>
+:root {
+  --red: #E8192C;
+  --white: #FFFFFF;
+  --sky: #87CEEB;
+  --water: #5BB8D4;
+  --cream: #F8F5EE;
+  --dark: #1A1A1A;
+  --card-bg: #E8E4DC;
+  --river-height: 200vh;
+  --hero-height: 100vh;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--cream);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+.footer-space {
+  height: 80px;
+  background: #1C1C1C;
+}
+
+/* Beaver sprite global positioning and top-layer styles */
+.h-beaver {
+    position: absolute;
+    top: calc(38% - 140px);
+    left: 28%;
+    width: 120px;
+    height: auto;
+    z-index: 20000;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.25s ease, visibility 0.25s ease;
+}
+
+.h-beaver.ready {
+  opacity: 1;
+  visibility: visible;
+}
+</style>
+
+<script type="module">
+  import Lenis from 'https://cdn.jsdelivr.net/npm/lenis@1.1.9/dist/lenis.mjs';
+  import { gsap } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/index.js';
+  import { ScrollTrigger } from 'https://cdn.jsdelivr.net/npm/gsap@3.12.5/ScrollTrigger.js';
+
+  const lenis = new Lenis({
+    lerp: 0.12,
+    smooth: true,
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    ScrollTrigger.update();
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hide hero elements immediately so there's no flash before entrance animation
+  gsap.set([
+    '#hero .hero-ocean', '#hero .hero-rock', '#hero .hero-rocks-right',
+    '#hero .hero-rock-right', '#hero .hero-rock2', '#hero .lighthouse-wrap',
+    '#hero .hero-cloud', '#hero .hero-text',
+  ], { opacity: 0 });
+  gsap.set('#hero .hero-ocean',     { y: 50 });
+  gsap.set('#hero .hero-rock',      { y: 80 });
+  gsap.set(['#hero .hero-rocks-right', '#hero .hero-rock-right'], { y: 70 });
+  gsap.set('#hero .hero-rock2',     { y: 60 });
+  gsap.set('#hero .lighthouse-wrap',{ y: 24, scale: 0.97 });
+  gsap.set('#hero .hero-text',      { y: 28 });
+
+  const panels = document.getElementById('horizontal-panels');
+
+  const heroParallax = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.4,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  heroParallax
+    .to('#hero .hero-ocean', { yPercent: 2.5, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock', { yPercent: 4, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rocks-right', { yPercent: 6, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock-right', { yPercent: 8, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock2', { yPercent: 10, ease: 'none', force3D: true }, 0)
+    .to('#hero .lighthouse-wrap', { yPercent: 6, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-text', { yPercent: 12, ease: 'none', force3D: true }, 0);
+
+  const heroCloud = document.getElementById('hero-cloud');
+  if (heroCloud) {
+    gsap.to(heroCloud, {
+      x: () => window.innerWidth + 260,
+      duration: 50,
+      ease: 'none',
+      repeat: -1,
+      repeatDelay: 0,
+      immediateRender: false,
+    });
+  }
+
+  // panels start at clamp(32vw,38vw,44vw) — offset so last panel exits cleanly without dead scroll
+  const horizontalDistance = () => (panels?.scrollWidth || 0) + window.innerWidth * 0.62;
+  const pinDistance = () => horizontalDistance() + window.innerHeight * 0.75;
+
+  const hTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#horizontal-scroll-section',
+      start: 'top top',
+      end: () => `+=${pinDistance()}`,
+      scrub: true,
+      pin: '#horizontal-scroll-section',
+      anticipatePin: 0.5,
+      invalidateOnRefresh: true,
+    },
+    defaults: { ease: 'none' },
+  });
+
+  hTl.to('#horizontal-panels', { x: () => -horizontalDistance() });
+  hTl.to('.layer-back',        { x: () => -horizontalDistance() * 0.15 }, 0);
+  hTl.to('.layer-mid',         { x: () => -horizontalDistance() * 0.35 }, 0);
+  hTl.to('.layer-front',       { x: () => -horizontalDistance() * 0.65 }, 0);
+
+  gsap.to('.scroll-hint', {
+    opacity: 0,
+    scrollTrigger: {
+      trigger: '#river-section',
+      start: 'top top',
+      end: '5% top',
+      scrub: true,
+    },
+  });
+
+  // Horizontal beaver: cycle sprite frames
+  const hBeaver = document.getElementById('h-beaver');
+  if (hBeaver) {
+    const beaverFrames = [1,2,3,4,5,6,7].map(i => `/assets/amy-huang/beaver[${i}].svg`);
+    let bfIdx = 0;
+    const bfTimer = setInterval(() => {
+      bfIdx = (bfIdx + 1) % beaverFrames.length;
+      hBeaver.src = beaverFrames[bfIdx];
+    }, 120);
+
+    const show = () => hBeaver.classList.add('ready');
+    if (hBeaver.complete) show();
+    else hBeaver.addEventListener('load', show, { once: true });
+
+    window.addEventListener('pagehide', () => clearInterval(bfTimer));
+  }
+
+  const entranceTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.05 });
+  entranceTl
+    .to('#hero .hero-ocean',       { y: 0, opacity: 1, duration: 0.9  }, 0)
+    .to('#hero .hero-rock',        { y: 0, opacity: 1, duration: 2.0  }, 0.08)
+    .to('#hero .hero-rock-right',  { y: 0, opacity: 1, duration: 1.2  }, 0.1)
+    .to('#hero .hero-rocks-right', { y: 0, opacity: 1, duration: 1.0  }, 0.15)
+    .to('#hero .hero-rock2',       { y: 0, opacity: 1, duration: 1.2  }, 0.2)
+    .to('#hero .lighthouse-wrap',  { y: 0, opacity: 1, scale: 1, duration: 0.8 }, 0.28)
+    .to('#hero .hero-cloud',       { opacity: 1, duration: 0.9        }, 0.38)
+    .to('#hero .hero-text',        { y: 0, opacity: 1, duration: 1.0  }, 0.55);
+</script>
