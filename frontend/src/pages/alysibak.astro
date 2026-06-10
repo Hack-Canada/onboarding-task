@@ -1,0 +1,180 @@
+---
+import Layout from '../layouts/Layout.astro';
+import SiteNav from '../components/SiteNav.astro';
+
+const crossingUrl = import.meta.env.PUBLIC_CROSSING_URL ?? '/crossing';
+---
+
+<Layout title="Alys — Hack Canada">
+	<SiteNav current="page" />
+	<main class="page">
+		<figure class="page__banner">
+			<img
+				class="page__banner-img"
+				src="/assets/alysibak/banner.svg"
+				alt=""
+				width="640"
+				height="180"
+				loading="eager"
+				decoding="async"
+			/>
+		</figure>
+
+		<figure class="page__hero">
+			<img
+				class="page__photo"
+				src="/assets/alysibak/headshot.jpeg"
+				alt="Alys"
+				width="200"
+				height="200"
+				loading="eager"
+				decoding="async"
+				onerror="this.onerror=null;this.src='/assets/alysibak/headshot.svg';"
+			/>
+		</figure>
+
+		<p class="page__eyebrow">Hack Canada 2027</p>
+		<h1 class="page__title">Alys</h1>
+		<p class="page__role">Voyage log &amp; web</p>
+
+		<p class="page__lead">
+			Team roster page. I built <strong>The Crossing</strong> — a harbour hero and horizontal
+			voyage scroll through Halifax, told as a sailmaker's logbook.
+		</p>
+
+		<ul class="page__highlights">
+			<li>Layered harbour hero with lantern fog and GSAP SplitText reveal</li>
+			<li>Pinned horizontal journey — four waypoints, dory on the chart</li>
+			<li>Lenis smooth scroll, harbour sound, five hidden gulls</li>
+			<li>Astro 6, GSAP 3, TypeScript, Tailwind</li>
+		</ul>
+
+		<p class="page__actions">
+			<a class="page__cta" href={crossingUrl}>
+				Open The Crossing →
+			</a>
+		</p>
+
+		<p class="page__back">
+			<a href="/">← Back to home</a>
+		</p>
+	</main>
+</Layout>
+
+<style>
+	.page {
+		min-height: 100vh;
+		padding: clamp(5rem, 12vh, 7rem) clamp(1.5rem, 6vw, 4rem) 3rem;
+		background:
+			radial-gradient(ellipse 90% 55% at 50% -5%, rgba(255, 223, 110, 0.14), transparent),
+			linear-gradient(180deg, #0f172a 0%, #111827 55%, #0f172a 100%);
+		color: #ffffff;
+		font-family: Inter, system-ui, sans-serif;
+		max-width: 36rem;
+		margin: 0 auto;
+	}
+
+	.page__banner {
+		margin: 0 0 1.5rem;
+		border-radius: 0.75rem;
+		overflow: hidden;
+		border: 1px solid rgba(255, 223, 110, 0.25);
+		box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+	}
+
+	.page__banner-img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.page__hero {
+		margin: 0 0 1.75rem;
+	}
+
+	.page__photo {
+		display: block;
+		width: 12.5rem;
+		height: 12.5rem;
+		object-fit: cover;
+		border-radius: 999px;
+		border: 3px solid rgba(255, 223, 110, 0.5);
+		box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+	}
+
+	.page__eyebrow {
+		margin: 0 0 0.5rem;
+		font-size: 0.82rem;
+		font-weight: 700;
+		letter-spacing: 0.14em;
+		text-transform: uppercase;
+		color: rgba(255, 255, 255, 0.65);
+	}
+
+	.page__title {
+		margin: 0 0 0.35rem;
+		font-size: clamp(2.25rem, 6vw, 3rem);
+		line-height: 1.1;
+	}
+
+	.page__role {
+		margin: 0 0 1.5rem;
+		font-size: 1rem;
+		color: #ffdf6e;
+		font-weight: 600;
+	}
+
+	.page__lead {
+		margin: 0 0 1.25rem;
+		font-size: 1.05rem;
+		line-height: 1.65;
+		color: rgba(255, 255, 255, 0.9);
+	}
+
+	.page__lead strong {
+		color: #fde68a;
+		font-weight: 600;
+	}
+
+	.page__highlights {
+		margin: 0 0 2rem;
+		padding-left: 1.25rem;
+		font-size: 0.95rem;
+		line-height: 1.7;
+		color: rgba(255, 255, 255, 0.78);
+	}
+
+	.page__highlights li {
+		margin-bottom: 0.35rem;
+	}
+
+	.page__actions {
+		margin: 0 0 2rem;
+	}
+
+	.page__cta {
+		display: inline-block;
+		padding: 0.85rem 1.35rem;
+		border-radius: 999px;
+		background: #ffdf6e;
+		color: #111827;
+		font-weight: 700;
+		text-decoration: none;
+		transition: filter 0.15s ease, transform 0.15s ease;
+	}
+
+	.page__cta:hover {
+		filter: brightness(1.06);
+		transform: translateY(-1px);
+	}
+
+	.page__back a {
+		color: #ffdf6e;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	.page__back a:hover {
+		text-decoration: underline;
+	}
+</style>
