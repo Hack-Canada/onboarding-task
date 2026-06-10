@@ -1,0 +1,130 @@
+---
+import transitionSky from "../../public/assets/linusgao/processed/transition-1.png"
+import transitionClouds from "../../public/assets/linusgao/processed/transition-2.png"
+import transitionSun from "../../public/assets/linusgao/processed/transition-3.png"
+import transitionWater from "../../public/assets/linusgao/processed/transition-4.png"
+import transitionCabin from "../../public/assets/linusgao/processed/transition-5.png"
+import transitionRocks from "../../public/assets/linusgao/processed/transition-7.png"
+---
+
+<section
+  id="story"
+  class="relative isolate min-h-screen overflow-hidden bg-[#f9efd1] py-0"
+  data-horizontal-section
+  aria-labelledby="story-title"
+>
+  <span id="sponsors" class="absolute top-1/2 h-px w-px overflow-hidden"></span>
+  <div class="pointer-events-none absolute inset-0 -z-20 bg-[#f7a34d]"></div>
+  <img
+    src={transitionSky.src}
+    width={transitionSky.width}
+    height={transitionSky.height}
+    alt=""
+    class="absolute inset-0 -z-20 h-full w-full object-cover"
+    loading="lazy"
+  />
+  <img
+    src={transitionClouds.src}
+    width={transitionClouds.width}
+    height={transitionClouds.height}
+    alt=""
+    class="parallax-layer absolute left-0 top-0 -z-10 h-[58vh] min-h-72 w-[180vw] max-w-none object-cover opacity-80"
+    data-depth="0.09"
+    loading="lazy"
+  />
+  <img
+    src={transitionSun.src}
+    width={transitionSun.width}
+    height={transitionSun.height}
+    alt=""
+    class="parallax-layer absolute left-[12vw] top-[8vh] -z-10 h-[50vh] min-h-72 w-[160vw] max-w-none object-cover opacity-75"
+    data-depth="0.14"
+    loading="lazy"
+  />
+  <img
+    src={transitionWater.src}
+    width={transitionWater.width}
+    height={transitionWater.height}
+    alt=""
+    class="parallax-layer absolute bottom-[5vh] left-[-8vw] -z-10 h-[58vh] min-h-[30rem] w-[220vw] max-w-none object-cover opacity-95"
+    data-depth="0.22"
+    loading="lazy"
+  />
+  <img
+    src={transitionCabin.src}
+    width={transitionCabin.width}
+    height={transitionCabin.height}
+    alt=""
+    class="parallax-layer absolute bottom-[-3rem] left-[-15rem] z-0 h-[72vh] min-h-[34rem] w-auto max-w-none opacity-70"
+    data-depth="0.38"
+    loading="lazy"
+  />
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-[28vh] bg-[linear-gradient(180deg,rgba(50,106,88,0)_0%,rgba(50,106,88,0.82)_78%)]"></div>
+
+  <div class="horizontal-pin relative z-10 flex min-h-screen items-center overflow-hidden px-5 py-16 sm:px-8 lg:px-12">
+    <div class="horizontal-track flex items-stretch gap-8 pr-[12vw] sm:gap-10 lg:gap-14">
+      <div class="grid min-h-[520px] w-[86vw] max-w-[640px] shrink-0 content-center gap-6 sm:min-h-[560px] lg:w-[48vw]">
+        <p class="text-xs font-black uppercase tracking-[0.2em] text-coral">Scroll story</p>
+        <h2 id="story-title" class="font-display text-[clamp(3rem,8vw,7rem)] font-black leading-[0.9] text-ink">
+          Horizontal scroll demo
+        </h2>
+        <p class="max-w-xl text-lg font-semibold leading-8 text-ink/72">
+          The scene pins while this wide strip moves sideways. The background layers drift at different speeds so you can judge the scroll effect without the four story cards.
+        </p>
+      </div>
+
+      <div class="relative min-h-[520px] w-[180vw] max-w-none shrink-0 overflow-hidden rounded-lg border-2 border-ink/80 bg-cream/55 shadow-[10px_10px_0_rgba(24,49,69,0.12)] sm:min-h-[560px] lg:w-[170vw]">
+        <img
+          src={transitionClouds.src}
+          width={transitionClouds.width}
+          height={transitionClouds.height}
+          alt=""
+          class="parallax-layer absolute left-[-6%] top-[-10%] h-[58%] w-[132%] max-w-none object-cover opacity-60"
+          data-depth="0.08"
+          loading="lazy"
+        />
+        <img
+          src={transitionWater.src}
+          width={transitionWater.width}
+          height={transitionWater.height}
+          alt=""
+          class="parallax-layer absolute bottom-0 left-[-8%] h-[72%] w-[135%] max-w-none object-cover opacity-90"
+          data-depth="0.16"
+          loading="lazy"
+        />
+        <img
+          src={transitionRocks.src}
+          width={transitionRocks.width}
+          height={transitionRocks.height}
+          alt=""
+          class="parallax-layer absolute bottom-[-4rem] left-[18%] h-[48%] w-[70%] max-w-none object-contain opacity-90"
+          data-depth="0.27"
+          loading="lazy"
+        />
+        <div class="absolute left-[8%] top-10 rounded-full border-2 border-ink bg-foam/80 px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-ink">
+          Pin starts
+        </div>
+        <div class="absolute left-[44%] top-1/2 rounded-full border-2 border-ink bg-coral px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white">
+          Scrub sideways
+        </div>
+        <div class="absolute bottom-10 right-[8%] rounded-full border-2 border-ink bg-spruce px-4 py-2 text-xs font-black uppercase tracking-[0.18em] text-white">
+          Parallax layers
+        </div>
+      </div>
+
+      <div id="apply" class="grid min-h-[520px] w-[86vw] max-w-[620px] shrink-0 content-center gap-5 rounded-lg border-2 border-ink bg-ink p-6 text-foam shadow-[10px_10px_0_rgba(239,116,98,0.32)] sm:min-h-[560px] sm:p-8 lg:w-[48vw]">
+        <p class="text-xs font-black uppercase tracking-[0.2em] text-coral">HC27</p>
+        <h3 class="font-display text-5xl font-black leading-none sm:text-6xl">Ready for the pier?</h3>
+        <p class="max-w-md text-base font-semibold leading-7 text-foam/78">
+          Bring a laptop, a curious idea, and a team spirit. The coast is open for builders.
+        </p>
+        <a
+          href="#top"
+          class="mt-2 w-fit rounded-full border-2 border-foam bg-cream px-5 py-3 text-sm font-black uppercase tracking-[0.12em] text-ink transition hover:bg-coral hover:text-white"
+        >
+          Back to top
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

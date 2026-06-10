@@ -1,0 +1,191 @@
+---
+import thirdPage1 from "../../public/assets/linusgao/thirdpage/img1.png"
+import thirdPage2 from "../../public/assets/linusgao/thirdpage/img2.png"
+import thirdPage3 from "../../public/assets/linusgao/thirdpage/img3.png"
+
+const backgrounds = [thirdPage1, thirdPage2, thirdPage3];
+---
+
+<section
+  id="sponsors"
+  class="relative isolate min-h-screen overflow-hidden bg-[#020b26] text-white"
+  data-horizontal-section
+  aria-labelledby="horizontal-title"
+>
+  <div class="pointer-events-none absolute inset-0 -z-10 bg-[#020b26]"></div>
+  <div class="pointer-events-none absolute inset-x-0 top-0 z-0 h-28 bg-gradient-to-b from-[#020b26] to-transparent"></div>
+  <div class="pointer-events-none absolute inset-x-0 bottom-0 z-0 h-32 bg-gradient-to-t from-[#020b26] to-transparent"></div>
+
+  <div class="horizontal-pin relative z-10 min-h-screen overflow-hidden">
+    <div class="horizontal-track flex min-h-screen">
+      {
+        backgrounds.map((background, index) => (
+          <section class="relative h-screen w-screen shrink-0 overflow-hidden px-5 py-12 sm:px-8 lg:px-12" aria-label={`Third page background ${index + 1}`}>
+            <img
+              src={background.src}
+              width={background.width}
+              height={background.height}
+              alt=""
+              class="parallax-layer absolute inset-y-0 left-[-6%] -z-20 h-full w-[112%] max-w-none object-cover object-center"
+              data-depth={0.035 + index * 0.012}
+              loading={index === 0 ? "eager" : "lazy"}
+            />
+            <div class="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_72%_52%,rgba(34,211,238,0.12),transparent_28rem),linear-gradient(90deg,rgba(2,8,31,0.86)_0%,rgba(2,8,31,0.34)_42%,rgba(2,8,31,0.46)_72%,rgba(2,8,31,0.74)_100%)]" />
+          </section>
+        ))
+      }
+
+      <div class="absolute inset-y-0 left-0 grid w-screen content-start overflow-hidden px-5 py-5 sm:px-8 sm:py-7 lg:content-center lg:px-12 lg:py-10">
+        <div class="mx-auto w-full max-w-[74rem]">
+          <div class="relative mx-auto max-w-[58rem] text-center">
+            <svg class="pointer-events-none absolute -left-20 top-2 hidden h-32 w-36 text-cyan-300/82 lg:block" viewBox="0 0 160 150" fill="none" aria-hidden="true">
+              <path d="M127 17C84 3 54 35 72 61C85 80 115 63 104 43C88 15 33 50 26 119" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+              <path d="M16 103L26 123L43 106" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <svg class="pointer-events-none absolute -right-20 top-5 hidden h-32 w-36 text-blue-400/88 lg:block" viewBox="0 0 160 150" fill="none" aria-hidden="true">
+              <path d="M14 24C68 12 120 31 109 67C103 86 73 82 76 61C81 23 148 53 144 121" stroke="currentColor" stroke-width="7" stroke-linecap="round" />
+              <path d="M130 108L145 124L155 101" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+            <h2 id="horizontal-title" class="font-display text-[clamp(2.5rem,5.2vw,5.35rem)] font-black leading-[0.96] tracking-normal font-serif text-white mt-6">
+              Get <span class="text-cyan-300">inspired</span> by industry leaders
+            </h2>
+            <p class="mx-auto mt-4 hidden max-w-[46rem] text-base font-semibold leading-7 text-cyan-50/72 md:block lg:text-xl lg:leading-8 font-serif">
+              Hear from founders, researchers, and builders who mentor hackers through the weekend.
+            </p>
+          </div>
+
+          <div class="mt-5 grid items-center gap-5 md:mt-10 md:grid-cols-[0.9fr_1.1fr] lg:gap-12">
+            <div class="mx-auto w-full max-w-[13.5rem] overflow-hidden rounded-lg bg-cyan-50 shadow-[0_24px_70px_rgba(0,0,0,0.32)] sm:max-w-[16rem] md:max-w-[22rem]">
+              <div class="relative aspect-[4/5] bg-[radial-gradient(circle_at_50%_25%,#e3f8ff_0_22%,#f8fbff_23%_100%)]">
+=
+                <div class="absolute inset-x-0 bottom-0 bg-[#071737] px-5 py-4">
+                  <p class="text-sm font-black uppercase tracking-[0.2em] text-cyan-200">Keynote</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="relative">
+              <span class="stats-shape stats-shape-star pointer-events-none -right-8 -top-8 hidden bg-[#ffe45c] lg:block"></span>
+              <p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-200">Opening keynote</p>
+              <h3 class="mt-4 font-display text-[clamp(2.4rem,4.4vw,4.8rem)] font-black leading-none text-white">
+                Maya Chen
+              </h3>
+              <p class="mt-2 text-xl font-black text-cyan-50/62 sm:text-2xl">Founder, Northstar Labs</p>
+              <p class="mt-4 max-w-[45rem] text-sm font-semibold leading-6 text-cyan-50/74 sm:text-base sm:leading-7 md:text-xl md:leading-9">
+                Maya builds climate data tools for coastal cities and leads teams that turn research into public-impact software. Her keynote will focus on building with urgency, care, and a strong demo culture.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Section portion -->
+      <div class="absolute inset-y-0 left-[100vw] grid w-screen content-start overflow-hidden px-5 py-5 sm:px-8 sm:py-6 lg:content-center lg:px-12">
+        <div class="mx-auto w-full max-w-[92rem]">
+          <div class="max-w-[76rem]">
+            <h2 class="font-display text-[clamp(2.25rem,5.4vw,5.7rem)] font-black leading-[0.94] tracking-normal text-white drop-shadow-[0_6px_22px_rgba(0,0,0,0.35)] font-serif">
+              Dream big and build bigger
+            </h2>
+            <p class="mt-3 hidden max-w-[58rem] text-base font-semibold leading-7 text-cyan-50/86 sm:block sm:text-lg sm:leading-8 lg:mt-4 lg:text-xl">
+              Every year, hackers turn ambitious ideas into polished demos. Explore one featured build and the story behind the team that made it.
+            </p>
+          </div>
+
+          <div class="mt-4 grid gap-4 rounded-lg border border-cyan-200/14 bg-[#071737]/88 p-3 shadow-[0_24px_90px_rgba(0,0,0,0.38)] backdrop-blur-md md:grid-cols-[0.92fr_1.08fr] md:p-6 lg:mt-8 lg:gap-5 lg:p-8">
+            <div class="project-mockup min-h-[190px] rounded-lg bg-cyan-50 p-3 text-[#071737] shadow-[0_18px_50px_rgba(0,0,0,0.24)] sm:min-h-[230px] lg:min-h-[250px]">
+
+              <div class="grid h-[calc(100%-2rem)] content-center gap-4">
+
+                <div class="grid grid-cols-4 gap-2 text-[0.58rem] font-black uppercase text-slate-500">
+                </div>
+                <div class="relative h-24 overflow-hidden rounded bg-[#dcebd8] sm:h-32 lg:h-36">
+                  
+                </div>
+              </div>
+            </div>
+
+            <div class="grid content-center gap-3 md:gap-4 md:pl-3">
+              <p class="text-sm font-black uppercase tracking-[0.22em] text-cyan-200">Featured project</p>
+              <h3 class="font-display text-[clamp(2rem,3.6vw,4.25rem)] font-black leading-none text-white">
+                Signal Harbor
+              </h3>
+              <p class="max-w-[45rem] text-sm font-semibold leading-6 text-cyan-50/82 sm:text-lg sm:leading-8 lg:text-xl lg:leading-9">
+                A rapid-response platform that helps community teams triage calls, map incidents, and coordinate resources during coastal emergencies.
+              </p>
+              <a
+                href="#apply"
+                class="mt-2 inline-flex w-fit items-center rounded-full border-2 border-cyan-200 bg-cyan-300/18 px-6 py-3 text-sm font-black text-cyan-50 shadow-[0_0_28px_rgba(34,211,238,0.22)] transition hover:bg-cyan-300 hover:text-[#041334]"
+              >
+                View project -&gt;
+              </a>
+            </div>
+          </div>
+
+          <div class="mt-5 hidden gap-5 md:grid md:grid-cols-[0.85fr_1.15fr]">
+            <div class="rounded-lg border border-cyan-200/14 bg-[#071737]/82 p-5 shadow-[0_18px_58px_rgba(0,0,0,0.28)] backdrop-blur-md">
+              <p class="font-display text-2xl font-black leading-none text-white sm:text-3xl">Faiz</p>
+              <p class="mt-3 max-w-sm text-sm font-semibold leading-6 text-cyan-50/76 sm:text-base">
+                Experienced hacker, undergraduate student, and builder of tools for real-world coordination.
+              </p>
+            </div>
+            <blockquote class="rounded-lg border border-cyan-200/14 bg-[#071737]/82 p-5 text-base font-semibold leading-7 text-cyan-50/84 shadow-[0_18px_58px_rgba(0,0,0,0.28)] backdrop-blur-md sm:text-lg sm:leading-8">
+              <span class="mr-2 text-4xl font-black leading-none text-cyan-200">"</span>
+              Hack Canada was a place where I could build what was on my mind, learn from people around me, and leave with something real.
+            </blockquote>
+          </div>
+        </div>
+      </div>
+
+      <div
+        id="apply"
+        class="absolute inset-y-0 left-[200vw] grid w-screen content-center overflow-hidden px-5 py-6 sm:px-8 lg:px-12"
+      >
+        <div class="mx-auto w-full max-w-[78rem]">
+          <div class="text-center">
+            <p class="text-xl mt-4 font-black uppercase tracking-[0.22em] text-cyan-200">Sponsors</p>
+            <h3 class="mt-3 font-display text-[clamp(2.35rem,5vw,5rem)] font-black leading-none text-white font-serif">
+              Built with support from partners
+            </h3>
+            <p class="mx-auto mt-4 max-w-[42rem] text-base font-semibold leading-7 text-cyan-50/72 sm:text-lg">
+              Our sponsors help hackers access tools, mentors, prizes, and the resources to ship ambitious projects.
+            </p>
+          </div>
+
+          <div class="mt-6 grid gap-4 sm:mt-8">
+            <div class="grid min-h-24 place-items-center rounded-lg bg-white px-8 py-6 text-[#1f294f] shadow-[0_20px_64px_rgba(0,0,0,0.26)] sm:min-h-32">
+              <div class="flex items-center gap-4 sm:gap-6">
+                <span class="relative grid h-16 w-16 place-items-center sm:h-20 sm:w-20">
+                  <span class="absolute inset-0 rounded-[50%] border-[7px] border-[#6fc5aa] rotate-12"></span>
+                  <span class="absolute inset-0 rounded-[50%] border-[7px] border-[#5668f2] -rotate-45"></span>
+                  <span class="absolute inset-0 rounded-[50%] border-[7px] border-[#f0679c] rotate-45"></span>
+                  <span class="absolute inset-0 rounded-[50%] border-[7px] border-[#f4bf50] -rotate-12"></span>
+                  <span class="relative h-7 w-7 rotate-45 bg-[#1f294f]"></span>
+                </span>
+                <span class="text-[clamp(2.1rem,5.4vw,5.2rem)] font-black leading-none tracking-tight">ETHGlobal</span>
+              </div>
+            </div>
+
+            <div class="grid min-h-24 place-items-center rounded-lg bg-white px-8 py-6 text-center shadow-[0_20px_64px_rgba(0,0,0,0.26)] sm:min-h-32">
+              <div class="flex items-center gap-4">
+                <span class="grid h-20 w-20 place-items-center rounded bg-[#153ca3] text-4xl font-black text-[#ffd84d] sm:h-24 sm:w-24">R</span>
+                <span class="font-display text-[clamp(2.5rem,6vw,5rem)] font-black leading-none text-[#153ca3]">RBC</span>
+              </div>
+            </div>
+
+            <div class="grid min-h-24 place-items-center rounded-lg bg-white px-8 py-6 text-center shadow-[0_20px_64px_rgba(0,0,0,0.26)] sm:min-h-32">
+              <span class="font-serif text-[clamp(3rem,7vw,6.2rem)] leading-none tracking-tight text-black">co:here</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+              <div class="grid min-h-20 place-items-center rounded-lg bg-white px-5 py-5 shadow-[0_16px_48px_rgba(0,0,0,0.22)] sm:min-h-24">
+                <span class="text-[clamp(2rem,4vw,3.8rem)] font-black leading-none text-[#54a8df]">datadog</span>
+              </div>
+              <div class="grid min-h-20 place-items-center rounded-lg bg-white px-5 py-5 shadow-[0_16px_48px_rgba(0,0,0,0.22)] sm:min-h-24">
+                <span class="text-[clamp(1.75rem,3.5vw,3.25rem)] font-black leading-none text-[#233a72]">DigitalOcean</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

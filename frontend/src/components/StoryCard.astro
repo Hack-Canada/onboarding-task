@@ -1,0 +1,60 @@
+---
+import beaver1 from "../../public/assets/linusgao/beaver1.svg"
+import beaver2 from "../../public/assets/linusgao/beaver2.svg"
+import beaver3 from "../../public/assets/linusgao/beaver3.svg"
+import beaver4 from "../../public/assets/linusgao/beaver4.svg"
+
+type StoryPanel = {
+  accent: "coral" | "tide" | "spruce" | "rope";
+  body: string;
+  eyebrow: string;
+  icon: string;
+  stat: "01" | "02" | "03" | "04";
+  title: string;
+};
+
+type Props = {
+  panel: StoryPanel;
+};
+
+const { panel } = Astro.props;
+const accentClasses = {
+  coral: "bg-coral text-white",
+  tide: "bg-tide text-white",
+  spruce: "bg-spruce text-white",
+  rope: "bg-rope text-ink"
+};
+const mascotByStat = {
+  "01": beaver1,
+  "02": beaver2,
+  "03": beaver3,
+  "04": beaver4
+};
+const mascot = mascotByStat[panel.stat];
+---
+
+<article
+  class="story-card sketch-card grid min-h-[520px] w-[86vw] max-w-[620px] shrink-0 content-between gap-8 p-5 sm:min-h-[560px] sm:p-7 lg:w-[52vw]"
+  data-story-card
+>
+  <div class="flex items-start justify-between gap-5">
+    <div>
+      <p class="text-xs font-black uppercase tracking-[0.18em] text-ink/58">{panel.eyebrow}</p>
+      <h3 class="mt-3 font-display text-4xl font-black leading-[0.95] text-ink sm:text-5xl">{panel.title}</h3>
+    </div>
+    <span class:list={["grid h-14 w-14 shrink-0 place-items-center rounded-full border-2 border-ink font-display text-xl font-black shadow-[4px_4px_0_rgba(24,49,69,0.14)]", accentClasses[panel.accent]]}>
+      {panel.stat}
+    </span>
+  </div>
+
+  <div class="grid gap-6">
+    <div class="relative h-56 overflow-hidden rounded-lg border-2 border-ink/75 bg-[#e7f5ee]">
+      <img src="/assets/story-water.svg" alt="" class="absolute inset-x-0 bottom-0 h-24 w-full object-cover" loading="lazy" />
+      <div class="absolute left-5 top-5 h-9 w-24 rounded-full bg-white/80 blur-sm"></div>
+      <div class="absolute right-8 top-14 h-7 w-20 rounded-full bg-white/70 blur-sm"></div>
+      <img src={panel.icon} alt="" class="parallax-layer absolute left-5 top-5 z-10 h-12 w-12 opacity-80" data-depth="0.03" loading="lazy" />
+      <img src={mascot.src} alt="" class="parallax-layer absolute bottom-2 left-1/2 z-10 h-48 w-48 -translate-x-1/2 object-contain drop-shadow-[0_12px_12px_rgba(24,49,69,0.14)]" data-depth="0.06" loading="lazy" />
+    </div>
+    <p class="text-base font-semibold leading-7 text-ink/76 sm:text-lg">{panel.body}</p>
+  </div>
+</article>
