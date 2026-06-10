@@ -35,7 +35,9 @@
 
   <div class="hero-text">
     <h1 class="hero-title">HACK CANADA</h1>
-    <p class="hero-subtitle">lorem ipsum blahh fix the text here</p>
+    <p class="hero-subtitle">
+      <span class="hs-static">Placeholder for something</span><span class="hs-wrap"><span class="hs-cycling" id="hs-cycling">happen</span></span>
+    </p>
   </div>
 
   <div class="hero-rock2">
@@ -302,7 +304,35 @@
   font-weight: 500;
   letter-spacing: 0.05em;
   opacity: 0.75;
+  line-height: 1.6;
+  white-space: nowrap;
 }
+
+/* Clipping window — hides the text above/below during the slide */
+.hs-wrap {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: text-bottom;
+  height: 1.4em;
+  margin-left: 0.4em;
+}
+
+.hs-cycling {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+@keyframes hsCycleOut {
+  0%   { transform: translateY(0);     opacity: 1; }
+  100% { transform: translateY(-130%); opacity: 0; }
+}
+
+@keyframes hsCycleIn {
+  0%   { transform: translateY(130%);  opacity: 0; }
+  100% { transform: translateY(0);     opacity: 1; }
+}
+
+/* ── hero-subtitle cycling text ── */
 
 /* Ocean ripple / wave animation */
 .hero-ocean {
@@ -334,3 +364,50 @@
 }
 
 </style>
+
+<script>
+  const PHRASES = [
+    'happen',
+    'possible',
+    'real',
+    'matter',
+    'connect',
+    'thrive',
+  ];
+
+  const OUT_MS  = 280;  // slide-up-out duration
+  const IN_MS   = 280;  // slide-in-from-below duration
+  const HOLD_MS = 2600; // how long each phrase stays
+  const DELAY   = 2400; // wait for hero entrance animation to finish
+
+  const el = document.getElementById('hs-cycling') as HTMLElement | null;
+  if (el) {
+    let idx = 0;
+
+    const cycle = () => {
+      idx = (idx + 1) % PHRASES.length;
+      const next = PHRASES[idx];
+
+      // Slide current text up and out
+      el.style.animation = `hsCycleOut ${OUT_MS}ms cubic-bezier(0.4,0,0.6,1) forwards`;
+
+      setTimeout(() => {
+        el.textContent = next;
+        // Slide new text in from below
+        el.style.animation = `hsCycleIn ${IN_MS}ms cubic-bezier(0.2,0.8,0.4,1) forwards`;
+      }, OUT_MS);
+    };
+
+    let timer: ReturnType<typeof setInterval>;
+    const start = () => {
+      timer = setInterval(cycle, HOLD_MS + OUT_MS);
+    };
+
+    const initTimer = setTimeout(start, DELAY);
+
+    window.addEventListener('pagehide', () => {
+      clearTimeout(initTimer);
+      clearInterval(timer);
+    }, { once: true });
+  }
+</script>

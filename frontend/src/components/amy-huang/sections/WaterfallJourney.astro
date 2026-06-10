@@ -4,7 +4,9 @@
   <section id="river-section">
     <img id="rock-screen-2" class="rock-screen-2" src="/assets/amy-huang/bg.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
     <img id="scroll-visual-img" src="/assets/amy-huang/waterfall.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
-    <img id="beaver-boat" class="beaver-boat" src="/assets/amy-huang/beaver%20on%20boat.svg" alt="" loading="eager" decoding="async" aria-hidden="true" />
+    <div id="boat-wrap" aria-hidden="true">
+      <img id="beaver-boat" src="/assets/amy-huang/beaver%20on%20boat.svg" alt="" loading="eager" decoding="async" />
+    </div>
     <div class="scroll-hint">
       <span>SCROLL</span>
       <div class="scroll-arrow"></div>
@@ -13,6 +15,7 @@
     <div id="waterfall-text" class="waterfall-text">
       <h2 class="wt-heading">Stats or Sumn<br>Anneyonghaseyo.</h2>
       <p class="wt-body">MI BOMBOOOOOOO copy filler idk what to write states about Hack Canada 50% hello elo.</p>
+      <img src="/assets/amy-huang/placeholder.jpg" alt="" decoding="async" loading="eager" aria-hidden="true" class="wt-placeholder">
     </div>
 
     <div id="waterfall-text-2" class="waterfall-text-2">
@@ -38,28 +41,40 @@
       <div class="horizontal-viewport">
         <div class="horizontal-panels" id="horizontal-panels">
           <article class="hpanel">
-            <h3 class="hpanel-title">Spons 1</h3>
-            <p class="hpanel-copy">Example 1 + picture would be here</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">Example 1 + picture would be here</p>
+            </div>
           </article>
           <article class="hpanel">
-            <h3 class="hpanel-title">Spons 2</h3>
-            <p class="hpanel-copy">lorem ipsum</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">lorem ipsum</p>
+            </div>
           </article>
           <article class="hpanel">
-            <h3 class="hpanel-title">Spons 3</h3>
-            <p class="hpanel-copy">this is so chopped cheese</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">this is so chopped cheese</p>
+            </div>
           </article>
           <article class="hpanel">
-            <h3 class="hpanel-title">Spons 4</h3>
-            <p class="hpanel-copy">sorry,, this was not the best</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">sorry,, this was not the best</p>
+            </div>
           </article>
           <article class="hpanel">
-            <h3 class="hpanel-title">Spons 5</h3>
-            <p class="hpanel-copy">Would like to add more to this</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">Would like to add more to this</p>
+            </div>
           </article>
           <article class="hpanel">
-            <h3 class="hpanel-title">Final spons</h3>
-            <p class="hpanel-copy">true</p>
+            <img src="/assets/amy-huang/placeholder.jpg" alt="" class="hpanel-img" loading="eager" decoding="async" aria-hidden="true" />
+            <div class="hpanel-content">
+              <p class="hpanel-copy">true</p>
+            </div>
           </article>
         </div>
       </div>
@@ -249,40 +264,35 @@
 }
 
 .hpanel {
-  flex: 0 0 280px;
-  min-height: 340px;
-  border-radius: 32px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.96) 0%, rgba(248,249,251,0.98) 100%);
-  box-shadow: 0 28px 68px rgba(15, 23, 42, 0.12);
-  padding: 28px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  flex: 0 0 240px;
+  height: 320px;
   overflow: hidden;
   position: relative;
-  border: 1px solid rgba(18, 32, 74, 0.08);
 }
 
-.hpanel::before {
-  content: '';
+.hpanel-img {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at top left, rgba(255,255,255,0.5), transparent 40%);
-  pointer-events: none;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
-.hpanel-title {
-  font-family: 'Bebas Neue', sans-serif;
-  font-size: clamp(2.8rem, 5vw, 4.5rem);
-  line-height: 0.95;
-  color: #111;
-  margin-bottom: 20px;
+.hpanel-content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 20px;
 }
 
 .hpanel-copy {
-  font-size: clamp(0.9rem, 1.2vw, 1rem);
-  line-height: 1.6;
-  color: #333;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: rgba(0, 0, 0, 0.85);
+  margin: 0;
 }
 
 .horizontal-parallax {
@@ -309,19 +319,41 @@
 .layer-mid   { opacity: 0.60; transition: translate 0.65s cubic-bezier(0.2,1,0.3,1); }
 .layer-front { opacity: 0.45; transition: translate 0.45s cubic-bezier(0.2,1,0.3,1); }
 
-/* ── Beaver on Boat — rides down the waterfall on scroll ── */
-#beaver-boat {
+/* ── Boat wrapper — handles positioning, float animation, and mouse-parallax translate ── */
+#boat-wrap {
   position: absolute;
-  /* Place boat at ~58% of waterfall width, centered on the main water channel */
-  left: calc(-220px + clamp(800px, 82vw, 1200px) * 0.58 - 50px);
+  /* Center on ~58% of waterfall width; -80px = half of 160px boat width */
+  left: calc(-220px + clamp(800px, 82vw, 1200px) * 0.58 - 80px);
   top: 7vh;
-  width: 100px;
+  width: 160px;
   height: auto;
-  max-width: none;
   pointer-events: none;
   z-index: 11500;
-  transform-origin: center center;
+  transform-origin: center bottom;
+  animation: boatFloat 2.8s ease-in-out infinite;
   transition: translate 0.8s cubic-bezier(0.2,1,0.3,1);
+}
+
+/* ── Beaver on Boat img — GSAP animates x/y/rotation here for path following ── */
+#beaver-boat {
+  width: 100%;
+  height: auto;
+  display: block;
+  transform-origin: center bottom;
+}
+
+@keyframes boatFloat {
+  0%   { transform: rotate(-3deg); }
+  50%  { transform: rotate( 3deg); }
+  100% { transform: rotate(-3deg); }
+}
+
+/* ── Placeholder image in waterfall text — kept small ── */
+.wt-placeholder {
+  max-width: clamp(300px, 18vw, 200px);
+  height: auto;
+  display: block;
+  margin-top: 14px;
 }
 
 /* ── Layer bob wrappers: CSS animation on the wrapper, GSAP on the inner layer ── */
@@ -342,4 +374,5 @@
 
 /* CSS translate transition for panels container mouse parallax */
 #horizontal-panels { transition: translate 0.7s cubic-bezier(0.2,1,0.3,1); }
+
 </style>

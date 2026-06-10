@@ -205,12 +205,15 @@ body.js-loading {
   hTl.to('.layer-back',        { x: () => -horizontalDistance() * 0.15 }, 0);
   hTl.to('.layer-mid',         { x: () => -horizontalDistance() * 0.35 }, 0);
   hTl.to('.layer-front',       { x: () => -horizontalDistance() * 0.65 }, 0);
-  hTl.to(['#scroll-visual-img', '#beaver-boat'], { x: () => -(window.innerWidth + 600), duration: 0.3, ease: 'none' }, 0);
+  hTl.to(['#scroll-visual-img', '#boat-wrap'], { x: () => -(window.innerWidth + 600), duration: 0.3, ease: 'none' }, 0);
 
-  // When horizontal scroll pins, freeze the waterfall at its current viewport position
-  // so it stops scrolling up and only exits left via the hTl x animation above.
-  const wfEl   = document.getElementById('scroll-visual-img');
-  const boatEl = document.getElementById('beaver-boat');
+  // When horizontal scroll pins, freeze waterfall + boat-wrap at their viewport position.
+  // boatPath is declared below but assigned before this fires (scroll time, not setup time).
+  let boatPath: gsap.core.Timeline | null = null;
+
+  const wfEl    = document.getElementById('scroll-visual-img');
+  const boatEl  = document.getElementById('beaver-boat');
+  const boatWrap = document.getElementById('boat-wrap');
   if (wfEl) {
     ScrollTrigger.create({
       trigger: '#horizontal-scroll-section',
@@ -218,15 +221,27 @@ body.js-loading {
       onEnter: () => {
         const r = wfEl.getBoundingClientRect();
         gsap.set(wfEl, { position: 'fixed', top: r.top, left: r.left, width: r.width });
-        if (boatEl) {
+        if (boatWrap && boatEl) {
+          // Read screen position BEFORE disabling the scrub — disable(false) would still
+          // revert on some GSAP versions, and either way we need the live rect first.
           const br = boatEl.getBoundingClientRect();
-          // br.top already includes the scroll-driven y offset, so reset y to avoid double-offset
-          gsap.set(boatEl, { position: 'fixed', top: br.top, left: br.left, width: br.width, y: 0 });
+          boatWrap.style.animation = 'none';
+          // disable(false) = stop future scroll updates without reverting current tween state.
+          // Without this the scrub re-applies its end-y on every RAF and fights gsap.set below.
+          if (boatPath?.scrollTrigger) boatPath.scrollTrigger.disable(false);
+          gsap.set(boatWrap, { position: 'fixed', top: br.top, left: br.left, width: br.width });
+          gsap.set(boatEl, { x: 0, y: 0, rotation: 0 });
         }
       },
       onLeaveBack: () => {
         gsap.set(wfEl, { clearProps: 'position,top,left,width,x' });
-        if (boatEl) gsap.set(boatEl, { clearProps: 'position,top,left,width,x,y' });
+        if (boatWrap) {
+          boatWrap.style.animation = '';
+          gsap.set(boatWrap, { clearProps: 'position,top,left,width,x' });
+        }
+        if (boatEl) gsap.set(boatEl, { clearProps: 'x,y,rotation' });
+        // Re-enable scrub after clearing props so it immediately recalculates correct position.
+        if (boatPath?.scrollTrigger) boatPath.scrollTrigger.enable();
       },
     });
   }
@@ -260,11 +275,11 @@ body.js-loading {
       const bvEl = document.getElementById('h-beaver');
       if (bvEl) bvEl.style.translate = `${nx * 18}px ${-ny * 12}px`;
 
-      // Waterfall + boat are fixed during horizontal scroll — parallax stacks on their position
+      // Waterfall + boat-wrap are fixed during horizontal scroll — parallax stacks on their position
       const wfElem = document.getElementById('scroll-visual-img');
       if (wfElem) wfElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
-      const boatElem = document.getElementById('beaver-boat');
-      if (boatElem) boatElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
+      const boatWrapElem = document.getElementById('boat-wrap');
+      if (boatWrapElem) boatWrapElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
 
       qtRX(-ny * 2.5);
       qtRY(nx * 4);
@@ -280,8 +295,8 @@ body.js-loading {
       if (bvEl) bvEl.style.translate = '';
       const wfElem = document.getElementById('scroll-visual-img');
       if (wfElem) wfElem.style.translate = '';
-      const boatElem = document.getElementById('beaver-boat');
-      if (boatElem) boatElem.style.translate = '';
+      const boatWrapElem = document.getElementById('boat-wrap');
+      if (boatWrapElem) boatWrapElem.style.translate = '';
       qtRX(0); qtRY(0);
     });
   }
@@ -324,19 +339,18 @@ body.js-loading {
   else wfImg?.addEventListener('load', syncRiverHeight, { once: true });
   window.addEventListener('resize', syncRiverHeight);
 
-  // Boat follows the waterfall's actual water channel path with rotation tilt on each curve.
-  // x offsets are derived from the waterfall SVG mask path waypoints, scaled to rendered width.
-  // Formula: x_offset = wfWidth * (svgX / 922 - 0.58), where 0.58 is the boat's CSS anchor %.
-  // Final segment (76–100%) has nearly zero x change = "straight downwards".
+  // Boat traces the waterfall's SVG mask channel (viewBox 922×2325).
+  // CSS top:7vh matches the waterfall image's own top — no GSAP y compensation needed.
+  // Trigger at 'top 50%' starts the path halfway through the hero scroll.
   if (boatEl) {
     const wfImgEl = document.getElementById('scroll-visual-img');
-    const wfW = () => wfImgEl?.offsetWidth  || 1181;
-    const wfH = () => wfImgEl?.offsetHeight || 0;
+    const wfW  = () => wfImgEl?.offsetWidth  || 1181;
+    const wfH  = () => wfImgEl?.offsetHeight || 0;
 
-    const boatPath = gsap.timeline({
+    boatPath = gsap.timeline({
       scrollTrigger: {
         trigger: '#river-section',
-        start: 'top top',
+        start: 'top 50%',
         end: 'bottom bottom',
         scrub: true,
         invalidateOnRefresh: true,
@@ -345,17 +359,13 @@ body.js-loading {
     });
 
     boatPath
-      .set(boatEl, { x: () => wfW() *  0.110, y: 0,                   rotation:  0 })
-      // 0–32 %: channel sweeps right (SVG x 636 → 713)
-      .to(boatEl,  { x: () => wfW() *  0.194, y: () => wfH() * 0.258, rotation:  8, duration: 0.315 })
-      // 32–47 %: sweeps hard left  (SVG x 713 → 469)
-      .to(boatEl,  { x: () => wfW() * -0.071, y: () => wfH() * 0.387, rotation: -8, duration: 0.157 })
-      // 47–56 %: recovers to centre (SVG x 469 → 580)
-      .to(boatEl,  { x: () => wfW() *  0.049, y: () => wfH() * 0.456, rotation:  3, duration: 0.084 })
-      // 56–76 %: settles into the main channel (SVG x 580 → 645)
-      .to(boatEl,  { x: () => wfW() *  0.119, y: () => wfH() * 0.624, rotation:  2, duration: 0.205 })
-      // 76–100 %: long straight plunge — x barely moves (SVG x 645 → 652)
-      .to(boatEl,  { x: () => wfW() *  0.127, y: () => wfH() * 0.82,  rotation:  0, ease: 'none', duration: 0.239 });
+      .to(boatEl,  { x: () => wfW() * -0.072, y: () => wfH() * 0.028, rotation: -8,  duration: 0.060 })
+      .to(boatEl,  { x: () => wfW() *  0.049, y: () => wfH() * 0.059, rotation:  6,  duration: 0.068 })
+      .to(boatEl,  { x: () => wfW() * -0.115, y: () => wfH() * 0.184, rotation: -10, duration: 0.143 })
+      .to(boatEl,  { x: () => wfW() *  0.092, y: () => wfH() * 0.277, rotation:  8,  duration: 0.106 })
+      .to(boatEl,  { x: () => wfW() * -0.208, y: () => wfH() * 0.422, rotation: -12, duration: 0.166 })
+      .to(boatEl,  { x: () => wfW() * -0.046, y: () => wfH() * 0.508, rotation:  2,  duration: 0.099 })
+      .to(boatEl,  { x: () => wfW() * -0.046, y: () => wfH() * 0.820, rotation:  0,  ease: 'none', duration: 0.358 });
   }
 
   const entranceTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.05 });
