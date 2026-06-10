@@ -1,0 +1,129 @@
+---
+import {
+  layerDriftDuration,
+  waterFoamCapSvg,
+  waterFoamLineSvg,
+  waterLayerTile,
+  WATER_LAYER_ORDER,
+} from '../../water/layers';
+import { WATER_FOAM_DRIFT_DURATION, WATER_GLINT_COUNT } from '../../config/animation';
+
+interface Props {
+  variant?: 'hero' | 'panel';
+  class?: string;
+}
+
+const { variant = 'hero', class: className } = Astro.props;
+const isHero = variant === 'hero';
+
+const glintPositions = [
+  { left: '42%', top: '18%' },
+  { left: '46%', top: '24%' },
+  { left: '50%', top: '14%' },
+  { left: '44%', top: '28%' },
+  { left: '48%', top: '20%' },
+  { left: '52%', top: '26%' },
+].slice(0, WATER_GLINT_COUNT);
+---
+
+<div
+  class:list={[
+    'sea-water harbour-water overflow-hidden pointer-events-none',
+    isHero
+      ? 'sea-water--hero mouse-layer absolute inset-x-0 bottom-0 z-[3] h-[54%]'
+      : 'sea-water--panel absolute inset-x-0 bottom-0 z-[2] h-[18vh] md:h-[20vh]',
+    className,
+  ]}
+  data-sea-water={variant}
+  data-parallax={isHero ? 'water' : undefined}
+  data-mouse-depth={isHero ? '10' : undefined}
+  data-mouse-delay={isHero ? '0.5' : undefined}
+  aria-hidden="true"
+>
+  <div class="sea-water__depth absolute inset-0 bg-gradient-to-b from-[#0f5e57]/25 via-[#0c2340]/90 to-[#06182e]"></div>
+
+  {
+    isHero && (
+      <div
+        class="sea-water__sheen harbour-water__sheen absolute pointer-events-none z-[2]"
+        data-water-sheen
+        aria-hidden="true"
+      ></div>
+    )
+  }
+
+  {
+    WATER_LAYER_ORDER.map((layer) => (
+      <div
+        data-water-bob={layer}
+        class:list={[
+          'sea-water__layer absolute inset-x-0 bottom-0 harbour-water__layer',
+          `sea-water__layer--${layer} harbour-water__layer--${layer}`,
+          layer === 'horizon' && 'h-[22%] z-[4]',
+          layer === 'deep' && 'h-[82%] z-[1]',
+          layer === 'mid' && 'h-[68%] z-[2]',
+          layer === 'surface' && 'h-[52%] z-[3]',
+        ]}
+      >
+        <div
+          class="harbour-water__track sea-water__track flex w-[200%] h-full"
+          data-harbour-wave
+          data-speed={layerDriftDuration(layer)}
+          data-water-layer={layer}
+        >
+          <div class="w-1/2 h-full shrink-0 harbour-water__tile overflow-hidden" set:html={waterLayerTile(layer)} />
+          <div class="w-1/2 h-full shrink-0 harbour-water__tile overflow-hidden" set:html={waterLayerTile(layer)} />
+        </div>
+        {
+          layer === 'surface' && (
+            <div class="sea-water__foam-caps absolute inset-0 z-[2] overflow-hidden pointer-events-none">
+              <div
+                class="harbour-water__track flex w-[200%] h-full"
+                data-harbour-wave
+                data-speed={layerDriftDuration('surface')}
+                data-water-foam="caps"
+              >
+                <div class="w-1/2 h-full shrink-0" set:html={waterFoamCapSvg()} />
+                <div class="w-1/2 h-full shrink-0" set:html={waterFoamCapSvg()} />
+              </div>
+            </div>
+          )
+        }
+      </div>
+    ))
+  }
+
+  <div class="sea-water__foam absolute inset-x-0 top-[8%] h-6 z-[5] overflow-hidden opacity-80 pointer-events-none">
+    <div
+      class="sea-water__track flex w-[200%] h-full"
+      data-harbour-wave
+      data-speed={WATER_FOAM_DRIFT_DURATION}
+      data-water-foam="line"
+    >
+      <div class="w-1/2 h-full shrink-0" set:html={waterFoamLineSvg()} />
+      <div class="w-1/2 h-full shrink-0" set:html={waterFoamLineSvg()} />
+    </div>
+  </div>
+
+  {
+    isHero && (
+      <>
+        <div class="sea-water__glints absolute inset-0 z-[6] pointer-events-none" data-water-glints aria-hidden="true">
+          {glintPositions.map((pos, i) => (
+            <span
+              data-water-glint
+              data-glint-index={i}
+              class="absolute w-1.5 h-1.5 rounded-full bg-[#fde68a] shadow-[0_0_6px_rgba(253,230,138,0.6)]"
+              style={`left:${pos.left};top:${pos.top};opacity:0.15`}
+            />
+          ))}
+        </div>
+        <div
+          class="sea-water__shimmer harbour-water__shimmer absolute pointer-events-none"
+          data-harbour-shimmer
+          aria-hidden="true"
+        ></div>
+      </>
+    )
+  }
+</div>

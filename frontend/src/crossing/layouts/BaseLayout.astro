@@ -1,0 +1,68 @@
+---
+import '../styles/globals.css';
+import DaylightSky from '../components/global/DaylightSky.astro';
+import { SITE_URL } from '../config/links';
+
+export interface Props {
+  title: string;
+  description?: string;
+  ogImage?: string;
+}
+
+const {
+  title,
+  description = "Hack Canada 2027 — Atlantic Canada's flagship hackathon. A 48-hour crossing from Halifax harbour.",
+  ogImage = '/og.svg',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, SITE_URL).href;
+const ogImageUrl = new URL(ogImage, SITE_URL).href;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#0c2340" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImageUrl} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content="Hack Canada" />
+    <meta property="og:locale" content="en_CA" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImageUrl} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=DM+Sans:opsz,wght@9..40,500;9..40,600&family=Lora:ital,wght@0,400;0,600;1,400&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="font-body text-logbook-ink antialiased overflow-x-hidden">
+    <DaylightSky />
+    <p data-gull-counter class="hidden fixed top-20 left-4 z-[90] font-hand text-sm text-white/70 bg-black/40 px-2 py-1 rounded" aria-live="polite">0/5</p>
+    <div data-app-shell class="relative">
+      <slot />
+    </div>
+    <script is:inline>
+      document.documentElement.classList.add('js');
+    </script>
+    <script>
+      import '../animations/bootstrap';
+    </script>
+  </body>
+</html>

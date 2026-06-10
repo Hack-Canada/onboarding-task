@@ -1,0 +1,68 @@
+---
+import {
+  smallDorySvg,
+  distantSailSvg,
+  pierPostSvg,
+  lobsterTrapSvg,
+  anchorHalfSvg,
+  buoyMiniSvg,
+  crateSvg,
+  ropeCoilSvg,
+  gullTinySvg,
+  kelpSvg,
+  waterRippleSvg,
+  driftwoodSvg,
+  mooredBoatSvg,
+  seagullSmallSvg,
+  fishingNetSvg,
+  harbourRockSvg,
+} from '../../assets/svg';
+import { mooringRopeSvg, pennantSvg } from '../../assets/characters';
+---
+
+<!-- Sky life -->
+<div data-hero-scatter class="absolute top-[7%] left-[22%] w-8 opacity-60 z-[3] pointer-events-none" data-seagull-drift set:html={gullTinySvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute top-[9%] left-[38%] w-7 opacity-50 z-[3] pointer-events-none" data-seagull-drift set:html={gullTinySvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute top-[5%] right-[28%] w-9 opacity-55 z-[3] pointer-events-none" data-seagull-drift set:html={gullTinySvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute top-[11%] right-[38%] w-10 opacity-45 z-[3] pointer-events-none" data-seagull-drift set:html={seagullSmallSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute top-[4%] left-[52%] w-6 opacity-40 z-[3] pointer-events-none" data-seagull-drift set:html={gullTinySvg} aria-hidden="true"></div>
+
+<!-- Distant water — silhouettes -->
+<div data-parallax="water" data-hero-scatter class="hero-scatter--far absolute bottom-[46%] left-[18%] w-14 sm:w-16 opacity-50 z-[3] pointer-events-none" set:html={distantSailSvg} aria-hidden="true"></div>
+<div data-parallax="water" data-hero-scatter class="hero-scatter--far absolute bottom-[44%] left-[42%] w-12 sm:w-14 opacity-40 z-[3] pointer-events-none scale-x-[-1]" set:html={distantSailSvg} aria-hidden="true"></div>
+<div data-parallax="water" data-hero-scatter class="hero-scatter--far absolute bottom-[45%] right-[32%] w-11 sm:w-12 opacity-45 z-[3] pointer-events-none" set:html={distantSailSvg} aria-hidden="true"></div>
+<div data-parallax="water" data-hero-scatter class="hero-scatter--far hero-prop-ground absolute bottom-[43%] left-[62%] w-16 sm:w-20 opacity-55 z-[3] pointer-events-none" data-float-slow set:html={mooredBoatSvg('far', '#e8e0cf', '#1e3a5f')} aria-hidden="true"></div>
+<div data-parallax="water" data-hero-scatter class="hero-scatter--far hero-prop-ground absolute bottom-[42%] right-[18%] w-14 sm:w-16 opacity-50 z-[3] pointer-events-none" data-float-slow set:html={mooredBoatSvg('far', '#faf6ee', '#c0392b')} aria-hidden="true"></div>
+
+<!-- Mid water -->
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[26%] left-[22%] w-20 sm:w-24 z-[5] pointer-events-none opacity-90" data-float-slow set:html={smallDorySvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[24%] right-[22%] w-16 sm:w-20 z-[5] pointer-events-none opacity-85 scale-x-[-1]" data-float-slow set:html={smallDorySvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[20%] left-[34%] w-8 sm:w-9 z-[5] pointer-events-none" data-float-slow set:html={buoyMiniSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[19%] right-[34%] w-7 sm:w-8 z-[5] pointer-events-none" data-float-fast set:html={buoyMiniSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[21%] left-[48%] w-7 sm:w-8 z-[5] pointer-events-none opacity-80" data-float-slow set:html={buoyMiniSvg} aria-hidden="true"></div>
+
+<!-- Foreground water edge -->
+<div data-hero-scatter class="absolute bottom-[10%] left-[18%] w-14 opacity-65 z-[4] pointer-events-none" set:html={waterRippleSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-[12%] right-[24%] w-12 opacity-55 z-[4] pointer-events-none scale-75" set:html={waterRippleSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-[6%] left-[42%] w-10 opacity-50 z-[4] pointer-events-none" set:html={waterRippleSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[11%] left-[28%] w-14 sm:w-16 z-[5] pointer-events-none" data-float-fast set:html={lobsterTrapSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[9%] right-[14%] w-12 sm:w-14 z-[5] pointer-events-none" data-float-slow set:html={anchorHalfSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[13%] right-[38%] w-16 sm:w-20 z-[5] pointer-events-none opacity-90" data-float-fast set:html={driftwoodSvg} aria-hidden="true"></div>
+
+<!-- Shore / pier details -->
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[28%] left-[1%] w-6 sm:w-10 z-[5] pointer-events-none" set:html={pierPostSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[26%] left-[5%] w-5 sm:w-9 z-[5] pointer-events-none opacity-85" set:html={pierPostSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[27%] right-[4%] w-6 sm:w-10 z-[5] pointer-events-none scale-x-[-1]" set:html={pierPostSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[25%] left-[14%] w-10 sm:w-12 z-[5] pointer-events-none" data-float-slow set:html={fishingNetSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-[8%] left-[52%] w-14 sm:w-16 z-[4] pointer-events-none opacity-70" set:html={harbourRockSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-[7%] right-[42%] w-12 sm:w-14 z-[4] pointer-events-none opacity-60 scale-90" set:html={harbourRockSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[32%] left-[6%] w-11 sm:w-12 z-[6] pointer-events-none hidden md:block" data-float-slow set:html={crateSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[31%] right-[6%] w-10 sm:w-12 z-[6] pointer-events-none hidden md:block" data-float-slow set:html={ropeCoilSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="hero-prop-ground absolute bottom-[33%] right-[20%] w-9 z-[6] pointer-events-none hidden lg:block" data-float-slow set:html={mooringRopeSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-[34%] left-[18%] w-8 z-[6] pointer-events-none hidden lg:block opacity-80" data-float-slow set:html={pennantSvg} aria-hidden="true"></div>
+
+<!-- Kelp + rocks along bottom -->
+<div data-hero-scatter class="absolute bottom-0 left-[12%] w-10 sm:w-12 z-[4] pointer-events-none opacity-75" set:html={kelpSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-0 left-[32%] w-8 sm:w-10 z-[4] pointer-events-none opacity-60 scale-90" set:html={kelpSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-0 right-[12%] w-9 sm:w-11 z-[4] pointer-events-none opacity-70 scale-x-[-1]" set:html={kelpSvg} aria-hidden="true"></div>
+<div data-hero-scatter class="absolute bottom-0 right-[28%] w-8 z-[4] pointer-events-none opacity-55" set:html={kelpSvg} aria-hidden="true"></div>

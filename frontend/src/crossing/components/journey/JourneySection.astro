@@ -1,0 +1,92 @@
+---
+import { PANELS, VOYAGE_ROUTE_D } from '../../config/panels';
+import Panel from './Panel.astro';
+import SeaWater from '../water/SeaWater.astro';
+import { chartWaypointMarkSvg, voyageTravelerBoatG } from '../../assets/svg';
+---
+
+<section
+  id="journey"
+  data-journey
+  class="journey-section relative w-full md:h-screen overflow-hidden bg-logbook-ink"
+  style="--panel-route-y: 17vh;"
+  aria-label="The Crossing — four waypoints"
+>
+  <div class="fathom-mobile md:hidden fixed top-20 left-0 right-0 z-40 h-1.5 bg-white/10 mx-6 rounded-full overflow-hidden pointer-events-none" aria-hidden="true">
+    <div data-fathom-fill-mobile class="fathom-gauge__fill h-full origin-left scale-x-0 w-full"></div>
+  </div>
+
+  <div data-journey-wrapper class="journey-track horizontal-wrapper flex flex-row relative">
+    <!-- Global voyage chart — one SVG, boat + route share coordinates -->
+    <div
+      class="voyage-chart-band hidden md:block absolute left-0 z-30 pointer-events-none"
+      style="top: var(--panel-route-y, 17vh); width: 100%;"
+      aria-hidden="true"
+    >
+      <svg
+        class="voyage-chart-overlay block w-full h-auto overflow-visible"
+        viewBox="0 0 4000 120"
+        preserveAspectRatio="xMidYMin meet"
+        aria-hidden="true"
+      >
+        <path
+          class="voyage-route-ghost"
+          d={VOYAGE_ROUTE_D}
+          fill="none"
+          stroke="rgba(227,160,8,0.45)"
+          stroke-width="3.5"
+          stroke-dasharray="10 12"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          data-voyage-wake
+          d={VOYAGE_ROUTE_D}
+          fill="none"
+          stroke="rgba(227,160,8,0.18)"
+          stroke-width="14"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <path
+          data-voyage-route
+          d={VOYAGE_ROUTE_D}
+          fill="none"
+          stroke="#e3a008"
+          stroke-width="4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <g data-journey-traveler opacity="1" set:html={voyageTravelerBoatG}></g>
+      </svg>
+    </div>
+
+    <!-- Waypoint pins — panel-centre X on full track width -->
+    <div
+      class="voyage-waypoint-layer hidden md:block absolute left-0 z-[31] pointer-events-none"
+      style="top: var(--panel-route-y, 17vh); width: 100%;"
+      aria-hidden="true"
+    >
+      {
+        PANELS.map((panel, i) => (
+          <div
+            class="voyage-waypoint-pin"
+            data-waypoint={panel.waypoint}
+            style={`left: ${((i * 1000 + 500) / 4000) * 100}%`}
+          >
+            <span class="voyage-waypoint-pin__icon w-8 h-8" set:html={chartWaypointMarkSvg(32)} />
+            <span class="voyage-waypoint-pin__label label-caps">{panel.waypoint}</span>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="journey-sky-bed absolute inset-x-0 top-0 bottom-[18vh] md:bottom-[20vh] z-0 pointer-events-none" aria-hidden="true"></div>
+
+    <div class="journey-water-rail absolute inset-x-0 bottom-0 z-[2] h-[18vh] md:h-[20vh] pointer-events-none" aria-hidden="true">
+      <SeaWater variant="panel" class="!absolute !inset-0 !h-full !w-full" />
+    </div>
+
+    {PANELS.map((panel) => <Panel config={panel} />)}
+  </div>
+</section>

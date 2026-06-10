@@ -1,0 +1,44 @@
+---
+import type { HTMLAttributes } from 'astro/types';
+import type { BeaverAssetKey } from '../../config/beavers';
+import { beaverMascotSvg } from '../../assets/characters';
+import { journeyTravelerMarkSvg, lighthouseSvg } from '../../assets/svg';
+
+const BEAVER_SVG: Record<BeaverAssetKey, string> = {
+  boat: journeyTravelerMarkSvg(),
+  mascot: beaverMascotSvg,
+  lighthouse: lighthouseSvg,
+};
+
+interface Props extends HTMLAttributes<'span'> {
+  asset: BeaverAssetKey;
+  alt?: string;
+  width?: number | string;
+  height?: number | string;
+}
+
+const { asset, alt = '', class: className = '', width, height, style, ...rest } = Astro.props;
+
+const toCssSize = (v: number | string | undefined): string | undefined => {
+  if (v == null) return undefined;
+  return typeof v === 'number' ? `${v}px` : v;
+};
+
+const sizeStyle = [
+  toCssSize(width) ? `width:${toCssSize(width)}` : '',
+  toCssSize(height) ? `height:${toCssSize(height)}` : '',
+  typeof style === 'string' ? style : '',
+]
+  .filter(Boolean)
+  .join(';');
+---
+
+<span
+  class:list={['beaver-asset', className]}
+  style={sizeStyle || undefined}
+  role={alt ? 'img' : undefined}
+  aria-label={alt || undefined}
+  aria-hidden={alt ? undefined : 'true'}
+  set:html={BEAVER_SVG[asset]}
+  {...rest}
+/>

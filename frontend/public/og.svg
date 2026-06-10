@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="600" y1="0" x2="600" y2="400" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#38bdf8"/>
+      <stop offset="1" stop-color="#0c2340"/>
+    </linearGradient>
+    <linearGradient id="water" x1="600" y1="360" x2="600" y2="630" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#14b8a6"/>
+      <stop offset="1" stop-color="#0f766e"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#sky)"/>
+  <circle cx="980" cy="110" r="64" fill="#fbbf24" opacity="0.35"/>
+  <path d="M0 380 Q300 340 600 380 T1200 360 L1200 630 L0 630Z" fill="url(#water)"/>
+  <path d="M0 420 Q400 390 800 420 T1200 400 L1200 630 L0 630Z" fill="#2dd4bf" opacity="0.22"/>
+  <path d="M920 280 L928 240 H912 Z" fill="#ef4444"/>
+  <rect x="908" y="240" width="24" height="52" rx="2" fill="#f8fafc"/>
+  <rect x="912" y="252" width="16" height="10" rx="1" fill="#fbbf24"/>
+  <text x="80" y="180" fill="#fbbf24" font-family="Georgia, serif" font-size="28" letter-spacing="0.18em">THE CROSSING</text>
+  <text x="80" y="270" fill="#faf6ee" font-family="Georgia, serif" font-size="84" font-weight="700">Hack Canada 2027</text>
+  <text x="80" y="330" fill="#a7f3d0" font-family="Georgia, serif" font-size="30">Atlantic Canada's 48-hour hackathon · Halifax, NS</text>
+  <text x="80" y="500" fill="#fef3c7" font-family="Georgia, serif" font-size="24">June 13–15, 2027 · hackcanada.ca</text>
+  <text x="1080" y="560" fill="#fef3c7" font-size="44" text-anchor="middle">?</text>
+</svg>

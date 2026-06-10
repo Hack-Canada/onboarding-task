@@ -1,0 +1,91 @@
+---
+---
+
+<div class="daylight-system fixed inset-0 z-[1] pointer-events-none" aria-hidden="true">
+  <div data-sky-phase="dawn" class="daylight-sky-layer"></div>
+  <div data-sky-phase="morning" class="daylight-sky-layer"></div>
+  <div data-sky-phase="golden" class="daylight-sky-layer"></div>
+  <div data-sky-phase="dusk" class="daylight-sky-layer"></div>
+  <div data-sky-phase="night" class="daylight-sky-layer"></div>
+  <div data-daylight-stars class="daylight-stars absolute inset-0 opacity-0"></div>
+  <div data-daylight-tint class="daylight-tint absolute inset-0"></div>
+  <div data-light-shafts class="light-shafts absolute inset-0"></div>
+</div>
+
+<style>
+  .daylight-system {
+    mix-blend-mode: soft-light;
+  }
+
+  .daylight-sky-layer {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
+
+  [data-sky-phase='dawn'] {
+    background: linear-gradient(175deg, #1a2744 0%, #6b8fa8 28%, #f0c9a0 62%, #fff7ed 100%);
+  }
+
+  [data-sky-phase='morning'] {
+    background: linear-gradient(175deg, #0284c7 0%, #38bdf8 35%, #6ee7b7 70%, #f0fdfa 100%);
+  }
+
+  [data-sky-phase='golden'] {
+    background: linear-gradient(175deg, #ea580c 0%, #fbbf24 30%, #fb7185 55%, #1e3a5f 100%);
+  }
+
+  [data-sky-phase='dusk'] {
+    background: linear-gradient(175deg, #5b21b6 0%, #c2410c 25%, #1e293b 65%, #020617 100%);
+  }
+
+  [data-sky-phase='night'] {
+    background: linear-gradient(175deg, #010409 0%, #0f172a 40%, #1e1b4b 100%);
+  }
+
+  .daylight-stars {
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, white, transparent),
+      radial-gradient(1px 1px at 60% 70%, white, transparent),
+      radial-gradient(1.5px 1.5px at 50% 50%, white, transparent),
+      radial-gradient(1px 1px at 80% 10%, white, transparent),
+      radial-gradient(1px 1px at 90% 60%, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(1px 1px at 33% 80%, white, transparent);
+    background-size: 100% 100%;
+  }
+
+  .daylight-tint {
+    mix-blend-mode: color;
+    opacity: calc(0.06 + var(--daylight-tint, 0) * 0.14);
+    background: linear-gradient(
+      180deg,
+      rgba(56, 189, 248, 0.2) 0%,
+      rgba(251, 191, 36, 0.12) 45%,
+      rgba(49, 46, 129, 0.35) 100%
+    );
+  }
+
+  .light-shafts {
+    opacity: 0;
+    background: conic-gradient(
+      from 220deg at 85% 20%,
+      transparent 0deg,
+      rgba(251, 191, 36, 0.07) 12deg,
+      transparent 24deg,
+      rgba(251, 191, 36, 0.05) 36deg,
+      transparent 48deg
+    );
+  }
+
+  :global(body.storm-mode) .daylight-system {
+    mix-blend-mode: normal;
+  }
+
+  :global(body.storm-mode) .daylight-sky-layer {
+    opacity: 0 !important;
+  }
+
+  :global(body.storm-mode) [data-sky-phase='night'] {
+    opacity: 1 !important;
+  }
+</style>

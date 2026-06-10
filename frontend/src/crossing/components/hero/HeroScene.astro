@@ -1,0 +1,179 @@
+---
+import WaterLayer from './WaterLayer.astro';
+import HeroHarbourScatter from './HeroHarbourScatter.astro';
+import ScrollCompass from './ScrollCompass.astro';
+import {
+  compassSvg,
+  dawnCloudSvg,
+  dawnCloudSmallSvg,
+  heroGodRaysSvg,
+  heroDistantHarbourSvg,
+  seagullSmallSvg,
+  seagullLargeSvg,
+  bluenoseSvg,
+  tugboatSvg,
+  lighthouseRockSvg,
+  doryBoatSvg,
+} from '../../assets/svg';
+import { lighthouseKeeperSvg, buoySvg } from '../../assets/characters';
+import { EVENT } from '../../config/event';
+import { HERO_GRAIN_OPACITY } from '../../config/animation';
+---
+
+<section
+  id="hero"
+  data-hero
+  class="hero-scene relative min-h-screen w-full overflow-hidden flex items-center justify-center isolate"
+  aria-label="Halifax harbour at dawn — The Crossing begins"
+>
+  <!-- z0: deep sky + dawn light -->
+  <div data-parallax="sky" class="mouse-layer hero-sky-dawn absolute inset-0 z-0" data-mouse-depth="-10" data-mouse-delay="0.25"></div>
+  <div data-hero-dawn-bloom class="hero-dawn-bloom absolute inset-0 z-[1] pointer-events-none" aria-hidden="true"></div>
+  <div class="hero-grain absolute inset-0 z-[1] pointer-events-none" style={`opacity: ${HERO_GRAIN_OPACITY}`} aria-hidden="true"></div>
+  <div class="hero-sky-veil absolute inset-0 z-[1] pointer-events-none" aria-hidden="true"></div>
+  <div class="hero-horizon-haze absolute inset-0 z-[1] pointer-events-none" aria-hidden="true"></div>
+
+  <div data-hero-god-rays class="hero-god-rays mouse-layer absolute inset-x-0 bottom-[38%] top-0 z-[2] pointer-events-none" data-mouse-depth="-4" data-mouse-delay="0.6" aria-hidden="true" set:html={heroGodRaysSvg}></div>
+
+  <div data-ghost-ships class="absolute inset-0 z-[1] pointer-events-none overflow-hidden" aria-hidden="true"></div>
+
+  <div data-parallax="cloud-far" class="mouse-layer absolute inset-0 z-[1] pointer-events-none" data-mouse-depth="-6" data-mouse-delay="0.55">
+    <div data-cloud-drift class="absolute top-[10%] right-[14%] w-48 md:w-64 opacity-80" set:html={dawnCloudSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[18%] left-[5%] w-36 md:w-44 opacity-70 scale-x-[-1]" set:html={dawnCloudSmallSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[8%] left-[42%] w-40 md:w-52 opacity-55" set:html={dawnCloudSmallSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[22%] right-[4%] w-44 md:w-56 opacity-50 scale-x-[-1]" set:html={dawnCloudSvg} aria-hidden="true"></div>
+  </div>
+
+  <div data-parallax="cloud" class="mouse-layer absolute inset-0 z-[2] pointer-events-none" data-mouse-depth="-16" data-mouse-delay="0.4">
+    <div data-cloud-drift class="absolute top-[6%] left-[4%] w-52 md:w-64 opacity-85" set:html={dawnCloudSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[12%] right-[8%] w-32 md:w-40 opacity-60" set:html={dawnCloudSmallSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[3%] right-[32%] w-28 md:w-36 opacity-70" set:html={dawnCloudSmallSvg} aria-hidden="true"></div>
+    <div data-cloud-drift class="absolute top-[15%] left-[28%] w-36 md:w-44 opacity-65 scale-x-[-1]" set:html={dawnCloudSvg} aria-hidden="true"></div>
+  </div>
+
+  <!-- z2–3: three atmospheric hill planes -->
+  <div data-parallax="cliff-far" class="mouse-layer absolute inset-x-0 bottom-0 z-[2] h-[46%] pointer-events-none" data-mouse-depth="-8" data-mouse-delay="0.45">
+    <svg class="w-full h-full" viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <linearGradient id="hill-far-grad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#6b8498" stop-opacity="0.35"/>
+          <stop offset="100%" stop-color="#3d5f7a" stop-opacity="0.2"/>
+        </linearGradient>
+      </defs>
+      <path d="M0 300 L220 268 L520 288 L760 248 L1080 278 L1320 258 L1440 268 V480 H0Z" fill="url(#hill-far-grad)"/>
+    </svg>
+  </div>
+  <div data-parallax="cliff-mid" class="mouse-layer absolute inset-x-0 bottom-0 z-[2] h-[50%] pointer-events-none" data-mouse-depth="-6" data-mouse-delay="0.42">
+    <svg class="w-full h-full" viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0 330 L200 290 L480 310 L760 258 L1040 298 L1320 268 L1440 278 V480 H0Z" fill="#2d4a66" opacity="0.55"/>
+    </svg>
+    <div class="absolute inset-x-0 bottom-[46%] h-16 md:h-20 opacity-90" set:html={heroDistantHarbourSvg} aria-hidden="true"></div>
+  </div>
+  <div data-parallax="cliff" class="mouse-layer absolute inset-x-0 bottom-0 z-[2] h-[54%] pointer-events-none" data-mouse-depth="-4" data-mouse-delay="0.38">
+    <svg class="w-full h-full" viewBox="0 0 1440 480" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <path d="M0 360 L240 260 L480 320 L760 200 L1040 300 L1320 220 L1440 280 V480 H0Z" fill="#1e3a5f"/>
+      <path d="M0 400 L200 340 L480 380 L720 300 L1000 380 L1280 320 L1440 360 V480 H0Z" fill="#0c2340"/>
+    </svg>
+  </div>
+
+  <WaterLayer />
+
+  <HeroHarbourScatter />
+
+  <!-- z4: HTN lighthouse on rock + beam -->
+  <div data-parallax="lighthouse" class="mouse-layer absolute right-[8%] md:right-[12%] bottom-[40%] z-[4] w-28 md:w-36 hidden sm:block pointer-events-none" data-mouse-depth="14" data-mouse-delay="0.55">
+    <div class="hero-prop-ground relative w-full">
+      <div class="absolute bottom-0 inset-x-[-12%] h-8" set:html={lighthouseRockSvg} aria-hidden="true"></div>
+      <span data-water-reflect class="hero-water-reflect hero-water-reflect--lighthouse" aria-hidden="true"></span>
+      <div data-lantern-glow data-float-slow class="relative w-[88%] mx-auto -mb-1">
+        <img
+          src="/assets/beavers/lighthouse.png"
+          alt=""
+          width="144"
+          height="240"
+          class="hero-lighthouse-img block w-full h-auto"
+          aria-hidden="true"
+        />
+      </div>
+      <div
+        data-lighthouse-beam
+        class="hero-lighthouse-beam absolute left-1/2 bottom-[58%] w-5 h-52 md:h-72 -ml-2.5 opacity-50 pointer-events-none"
+        aria-hidden="true"
+      ></div>
+    </div>
+  </div>
+
+  <!-- z5: midground props -->
+  <div class="hero-prop-ground absolute bottom-[22%] right-[9%] md:right-[11%] w-10 sm:w-12 md:w-14 z-[5] pointer-events-none" data-buoy data-castoff-target="buoy" data-float-slow aria-hidden="true">
+    <span data-water-reflect class="hero-water-reflect hero-water-reflect--buoy" aria-hidden="true"></span>
+    <div set:html={buoySvg}></div>
+  </div>
+  <div data-seagull-drift class="absolute top-[16%] right-[14%] w-16 sm:w-20 md:w-24 z-[5] pointer-events-none" set:html={seagullLargeSvg} aria-hidden="true"></div>
+  <div data-seagull-secret class="absolute top-[14%] left-[7%] w-12 sm:w-14 z-[5] opacity-70 pointer-events-none hidden sm:block" set:html={seagullSmallSvg} aria-hidden="true"></div>
+  <button type="button" data-secret-gull data-gull-index="0" class="absolute top-[11%] right-[22%] w-10 z-[6] bg-transparent border-0 p-0 opacity-20" aria-label="Hidden gull" set:html={seagullSmallSvg}></button>
+
+  <!-- z6: foreground props — left margin only, clear of copy column -->
+  <div
+    data-character
+    data-from="left"
+    data-castoff-target="keeper"
+    class="character-travel hero-prop-ground hidden sm:block absolute bottom-[30%] left-[2%] md:left-[3%] z-[6] w-[3.5rem] sm:w-[4.5rem] md:w-[5.5rem] pointer-events-none"
+    set:html={lighthouseKeeperSvg}
+    aria-hidden="true"
+  ></div>
+  <div data-hero-dory data-castoff-target="dory" data-float-slow class="hero-prop-ground mouse-layer absolute bottom-[18%] left-[8%] sm:left-[10%] md:left-[12%] w-24 sm:w-32 md:w-40 z-[6] pointer-events-none" data-mouse-depth="16" data-mouse-delay="0.65" aria-hidden="true">
+    <span data-water-reflect class="hero-water-reflect hero-water-reflect--dory" aria-hidden="true"></span>
+    <div set:html={doryBoatSvg}></div>
+  </div>
+  <div data-compass data-float-slow class="hero-prop-ground absolute bottom-[24%] left-[2%] md:left-[3%] w-8 sm:w-9 md:w-10 z-[6] pointer-events-none hidden sm:block" set:html={compassSvg} aria-hidden="true"></div>
+
+  <!-- z12–17: atmospheric overlays (behind copy) -->
+  <div data-fog-layer class="hero-fog-layer absolute inset-0 z-[12] pointer-events-none opacity-[0.06]" aria-hidden="true"></div>
+  <div
+    data-lantern-fog
+    class="lantern-fog-overlay absolute inset-0 z-[15] pointer-events-none"
+    style="filter: brightness(calc(0.92 + var(--lantern-warmth, 0.3) * 0.12));"
+    aria-hidden="true"
+  ></div>
+  <div data-hero-exit-fog class="absolute inset-0 z-[16] pointer-events-none bg-gradient-to-r from-[#1e3a5f]/20 to-transparent" aria-hidden="true"></div>
+  <div
+    class="hero-harbour-seam absolute inset-x-0 bottom-0 h-40 md:h-52 z-[17] pointer-events-none bg-gradient-to-b from-transparent via-[#06182e]/40 to-logbook-ink"
+    aria-hidden="true"
+  ></div>
+
+  <!-- z20+: copy & scroll cue -->
+  <div class="hero-copy-wrap relative z-20 text-center px-6 max-w-4xl mx-auto pt-28 md:pt-32 pb-28 md:pb-32" data-reveal-container>
+    <div class="hero-copy-scrim absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-[45%] w-[min(100%,48rem)] h-[130%] -z-10 pointer-events-none" aria-hidden="true"></div>
+    <p data-reveal-line class="label-caps text-logbook-paper/75 mb-4">
+      <span class="typewriter-hero inline-block whitespace-nowrap" style="clip-path: inset(0 100% 0 0);">
+        Sailmaker's log · {EVENT.dateLabel} · {EVENT.location}
+      </span>
+    </p>
+    <h1 data-hero-headline class="type-display-xl text-logbook-paper leading-tight hero-title-glow mx-auto max-w-[min(100%,42rem)]">
+      <span data-hero-headline-phrase class="inline">Set sail to </span><span class="hero-headline-year whitespace-nowrap">Hack Canada&nbsp;2027</span>
+    </h1>
+    <p data-hero-subtitle class="mt-5 md:mt-6 text-lg md:text-xl text-logbook-paper/90 max-w-xl mx-auto font-body">
+      48 hours. Halifax. Build something that matters.
+    </p>
+    <p data-hero-tagline class="mt-2 text-base text-logbook-paper/80 max-w-md mx-auto font-body italic">
+      Come-from-away at the gangway. Crew when you sign off.
+    </p>
+    <a
+      href="#journey"
+      data-hero-cta
+      data-magnetic
+      class="hero-cta btn-stamp btn-ripple relative overflow-hidden inline-block mt-8 bg-amber-600 hover:bg-amber-700 text-logbook-paper font-hand text-xl md:text-2xl font-semibold px-8 py-3 rounded-lg border-2 border-amber-800/90 transition-[transform,background-color,box-shadow] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-amber-300 focus-visible:ring-offset-2 focus-visible:ring-offset-[#0c2340]"
+    >
+      Begin the crossing <span class="hero-cta__arrow inline-block transition-transform" aria-hidden="true">→</span>
+    </a>
+  </div>
+
+  <ScrollCompass />
+</section>
+
+<div data-bluenose class="fixed top-[28%] left-0 z-[190] w-56 md:w-72 opacity-0 pointer-events-none" set:html={bluenoseSvg} aria-hidden="true"></div>
+<p data-bluenose-note class="fixed top-[22%] left-1/2 -translate-x-1/2 z-[191] hand-drawn text-amber-100 text-xl opacity-0 pointer-events-none text-center px-4">She never lost. Neither will you.</p>
+<div data-tugboat class="fixed bottom-[25%] left-0 z-[40] w-16 opacity-0 pointer-events-none flex items-center gap-2" aria-hidden="true">
+  <span class="w-16 shrink-0" set:html={tugboatSvg}></span>
+  <span class="font-hand text-sm text-teal-900 bg-white/80 px-2 py-1 rounded shadow">Halifax has the second-largest natural harbour in the world.</span>
+</div>
