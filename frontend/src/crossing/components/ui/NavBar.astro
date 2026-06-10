@@ -1,0 +1,91 @@
+---
+import { APPLY_URL, APPLY_LABEL } from '../../config/links';
+import { navAnchorSvg } from '../../assets/svg';
+
+const navLinks = [
+  { href: '#hero', id: 'hero', label: 'Wharf' },
+  { href: '#journey', id: 'journey', label: 'Voyage' },
+] as const;
+---
+
+<nav
+  data-site-nav
+  class="site-nav fixed top-0 left-0 right-0 z-50 px-4 py-3 md:px-12 md:py-4 transition-[opacity,transform,background,box-shadow] duration-350 md:mix-blend-difference md:text-white logbook-paper md:bg-transparent md:backdrop-blur-none md:border-b-0 bg-logbook-paper/75 backdrop-blur-md border-b border-logbook-ink/10"
+  aria-label="Main navigation"
+>
+  <div data-nav-progress class="nav-progress absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-logbook-teal via-logbook-amber to-logbook-teal origin-left scale-x-0" aria-hidden="true"></div>
+
+  <div class="max-w-7xl mx-auto flex justify-between items-center gap-3">
+    <a href="/" class="flex items-center gap-2 font-hand text-xl md:text-3xl font-bold text-logbook-ink md:text-white hover:text-logbook-teal md:hover:opacity-70 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logbook-teal rounded shrink-0">
+      <span class="w-6 h-6 md:w-7 md:h-7 shrink-0" set:html={navAnchorSvg} aria-hidden="true"></span>
+      HackCanada
+    </a>
+
+    <div class="hidden md:flex gap-7">
+      {
+        navLinks.map((link) => (
+          <a href={link.href} data-nav-section={link.id} class="nav-link label-caps relative py-1 text-logbook-ink/70 md:text-white/85 hover:text-logbook-ink md:hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-logbook-teal rounded">
+            {link.label}
+            <span class="nav-underline absolute bottom-0 left-0 w-full h-0.5 bg-logbook-teal md:bg-[#fde68a] origin-left scale-x-0"></span>
+          </a>
+        ))
+      }
+    </div>
+
+    <div class="flex items-center gap-2 shrink-0">
+      <a
+        href={APPLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hidden sm:inline-flex label-caps text-[0.62rem] bg-logbook-ink hover:bg-logbook-teal text-logbook-paper md:bg-transparent md:hover:bg-white/10 md:text-white md:border-white px-4 md:px-5 py-2 rounded-lg border border-logbook-ink md:border-white transition-colors focus-visible:ring-2 focus-visible:ring-logbook-teal focus-visible:ring-offset-2"
+      >
+        {APPLY_LABEL}
+      </a>
+
+      <button
+        type="button"
+        data-mobile-nav-toggle
+        class="md:hidden flex flex-col justify-center items-center w-10 h-10 rounded-lg border border-logbook-ink/15 bg-white/50 hover:bg-white/80 transition-colors focus-visible:ring-2 focus-visible:ring-logbook-teal"
+        aria-expanded="false"
+        aria-controls="mobile-nav-drawer"
+        aria-label="Open navigation menu"
+      >
+        <span class="mobile-nav-bar block w-5 h-0.5 bg-logbook-ink mb-1 rounded"></span>
+        <span class="mobile-nav-bar block w-5 h-0.5 bg-logbook-ink mb-1 rounded"></span>
+        <span class="mobile-nav-bar block w-5 h-0.5 bg-logbook-ink rounded"></span>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div
+  id="mobile-nav-drawer"
+  data-mobile-nav-drawer
+  class="mobile-nav-drawer fixed inset-0 z-[60] pointer-events-none opacity-0 md:hidden"
+  aria-hidden="true"
+>
+  <div data-mobile-nav-backdrop class="absolute inset-0 bg-logbook-ink/40 backdrop-blur-sm"></div>
+  <div class="mobile-nav-panel logbook-paper absolute top-0 right-0 h-full w-[min(88vw,320px)] shadow-2xl border-l border-logbook-ink/10 pt-20 px-6 pb-8 flex flex-col gap-1 translate-x-full">
+    {
+      navLinks.map((link) => (
+        <a
+          href={link.href}
+          data-nav-section={link.id}
+          data-mobile-nav-link
+          class="nav-link mobile-nav-link block py-3 px-3 rounded-lg label-caps text-base text-logbook-ink hover:bg-logbook-ink/5 focus-visible:ring-2 focus-visible:ring-logbook-teal"
+        >
+          {link.label}
+        </a>
+      ))
+    }
+    <a
+      href={APPLY_URL}
+      target="_blank"
+      rel="noopener noreferrer"
+      data-mobile-nav-link
+      class="mt-4 text-center bg-logbook-ink hover:bg-logbook-teal text-logbook-paper px-5 py-3 rounded-lg label-caps transition-colors focus-visible:ring-2 focus-visible:ring-logbook-teal"
+    >
+      {APPLY_LABEL} ↗
+    </a>
+  </div>
+</div>

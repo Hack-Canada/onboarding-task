@@ -7,6 +7,7 @@
   },
   "scripts": {
     "dev": "astro dev",
+    "merge-crossing": "node scripts/merge-crossing.mjs",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
@@ -21,6 +22,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "gsap": "^3.15.0",
+    "lenis": "1.1.20",
     "lucide-react": "^1.17.0",
     "motion": "^12.40.0",
     "radix-ui": "^1.4.3",

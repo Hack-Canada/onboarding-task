@@ -1,0 +1,34 @@
+---
+import BaseLayout from '../../crossing/layouts/BaseLayout.astro';
+import CastOffPreloader from '../../crossing/components/preloader/CastOffPreloader.astro';
+import NavBar from '../../crossing/components/ui/NavBar.astro';
+import HeroScene from '../../crossing/components/hero/HeroScene.astro';
+import JourneySection from '../../crossing/components/journey/JourneySection.astro';
+import { APPLY_URL, APPLY_LABEL } from '../../crossing/config/links';
+---
+
+<BaseLayout title="Hack Canada 2027 — The Crossing">
+  <CastOffPreloader />
+  <NavBar />
+  <main id="main-content">
+    <HeroScene />
+    <JourneySection />
+  </main>
+  <footer class="logbook-paper border-t border-logbook-ink/12 py-8 px-6 md:px-12">
+    <div class="max-w-3xl mx-auto flex flex-col sm:flex-row items-center sm:items-end justify-between gap-6 text-logbook-ink/75">
+      <div class="text-center sm:text-left">
+        <p class="label-caps text-logbook-teal/70 mb-1.5">Signed &amp; dated</p>
+        <p class="font-hand text-2xl md:text-3xl text-logbook-ink leading-none">Hack Canada 2027</p>
+        <p class="font-body italic text-sm text-logbook-ink/55 mt-1.5">Halifax harbour · June 2027</p>
+      </div>
+      <a
+        href={APPLY_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-stamp inline-block bg-amber-600 hover:bg-amber-700 text-logbook-paper font-hand text-lg px-6 py-2.5 rounded-lg border-2 border-amber-800/90 transition-colors focus-visible:ring-2 focus-visible:ring-amber-800 focus-visible:ring-offset-2"
+      >
+        {APPLY_LABEL} ↗
+      </a>
+    </div>
+  </footer>
+</BaseLayout>

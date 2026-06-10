@@ -1,0 +1,54 @@
+---
+import { EVENT } from '../../config/event';
+---
+
+<div
+  data-castoff-preloader
+  class="castoff-preloader fixed inset-0 z-[500] flex flex-col items-center justify-center bg-[#0c2340] text-logbook-paper pointer-events-auto"
+  aria-live="polite"
+  aria-busy="true"
+  aria-label="Casting off from Halifax harbour"
+>
+  <div
+    class="castoff-preloader__progress font-hand text-[clamp(3.5rem,12vw,7rem)] leading-none text-[#fde68a] mb-10 tabular-nums"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow="0"
+    aria-labelledby="preloader-progress-value"
+  >
+    <span id="preloader-progress-value" data-preloader-progress>00</span><span class="text-[0.45em] align-top ml-1 text-[#fde68a]/70">%</span>
+  </div>
+
+  <div class="castoff-preloader__copy text-center px-6 max-w-md">
+    <p
+      data-preloader-line
+      class="typewriter-line font-body italic text-lg md:text-xl text-[#f2d3b3]/90 mb-2"
+      style="--type-steps: 18; --type-duration: 0.9s; --type-delay: 0.5s;"
+    >
+      {EVENT.location}.
+    </p>
+    <p
+      data-preloader-line
+      class="typewriter-line label-caps text-[#fde68a]/80 tracking-[0.35em]"
+      style="--type-steps: 8; --type-duration: 0.6s; --type-delay: 1.4s;"
+    >
+      06:00
+    </p>
+    <p
+      data-preloader-line
+      class="typewriter-line font-body italic text-base md:text-lg text-[#f2d3b3]/70 mt-3"
+      style="--type-steps: 28; --type-duration: 1.1s; --type-delay: 2.2s;"
+    >
+      Casting off — {EVENT.tagline}
+    </p>
+  </div>
+
+  <button
+    type="button"
+    data-preloader-skip
+    class="castoff-preloader__skip absolute bottom-8 right-6 label-caps text-[0.62rem] text-logbook-paper/35 hover:text-logbook-paper/70 transition-colors"
+  >
+    Skip cast-off
+  </button>
+</div>
