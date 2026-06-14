@@ -1,0 +1,100 @@
+---
+---
+<nav
+  id="site-nav"
+  aria-label="Site navigation"
+  class="fixed top-0 left-0 right-0 h-[64px] flex items-center px-8 bg-transparent z-[200000] pointer-events-auto"
+>
+  <a href="#hero" class="flex items-center shrink-0 mr-8" aria-label="Home">
+    <img
+      src="/assets/amy-huang/logo.svg"
+      alt="Hack Canada"
+      width="40"
+      height="40"
+      class="block transition-opacity duration-200 hover:opacity-75"
+    />
+  </a>
+
+  <ul class="flex items-center gap-8 list-none p-0 m-0">
+    <li><a href="#about"    class="nav-link">About</a></li>
+    <li><a href="#sponsors" class="nav-link">Sponsors</a></li>
+    <li><a href="#faq"      class="nav-link">FAQ</a></li>
+  </ul>
+</nav>
+
+<style>
+  .nav-link {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    font-size: 15px;
+    line-height: 1;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    letter-spacing: 0.03em;
+    transition: color 0.25s ;
+  }
+
+  .nav-link:hover { opacity: 0.9; color: #100079;}
+  .nav-link:hover::after { transform: scaleX(1); }
+
+  #site-nav {
+    transition: transform 700ms cubic-bezier(0.16, 1, 0.3, 1),
+                background 400ms ease,
+                backdrop-filter 400ms ease;
+  }
+
+  #site-nav.scrolled {
+    background: rgba(22, 100, 145, 0.55);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('site-nav');
+  const NAV_H = 64;
+  let lastY = window.scrollY;
+  let navShown = false;
+
+  function applyNav(currentY) {
+    const heroH = window.innerHeight;
+
+    // Reveal when scrolling up past the hero
+    if (currentY < lastY && lastY >= heroH) navShown = true;
+
+    // Hide immediately when scrolling back down
+    if (currentY > lastY && currentY > NAV_H) navShown = false;
+
+    // Reset to bare transparent at the very top
+    if (currentY < NAV_H) navShown = false;
+
+    // Always use CSS transition so every state change is smooth
+    nav.style.transition = '';
+
+    if (navShown) {
+      // Visible with glass — stays here through the whole hero section on the way back up
+      nav.style.transform = 'translateY(0)';
+      nav.classList.add('scrolled');
+      nav.style.pointerEvents = 'auto';
+    } else if (currentY < NAV_H) {
+      // Very top: visible, no glass background (hero is transparent here)
+      nav.style.transform = 'translateY(0)';
+      nav.classList.remove('scrolled');
+      nav.style.pointerEvents = 'auto';
+    } else {
+      // Scrolling down through hero / past hero before triggered: hidden
+      nav.style.transform = 'translateY(-100%)';
+      nav.classList.remove('scrolled');
+      nav.style.pointerEvents = 'none';
+    }
+  }
+
+  window.addEventListener('scroll', () => {
+    const currentY = window.scrollY;
+    applyNav(currentY);
+    lastY = currentY;
+  }, { passive: true });
+
+  applyNav(window.scrollY);
+</script>

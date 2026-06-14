@@ -1,0 +1,382 @@
+---
+import HeroIntro from './HeroIntro.astro';
+import WaterfallJourney from './WaterfallJourney.astro';
+import NavBar from '../ui/NavBar.astro';
+---
+
+<NavBar />
+<HeroIntro />
+<WaterfallJourney />
+
+<div class="footer-space"></div>
+
+<style is:global>
+:root {
+  --red: #E8192C;
+  --white: #FFFFFF;
+  --sky: #87CEEB;
+  --water: #5BB8D4;
+  --cream: #F8F5EE;
+  --dark: #1A1A1A;
+  --card-bg: #E8E4DC;
+  --river-height: 200vh;
+  --hero-height: 100vh;
+}
+
+html {
+  scroll-behavior: auto;
+}
+
+body {
+  background: var(--cream);
+  font-family: 'Inter', sans-serif;
+  overflow-x: hidden;
+}
+
+/* Hide everything until GSAP sets initial states — prevents position flash on load/refresh */
+body.js-loading {
+  visibility: hidden;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(6px); }
+}
+
+.footer-space {
+  height: 80px;
+  background: #1C1C1C;
+}
+
+/* Hide hero elements before entrance animation — prevents flash on first paint */
+#hero .hero-ocean,
+#hero .hero-rock,
+#hero .hero-rocks-right,
+#hero .hero-rock-right,
+#hero .hero-rock2,
+#hero .lighthouse-wrap,
+#hero .hero-cloud,
+#hero .hero-cloud-3,
+#hero .hero-cloud-4,
+#hero .hero-cloud-5,
+#hero .hero-text {
+  opacity: 0;
+}
+
+/* Beaver sprite global positioning and top-layer styles */
+.h-beaver {
+    position: absolute;
+    top: calc(8%);
+    left: 50%;
+    width: 120px;
+    aspect-ratio: 247 / 115;
+    z-index: 20000;
+    pointer-events: none;
+    transform: translateZ(0);
+    will-change: transform;
+    transition: translate 0.4s cubic-bezier(0.2,1,0.3,1);
+}
+
+.hb-frame {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    object-fit: contain;
+    opacity: 0;
+}
+
+.hb-frame.active {
+    opacity: 1;
+}
+</style>
+
+<script>
+  // Kill browser scroll restoration and jump to top before any paint
+  if (history.scrollRestoration) history.scrollRestoration = 'manual';
+  window.scrollTo(0, 0);
+
+  import Lenis from 'lenis';
+  import { gsap } from 'gsap';
+  import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+  const lenis = new Lenis({
+    lerp: 0.12,
+    smooth: true,
+  });
+
+  function raf(time) {
+    lenis.raf(time);
+    ScrollTrigger.update();
+    requestAnimationFrame(raf);
+  }
+
+  requestAnimationFrame(raf);
+
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Hide hero elements immediately so there's no flash before entrance animation
+  gsap.set([
+    '#hero .hero-ocean', '#hero .hero-rock', '#hero .hero-rocks-right',
+    '#hero .hero-rock-right', '#hero .hero-rock2', '#hero .lighthouse-wrap',
+    '#hero .hero-cloud', '#hero .hero-cloud-3', '#hero .hero-cloud-4', '#hero .hero-cloud-5',
+    '#hero .hero-text',
+  ], { opacity: 0 });
+  gsap.set('#hero .hero-ocean',     { y: 50 });
+  gsap.set('#hero .hero-rock',      { y: 80 });
+  gsap.set(['#hero .hero-rocks-right', '#hero .hero-rock-right'], { y: 70 });
+  gsap.set('#hero .hero-rock2',     { y: 60 });
+  gsap.set('#hero .lighthouse-wrap',{ y: 24, scale: 0.97 });
+  gsap.set('#hero .hero-text',      { y: 28 });
+
+  // All initial GSAP states are set — safe to reveal the page
+  document.body.classList.remove('js-loading');
+
+  const panels = document.getElementById('horizontal-panels');
+
+  const heroParallax = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 0.4,
+      invalidateOnRefresh: true,
+    },
+  });
+
+  heroParallax
+    .to('#hero .hero-ocean', { yPercent: 2.5, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock', { yPercent: 4, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rocks-right', { yPercent: 6, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock-right', { yPercent: 8, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-rock2', { yPercent: 10, ease: 'none', force3D: true }, 0)
+    .to('#hero .lighthouse-wrap', { yPercent: 6, ease: 'none', force3D: true }, 0)
+    .to('#hero .hero-text', { yPercent: 12, ease: 'none', force3D: true }, 0);
+
+  // cloud-2 starts off-screen left (-240px) so its xEnd needs +240 extra to reach off-screen right
+  [
+    { id: 'hero-cloud',   dur: 78  },
+    { id: 'hero-cloud-2', dur: 95,  xEnd: () => window.innerWidth + 480 },
+    { id: 'hero-cloud-3', dur: 84  },
+    { id: 'hero-cloud-4', dur: 72  },
+    { id: 'hero-cloud-5', dur: 102 },
+  ].forEach(({ id, dur, xEnd }) => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    gsap.to(el, {
+      x: xEnd ?? (() => window.innerWidth + 260),
+      duration: dur,
+      ease: 'none',
+      repeat: -1,
+      repeatDelay: 0,
+      immediateRender: false,
+    });
+  });
+
+  const seagullWrap = document.getElementById('seagull-wrap');
+  if (seagullWrap) {
+    gsap.to(seagullWrap, {
+      x: () => window.innerWidth + 210,
+      duration: 55,
+      ease: 'none',
+      repeat: -1,
+      repeatDelay: 0,
+      immediateRender: false,
+    });
+  }
+
+  // panels start at clamp(32vw,38vw,44vw) — offset so last panel exits cleanly without dead scroll
+  const horizontalDistance = () => (panels?.scrollWidth || 0) + window.innerWidth * 0.62;
+  const pinDistance = () => horizontalDistance() + window.innerHeight * 0.75;
+
+  const hTl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '#horizontal-scroll-section',
+      start: 'top top',
+      end: () => `+=${pinDistance()}`,
+      scrub: true,
+      pin: '#horizontal-scroll-section',
+      anticipatePin: 0.5,
+      invalidateOnRefresh: true,
+    },
+    defaults: { ease: 'none' },
+  });
+
+  hTl.to('#horizontal-panels', { x: () => -horizontalDistance() });
+  hTl.to('.layer-back',        { x: () => -horizontalDistance() * 0.15 }, 0);
+  hTl.to('.layer-mid',         { x: () => -horizontalDistance() * 0.35 }, 0);
+  hTl.to('.layer-front',       { x: () => -horizontalDistance() * 0.65 }, 0);
+  hTl.to(['#scroll-visual-img', '#boat-wrap'], { x: () => -(window.innerWidth + 600), duration: 0.3, ease: 'none' }, 0);
+
+  // When horizontal scroll pins, freeze waterfall + boat-wrap at their viewport position.
+  // boatPath is declared below but assigned before this fires (scroll time, not setup time).
+  let boatPath: gsap.core.Timeline | null = null;
+
+  const wfEl    = document.getElementById('scroll-visual-img');
+  const boatEl  = document.getElementById('beaver-boat');
+  const boatWrap = document.getElementById('boat-wrap');
+  if (wfEl) {
+    ScrollTrigger.create({
+      trigger: '#horizontal-scroll-section',
+      start: 'top top',
+      onEnter: () => {
+        const r = wfEl.getBoundingClientRect();
+        gsap.set(wfEl, { position: 'fixed', top: r.top, left: r.left, width: r.width });
+        if (boatWrap && boatEl) {
+          // Read screen position BEFORE disabling the scrub — disable(false) would still
+          // revert on some GSAP versions, and either way we need the live rect first.
+          const br = boatEl.getBoundingClientRect();
+          boatWrap.style.animation = 'none';
+          // disable(false) = stop future scroll updates without reverting current tween state.
+          // Without this the scrub re-applies its end-y on every RAF and fights gsap.set below.
+          if (boatPath?.scrollTrigger) boatPath.scrollTrigger.disable(false);
+          gsap.set(boatWrap, { position: 'fixed', top: br.top, left: br.left, width: br.width });
+          gsap.set(boatEl, { x: 0, y: 0, rotation: 0 });
+        }
+      },
+      onLeaveBack: () => {
+        gsap.set(wfEl, { clearProps: 'position,top,left,width,x' });
+        if (boatWrap) {
+          boatWrap.style.animation = '';
+          gsap.set(boatWrap, { clearProps: 'position,top,left,width,x' });
+        }
+        if (boatEl) gsap.set(boatEl, { clearProps: 'x,y,rotation' });
+        // Re-enable scrub after clearing props so it immediately recalculates correct position.
+        if (boatPath?.scrollTrigger) boatPath.scrollTrigger.enable();
+      },
+    });
+  }
+
+  // Scene-wide x+y mouse parallax — whole horizontal section moves as one image.
+  // No individual panel reactions; panels only shift as part of the collective scene.
+  const hSection = document.getElementById('horizontal-scroll-section');
+  const hInner   = hSection?.querySelector('.horizontal-scroll-inner');
+  if (hSection && hInner) {
+    const qtRX = gsap.quickTo(hInner, 'rotateX', { duration: 1.0, ease: 'power2.out' });
+    const qtRY = gsap.quickTo(hInner, 'rotateY', { duration: 1.0, ease: 'power2.out' });
+
+    const layerDefs = [
+      { sel: '.layer-back',  xa: 6,  ya: 8  },
+      { sel: '.layer-mid',   xa: 14, ya: 22 },
+      { sel: '.layer-front', xa: 26, ya: 38 },
+    ];
+
+    hSection.addEventListener('mousemove', e => {
+      const r = hSection.getBoundingClientRect();
+      const nx = (e.clientX - r.left) / r.width  * 2 - 1;
+      const ny = (e.clientY - r.top)  / r.height * 2 - 1;
+
+      layerDefs.forEach(({ sel, xa, ya }) => {
+        const el = hSection.querySelector(sel);
+        if (el) el.style.translate = `${-nx * xa}px ${-ny * ya}px`;
+      });
+
+      if (panels) panels.style.translate = `${-nx * 10}px ${-ny * 8}px`;
+
+      const bvEl = document.getElementById('h-beaver');
+      if (bvEl) bvEl.style.translate = `${nx * 18}px ${-ny * 12}px`;
+
+      // Waterfall + boat-wrap are fixed during horizontal scroll — parallax stacks on their position
+      const wfElem = document.getElementById('scroll-visual-img');
+      if (wfElem) wfElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
+      const boatWrapElem = document.getElementById('boat-wrap');
+      if (boatWrapElem) boatWrapElem.style.translate = `${-nx * 8}px ${-ny * 10}px`;
+
+      qtRX(-ny * 2.5);
+      qtRY(nx * 4);
+    });
+
+    hSection.addEventListener('mouseleave', () => {
+      layerDefs.forEach(({ sel }) => {
+        const el = hSection.querySelector(sel);
+        if (el) el.style.translate = '';
+      });
+      if (panels) panels.style.translate = '';
+      const bvEl = document.getElementById('h-beaver');
+      if (bvEl) bvEl.style.translate = '';
+      const wfElem = document.getElementById('scroll-visual-img');
+      if (wfElem) wfElem.style.translate = '';
+      const boatWrapElem = document.getElementById('boat-wrap');
+      if (boatWrapElem) boatWrapElem.style.translate = '';
+      qtRX(0); qtRY(0);
+    });
+  }
+
+  gsap.to('.scroll-hint', {
+    opacity: 0,
+    scrollTrigger: {
+      trigger: '#river-section',
+      start: 'top top',
+      end: '5% top',
+      scrub: true,
+    },
+  });
+
+  // Horizontal beaver: cycle sprite frames via class toggling (no dynamic src changes)
+  const hBeaverWrap = document.getElementById('h-beaver');
+  if (hBeaverWrap) {
+    const frames = Array.from(hBeaverWrap.querySelectorAll('.hb-frame'));
+    let bfIdx = 0;
+    frames[0].classList.add('active');
+    const bfTimer = setInterval(() => {
+      frames[bfIdx].classList.remove('active');
+      bfIdx = (bfIdx + 1) % frames.length;
+      frames[bfIdx].classList.add('active');
+    }, 120);
+    window.addEventListener('pagehide', () => clearInterval(bfTimer));
+  }
+
+  // River section height = waterfall bottom, so horizontal scroll starts exactly
+  // when the waterfall's bottom edge hits the viewport bottom.
+  const wfImg = document.getElementById('scroll-visual-img');
+  const riverSection = document.getElementById('river-section');
+  function syncRiverHeight() {
+    if (wfImg && riverSection && wfImg.offsetHeight > 0) {
+      riverSection.style.height = (wfImg.offsetTop + wfImg.offsetHeight) + 'px';
+      ScrollTrigger.refresh();
+    }
+  }
+  if (wfImg?.complete && wfImg?.naturalHeight > 0) syncRiverHeight();
+  else wfImg?.addEventListener('load', syncRiverHeight, { once: true });
+  window.addEventListener('resize', syncRiverHeight);
+
+  // Boat traces the waterfall's SVG mask channel (viewBox 922×2325).
+  // CSS top:7vh matches the waterfall image's own top — no GSAP y compensation needed.
+  // Trigger at 'top 50%' starts the path halfway through the hero scroll.
+  if (boatEl) {
+    const wfImgEl = document.getElementById('scroll-visual-img');
+    const wfW  = () => wfImgEl?.offsetWidth  || 1181;
+    const wfH  = () => wfImgEl?.offsetHeight || 0;
+
+    boatPath = gsap.timeline({
+      scrollTrigger: {
+        trigger: '#river-section',
+        start: 'top 50%',
+        end: 'bottom bottom',
+        scrub: true,
+        invalidateOnRefresh: true,
+      },
+      defaults: { ease: 'sine.inOut' },
+    });
+
+    boatPath
+      .to(boatEl,  { x: () => wfW() * -0.072, y: () => wfH() * 0.028, rotation: -8,  duration: 0.060 })
+      .to(boatEl,  { x: () => wfW() *  0.049, y: () => wfH() * 0.059, rotation:  6,  duration: 0.068 })
+      .to(boatEl,  { x: () => wfW() * -0.115, y: () => wfH() * 0.184, rotation: -10, duration: 0.143 })
+      .to(boatEl,  { x: () => wfW() *  0.092, y: () => wfH() * 0.277, rotation:  8,  duration: 0.106 })
+      .to(boatEl,  { x: () => wfW() * -0.208, y: () => wfH() * 0.422, rotation: -12, duration: 0.166 })
+      .to(boatEl,  { x: () => wfW() * -0.046, y: () => wfH() * 0.508, rotation:  2,  duration: 0.099 })
+      .to(boatEl,  { x: () => wfW() * -0.046, y: () => wfH() * 0.820, rotation:  0,  ease: 'none', duration: 0.358 });
+  }
+
+  const entranceTl = gsap.timeline({ defaults: { ease: 'power3.out' }, delay: 0.05 });
+  entranceTl
+    .to('#hero .hero-ocean',       { y: 0, opacity: 1, duration: 0.9  }, 0)
+    .to('#hero .hero-rock',        { y: 0, opacity: 1, duration: 2.0  }, 0.08)
+    .to('#hero .hero-rock-right',  { y: 0, opacity: 1, duration: 1.2  }, 0.1)
+    .to('#hero .hero-rocks-right', { y: 0, opacity: 1, duration: 1.0  }, 0.15)
+    .to('#hero .hero-rock2',       { y: 0, opacity: 1, duration: 1.2  }, 0.2)
+    .to('#hero .lighthouse-wrap',  { y: 0, opacity: 1, scale: 1, duration: 0.8 }, 0.28)
+    .to(['#hero .hero-cloud', '#hero .hero-cloud-3', '#hero .hero-cloud-4', '#hero .hero-cloud-5'],
+                                   { opacity: 1, duration: 1.2        }, 0.38)
+    .to('#hero .hero-text',        { y: 0, opacity: 1, duration: 1.0  }, 0.55);
+</script>
